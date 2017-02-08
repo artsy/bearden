@@ -1,0 +1,18 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development:
+  <<: *default
+  database: bearden_development
+
+test:
+  <<: *default
+  database: bearden_test
+
+production:
+  <<: *default
+  database: bearden_production
+  username: bearden
+  password: <%= ENV['BEARDEN_DATABASE_PASSWORD'] %>
