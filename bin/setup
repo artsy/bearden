@@ -50,6 +50,8 @@ bundle install > /dev/null
 # STEP 3
 printf "${CLEAR_LINE}[3/${STEPS}]  adding remotes"
 git remote add upstream git@github.com:artsy/bearden.git
+git remote add staging git@heroku.com:bearden-staging.git
+git remote add production git@heroku.com:bearden-production.git
 
 # STEP 4
 printf "${CLEAR_LINE}[4/${STEPS}]  fetching remotes"
