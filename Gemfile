@@ -7,6 +7,7 @@ gem 'pg', '~> 0.18'
 gem 'puma', '~> 3.0'
 
 gem 'coffee-rails', '~> 4.2'
+gem 'factual-api', require: 'factual'
 gem 'faraday'
 gem 'foreman'
 gem 'jbuilder', '~> 2.5'
