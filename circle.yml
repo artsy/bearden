@@ -2,6 +2,10 @@ machine:
   ruby:
     version: 2.4.0
 
+test:
+  override:
+    - bundle exec rake
+
 deployment:
   staging:
     branch: master
