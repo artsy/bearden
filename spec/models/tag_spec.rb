@@ -2,12 +2,14 @@ require 'rails_helper'
 
 RSpec.describe Tag do
   it 'has multiple tags' do
-    tag = Fabricate(:tag, organizations: [Fabricate(:organization), Fabricate(:organization)])
+    organizations = Fabricate.times 2, :organization
+    tag = Fabricate :tag, organizations: organizations
     expect(tag.organizations.count).to eql 2
   end
 
   it 'has multiple sources' do
-    tag = Fabricate(:tag, sources: [Fabricate(:source), Fabricate(:source)])
+    sources = Fabricate.times 2, :source
+    tag = Fabricate :tag, sources: sources
     expect(tag.sources.count).to eql 2
   end
 end
