@@ -14,8 +14,8 @@ class CreateTagsSourcesOrganizations < ActiveRecord::Migration[5.0]
       t.string :region
       t.string :postcode
       t.string :country
-      t.decimal :lat, { :precision => 10, :scale => 6 }
-      t.decimal :lng, { :precision => 10, :scale => 6 }
+      t.decimal :lat, precision: 10, scale: 6
+      t.decimal :lng, precision: 10, scale: 6
       t.timestamps
     end
 
@@ -34,6 +34,5 @@ class CreateTagsSourcesOrganizations < ActiveRecord::Migration[5.0]
       t.belongs_to :organization, index: true
       t.belongs_to :tag, index: true
     end
-
   end
 end
