@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170209182659) do
+ActiveRecord::Schema.define(version: 20170209213943) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,6 +19,49 @@ ActiveRecord::Schema.define(version: 20170209182659) do
     t.string   "table"
     t.integer  "page"
     t.json     "payload"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "locations", force: :cascade do |t|
+    t.integer  "organization_id"
+    t.string   "address1"
+    t.string   "address2"
+    t.string   "locality"
+    t.string   "region"
+    t.string   "postcode"
+    t.string   "country"
+    t.decimal  "lat",             precision: 10, scale: 6
+    t.decimal  "lng",             precision: 10, scale: 6
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
+    t.index ["organization_id"], name: "index_locations_on_organization_id", using: :btree
+  end
+
+  create_table "organizations", force: :cascade do |t|
+    t.string   "name"
+    t.string   "website"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "organizations_tags", id: false, force: :cascade do |t|
+    t.integer "organization_id"
+    t.integer "tag_id"
+    t.index ["organization_id"], name: "index_organizations_tags_on_organization_id", using: :btree
+    t.index ["tag_id"], name: "index_organizations_tags_on_tag_id", using: :btree
+  end
+
+  create_table "sources", force: :cascade do |t|
+    t.integer  "tag_id"
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tag_id"], name: "index_sources_on_tag_id", using: :btree
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
