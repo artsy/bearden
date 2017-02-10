@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Tag, type: :model do
+RSpec.describe Tag do
   it 'has multiple tags' do
     tag = Fabricate(:tag, organizations: [Fabricate(:organization), Fabricate(:organization)])
     expect(tag.organizations.count).to eql 2
