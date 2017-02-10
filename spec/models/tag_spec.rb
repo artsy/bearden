@@ -1,8 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe Tag, type: :model do
-  it 'adds new tags' do
-    tag = Fabricate(:tag, companies: [Fabricate(:company), Fabricate(:company)])
-    expect(tag.companies.count).to eql 2
+  it 'has multiple tags' do
+    tag = Fabricate(:tag, organizations: [Fabricate(:organization), Fabricate(:organization)])
+    expect(tag.organizations.count).to eql 2
+  end
+
+  it 'has multiple sources' do
+    tag = Fabricate(:tag, sources: [Fabricate(:source), Fabricate(:source)])
+    expect(tag.sources.count).to eql 2
   end
 end
