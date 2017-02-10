@@ -2,33 +2,33 @@ source 'https://rubygems.org'
 
 ruby '2.4.0'
 
-gem 'rails', '~> 5.0.1'
-gem 'pg', '~> 0.18'
-gem 'puma', '~> 3.0'
+gem 'rails', '5.0.1'
+gem 'pg'
+gem 'puma'
 
-gem 'coffee-rails', '~> 4.2'
+gem 'coffee-rails'
 gem 'factual-api', require: 'factual'
 gem 'faraday'
 gem 'foreman'
-gem 'jbuilder', '~> 2.5'
+gem 'jbuilder'
 gem 'jquery-rails'
-gem 'sass-rails', '~> 5.0'
+gem 'sass-rails'
 gem 'sidekiq'
-gem 'uglifier', '>= 1.3.0'
+gem 'uglifier'
 
 group :development, :test do
-  gem 'byebug', platform: :mri
+  gem 'byebug'
   gem 'rspec-rails'
   gem 'rubocop'
 end
 
 group :development do
   gem 'dotenv-rails'
-  gem 'listen', '~> 3.0.5'
+  gem 'listen'
   gem 'rails-erd'
   gem 'spring'
-  gem 'spring-watcher-listen', '~> 2.0.0'
-  gem 'web-console', '>= 3.3.0'
+  gem 'spring-watcher-listen'
+  gem 'web-console'
 end
 
 group :test do

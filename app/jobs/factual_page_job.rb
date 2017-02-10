@@ -22,6 +22,6 @@ class FactualPageJob < ApplicationJob
 
   def page
     return 1 unless FactualPage.any?
-    FactualPage.order(page: :desc).limit(1).pluck(:page).first + 1
+    FactualPage.maximum(:page) + 1
   end
 end
