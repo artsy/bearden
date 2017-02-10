@@ -18,9 +18,12 @@ Bundler.require(*Rails.groups)
 
 module Bearden
   class Application < Rails::Application
-    # Settings in config/environments/* take precedence over those specified here.
-    # Application configuration should go into files in config/initializers
-    # -- all .rb files in that directory are automatically loaded.
+    config.action_controller.forgery_protection_origin_check = true
+    config.action_controller.per_form_csrf_tokens = true
     config.active_job.queue_adapter = :sidekiq
+    config.active_record.belongs_to_required_by_default = true
+    config.active_support.halt_callback_chains_on_return_false = false
+    config.active_support.to_time_preserves_timezone = true
+    config.ssl_options = { hsts: { subdomains: true } }
   end
 end
