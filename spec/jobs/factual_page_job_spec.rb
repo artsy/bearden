@@ -3,18 +3,18 @@ require 'rails_helper'
 describe FactualPageJob do
   describe '#perform' do
     let(:rows) { [] }
-    let(:client) { double(:client, rows: rows) }
+    let(:query) { double(:query, rows: rows) }
 
     before do
-      allow(Factual).to receive(:new).and_return client
-      allow(client).to receive(:table).and_return client
-      allow(client).to receive(:filters).and_return client
-      allow(client).to receive(:page).and_return client
+      allow(Factual).to receive(:new).and_return query
+      allow(query).to receive(:table).and_return query
+      allow(query).to receive(:filters).and_return query
+      allow(query).to receive(:page).and_return query
     end
 
     context 'with no FactualPage records yet' do
       it 'gets the first page' do
-        expect(client).to receive(:page).with(1, per: 50)
+        expect(query).to receive(:page).with(1, per: 50)
         FactualPageJob.perform_now
       end
     end
@@ -22,7 +22,7 @@ describe FactualPageJob do
     context 'with a FactualPage record' do
       it 'gets the next page' do
         Fabricate :factual_page, page: 2
-        expect(client).to receive(:page).with(3, per: 50)
+        expect(query).to receive(:page).with(3, per: 50)
         FactualPageJob.perform_now
       end
     end
@@ -32,7 +32,7 @@ describe FactualPageJob do
         Fabricate :factual_page, page: 1
         Fabricate :factual_page, page: 3
         Fabricate :factual_page, page: 2
-        expect(client).to receive(:page).with(4, per: 50)
+        expect(query).to receive(:page).with(4, per: 50)
         FactualPageJob.perform_now
       end
     end
