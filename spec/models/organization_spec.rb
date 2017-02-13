@@ -20,7 +20,9 @@ RSpec.describe Organization, type: :model do
   context 'when records are created and updated' do
     it 'raises an error when PaperTrail.whodunnit is nil' do
       PaperTrail.whodunnit = nil
-      expect { Fabricate :organization }.to raise_error ActiveRecord::StatementInvalid
+      expect { Fabricate :organization }.to raise_error(
+        ActiveRecord::StatementInvalid
+      )
     end
 
     it 'PaperTrail creates the first version' do
