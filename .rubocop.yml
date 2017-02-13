@@ -1,21 +1,22 @@
-inherit_from: .rubocop_todo.yml
-
-Style/Documentation:
-  Enabled: false
-
-Style/NumericLiterals:
+AllCops:
   Exclude:
     - 'db/schema.rb'
-
-Metrics/BlockLength:
-  Exclude:
-    - 'spec/**/*'
-    - 'db/schema.rb'
+    - 'vendor/**/*'
 
 Metrics/AbcSize:
   Exclude:
     - 'db/migrate/*'
 
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+
 Metrics/MethodLength:
   Exclude:
     - 'db/migrate/*'
+
+Style/Documentation:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false

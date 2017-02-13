@@ -2,9 +2,11 @@ source 'https://rubygems.org'
 
 ruby '2.4.0'
 
+# rubocop:disable Bundler/OrderedGems
 gem 'rails', '5.0.1'
 gem 'pg'
 gem 'puma'
+# rubocop:enable Bundler/OrderedGems
 
 gem 'coffee-rails'
 gem 'factual-api', require: 'factual'
