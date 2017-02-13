@@ -1,22 +1,22 @@
-Style/Documentation:
-  Enabled: false
-
-Metrics/BlockLength:
+AllCops:
   Exclude:
-    - 'spec/**/*'
+    - 'db/schema.rb'
+    - 'vendor/**/*'
 
 Metrics/AbcSize:
   Exclude:
     - 'db/migrate/*'
 
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+
 Metrics/MethodLength:
   Exclude:
     - 'db/migrate/*'
 
-Style/FrozenStringLiteralComment:
+Style/Documentation:
   Enabled: false
 
-AllCops:
-  Exclude:
-    - 'db/schema.rb'
-    - 'vendor/**/*'
+Style/FrozenStringLiteralComment:
+  Enabled: false
