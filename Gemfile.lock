@@ -101,6 +101,9 @@ GEM
     nokogiri (1.7.0.1)
       mini_portile2 (~> 2.1.0)
     oauth (0.4.7)
+    paper_trail (6.0.2)
+      activerecord (>= 4.0, < 5.2)
+      request_store (~> 1.1)
     parser (2.4.0.0)
       ast (~> 2.2)
     pg (0.19.0)
@@ -145,6 +148,7 @@ GEM
     rb-inotify (0.9.8)
       ffi (>= 0.5.0)
     redis (3.3.3)
+    request_store (1.3.2)
     rspec-core (3.5.4)
       rspec-support (~> 3.5.0)
     rspec-expectations (3.5.0)
@@ -227,6 +231,7 @@ DEPENDENCIES
   jbuilder
   jquery-rails
   listen
+  paper_trail
   pg
   puma
   rails (= 5.0.1)
