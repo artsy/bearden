@@ -18,3 +18,4 @@ Metrics/MethodLength:
 AllCops:
   Exclude:
     - 'db/schema.rb'
+    - 'vendor/**/*'
