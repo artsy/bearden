@@ -1,10 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Organization, type: :model do
-  before do
-    PaperTrail.whodunnit = 'Test User'
-  end
-
   it 'has multiple tags' do
     tags = Fabricate.times 2, :tag
     organization = Fabricate :organization, tags: tags
