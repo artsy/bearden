@@ -42,16 +42,3 @@ Style/FrozenStringLiteralComment:
 Style/SpaceInsideBrackets:
   Exclude:
     - 'config/environments/production.rb'
-
-# Offense count: 17
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles, ConsistentQuotesInMultiline.
-# SupportedStyles: single_quotes, double_quotes
-Style/StringLiterals:
-  Exclude:
-    - 'bin/spring'
-    - 'config/application.rb'
-    - 'config/environments/production.rb'
-    - 'config/puma.rb'
-    - 'db/schema.rb'
-    - 'spec/rails_helper.rb'
