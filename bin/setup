@@ -3,7 +3,7 @@
 # Exit if any subcommand fails
 set -e
 
-STEPS=6
+STEPS=7
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -65,5 +65,10 @@ copy_env
 printf "${CLEAR_LINE}[6/${STEPS}]  database setup"
 bundle exec rake db:setup > /dev/null
 
+# STEP 7
+printf "${CLEAR_LINE}[7/${STEPS}]  Rubocop pre-commit hook"
+cp lib/assets/pre-commit .git/hooks/pre-commit
+chmod 755 .git/hooks/pre-commit
+
 # FINISH
-printf "${CLEAR_LINE}[6/${STEPS}]${GREEN}  finished!${NO_COLOR}\n"
+printf "${CLEAR_LINE}[${STEPS}/${STEPS}]${GREEN}  finished!${NO_COLOR}\n"
