@@ -36,7 +36,6 @@ ActiveRecord::Schema.define(version: 20170213210316) do
 
   create_table "imports", force: :cascade do |t|
     t.integer  "source_id"
-    t.string   "name"
     t.string   "description"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false

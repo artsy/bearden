@@ -32,25 +32,5 @@ RSpec.describe Organization, type: :model do
         ActiveRecord::StatementInvalid
       )
     end
-
-    it 'PaperTrail can ascribe an object to the `whodunnit` field' do
-      import = Fabricate :import, source: Fabricate(:source)
-      PaperTrail.whodunnit = import
-      organization = Fabricate :organization
-      expect(organization.versions.first.actor.name).to eql import.name
-    end
-
-    it 'PaperTrail creates a version' do
-      organization = Fabricate :organization
-      expect(organization.versions.count).to eql 1
-    end
-
-    it 'PaperTrail can revert an organization' do
-      organization = Fabricate :organization, website: 'https://example.com'
-      organization.update_attribute :website, 'https://artsy.net'
-      organization = organization.paper_trail.previous_version
-      organization.save
-      expect(organization.website).to eql 'https://example.com'
-    end
   end
 end

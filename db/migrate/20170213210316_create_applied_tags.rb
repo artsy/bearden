@@ -11,7 +11,6 @@ class CreateAppliedTags < ActiveRecord::Migration[5.0]
 
     create_table :imports do |t|
       t.belongs_to :source, index: true
-      t.string :name
       t.string :description
       t.timestamps
     end
