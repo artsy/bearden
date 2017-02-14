@@ -1,5 +1,6 @@
 class Tag < ApplicationRecord
-  has_and_belongs_to_many :organizations
-  has_many :sources
+  has_many :applied_tags
+  has_many :imports, through: :applied_tags
+
   validates :name, presence: true
 end

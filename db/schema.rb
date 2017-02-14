@@ -10,10 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170210222250) do
+ActiveRecord::Schema.define(version: 20170213210316) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "applied_tags", force: :cascade do |t|
+    t.integer  "tag_id"
+    t.integer  "import_id"
+    t.integer  "organization_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.index ["import_id"], name: "index_applied_tags_on_import_id", using: :btree
+    t.index ["organization_id"], name: "index_applied_tags_on_organization_id", using: :btree
+    t.index ["tag_id"], name: "index_applied_tags_on_tag_id", using: :btree
+  end
 
   create_table "factual_pages", force: :cascade do |t|
     t.string   "table"
@@ -21,6 +32,15 @@ ActiveRecord::Schema.define(version: 20170210222250) do
     t.json     "payload"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "imports", force: :cascade do |t|
+    t.integer  "source_id"
+    t.string   "name"
+    t.string   "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["source_id"], name: "index_imports_on_source_id", using: :btree
   end
 
   create_table "locations", force: :cascade do |t|
@@ -45,19 +65,10 @@ ActiveRecord::Schema.define(version: 20170210222250) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "organizations_tags", id: false, force: :cascade do |t|
-    t.integer "organization_id"
-    t.integer "tag_id"
-    t.index ["organization_id"], name: "index_organizations_tags_on_organization_id", using: :btree
-    t.index ["tag_id"], name: "index_organizations_tags_on_tag_id", using: :btree
-  end
-
   create_table "sources", force: :cascade do |t|
-    t.integer  "tag_id"
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["tag_id"], name: "index_sources_on_tag_id", using: :btree
   end
 
   create_table "tags", force: :cascade do |t|
@@ -73,7 +84,7 @@ ActiveRecord::Schema.define(version: 20170210222250) do
     t.string   "whodunnit",  null: false
     t.text     "object"
     t.datetime "created_at"
-    t.index %w(item_type item_id), name: "index_versions_on_item_type_and_item_id", using: :btree
+    t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
   end
 
 end
