@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Organization, type: :model do
-  it 'has unique and shared tag_sources' do
+  it 'has unique and shared applied_tags' do
     import_a = Fabricate :import
     import_b = Fabricate :import
     import_c = Fabricate :import
@@ -33,18 +33,16 @@ RSpec.describe Organization, type: :model do
       )
     end
 
-    it 'PaperTrail creates the first version' do
+    it 'PaperTrail can ascribe an object to the `whodunnit` field' do
+      import = Fabricate :import, source: Fabricate(:source)
+      PaperTrail.whodunnit = import
       organization = Fabricate :organization
-      expect(organization.versions.count).to eql 1
+      expect(organization.versions.first.actor.name).to eql import.name
     end
 
-    it 'PaperTrail ascribes the correct user to the `whodunnit` field' do
-      PaperTrail.whodunnit = 'Artsy Admin'
+    it 'PaperTrail creates a version' do
       organization = Fabricate :organization
-      expect(organization.versions.first.whodunnit).to eql 'Artsy Admin'
-      PaperTrail.whodunnit = 'Apollo'
-      organization.update_attribute :name, 'Delphi'
-      expect(organization.versions.second.whodunnit).to eql 'Apollo'
+      expect(organization.versions.count).to eql 1
     end
 
     it 'PaperTrail can revert an organization' do
