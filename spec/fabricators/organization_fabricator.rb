@@ -1,3 +1,3 @@
 Fabricator :organization do
-  name { Fabricate.sequence(:tag_name) { |i| "Organization ##{i}" } }
+  website { Fabricate.sequence(:website) { |i| "https://example#{i}.com" } }
 end

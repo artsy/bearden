@@ -1,4 +1,4 @@
-class AppliedTag < ApplicationRecord
+class ImportsOrganizationsTag < ApplicationRecord
   belongs_to :tag
   belongs_to :import
   belongs_to :organization
