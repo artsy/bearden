@@ -1,6 +1,6 @@
 module BurdenConnection
   DB = Sequel.connect(
-    ENV['BURDEN_DB_URL'],
+    Rails.application.secrets.burden_db_url,
     force_standard_strings: false,
     client_min_messages: ''
   )

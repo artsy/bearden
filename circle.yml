@@ -6,6 +6,11 @@ test:
   override:
     - bundle exec rake
 
+database:
+  post:
+    - createdb bearden_mockburden
+    - createdb bearden_mockredshift
+
 deployment:
   staging:
     branch: master

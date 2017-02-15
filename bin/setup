@@ -64,6 +64,8 @@ copy_env
 # STEP 6
 printf "${CLEAR_LINE}[6/${STEPS}]  database setup"
 bundle exec rake db:setup > /dev/null
+createdb bearden_mockburden
+createdb bearden_mockredshift
 
 # STEP 7
 printf "${CLEAR_LINE}[7/${STEPS}]  Rubocop pre-commit hook"
