@@ -14,9 +14,9 @@ database:
 deployment:
   staging:
     branch: master
-    heroku:
-      appname: bearden-staging
+    commands:
+      - './script/heroku_deploy bearden-staging'
   production:
     branch: release
-    heroku:
-      appname: bearden-production
+    commands:
+      - './script/heroku_deploy bearden-production'
