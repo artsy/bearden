@@ -10,21 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170213210316) do
+ActiveRecord::Schema.define(version: 20170215153621) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "applied_tags", force: :cascade do |t|
-    t.integer  "tag_id"
-    t.integer  "import_id"
-    t.integer  "organization_id"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
-    t.index ["import_id"], name: "index_applied_tags_on_import_id", using: :btree
-    t.index ["organization_id"], name: "index_applied_tags_on_organization_id", using: :btree
-    t.index ["tag_id"], name: "index_applied_tags_on_tag_id", using: :btree
-  end
 
   create_table "factual_pages", force: :cascade do |t|
     t.string   "table"
@@ -42,6 +31,28 @@ ActiveRecord::Schema.define(version: 20170213210316) do
     t.index ["source_id"], name: "index_imports_on_source_id", using: :btree
   end
 
+  create_table "imports_organizations_names", force: :cascade do |t|
+    t.integer  "name_id"
+    t.integer  "import_id"
+    t.integer  "organization_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.index ["import_id"], name: "index_imports_organizations_names_on_import_id", using: :btree
+    t.index ["name_id"], name: "index_imports_organizations_names_on_name_id", using: :btree
+    t.index ["organization_id"], name: "index_imports_organizations_names_on_organization_id", using: :btree
+  end
+
+  create_table "imports_organizations_tags", force: :cascade do |t|
+    t.integer  "tag_id"
+    t.integer  "import_id"
+    t.integer  "organization_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.index ["import_id"], name: "index_imports_organizations_tags_on_import_id", using: :btree
+    t.index ["organization_id"], name: "index_imports_organizations_tags_on_organization_id", using: :btree
+    t.index ["tag_id"], name: "index_imports_organizations_tags_on_tag_id", using: :btree
+  end
+
   create_table "locations", force: :cascade do |t|
     t.integer  "organization_id"
     t.string   "address1"
@@ -57,8 +68,13 @@ ActiveRecord::Schema.define(version: 20170213210316) do
     t.index ["organization_id"], name: "index_locations_on_organization_id", using: :btree
   end
 
+  create_table "names", force: :cascade do |t|
+    t.string   "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "organizations", force: :cascade do |t|
-    t.string   "name"
     t.string   "website"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
