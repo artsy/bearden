@@ -1,0 +1,22 @@
+machine:
+  ruby:
+    version: 2.4.0
+
+test:
+  override:
+    - bundle exec rake
+
+database:
+  post:
+    - createdb bearden_mockburden
+    - createdb bearden_mockredshift
+
+deployment:
+  staging:
+    branch: master
+    commands:
+      - './script/heroku_deploy bearden-staging'
+  production:
+    branch: release
+    commands:
+      - './script/heroku_deploy bearden-production'

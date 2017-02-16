@@ -1,0 +1,76 @@
+#!/bin/sh
+
+# Exit if any subcommand fails
+set -e
+
+STEPS=7
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+NO_COLOR='\033[0m'
+CLEAR_LINE='\r\033[K'
+
+# STEP 1
+printf "[1/${STEPS}]  checking dependencies"
+
+if ! command -v redis-server > /dev/null; then
+  printf "${CLEAR_LINE}${RED}  You must install redis before setup can continue${NO_COLOR}\n"
+  printf "    You should:\n"
+  printf "      $ brew install redis\n"
+  exit -1
+fi
+
+if ! command -v psql > /dev/null; then
+  printf "${CLEAR_LINE}${RED}  You must install postgres before setup can continue${NO_COLOR}\n"
+  printf "    You should:\n"
+  printf "      $ brew install postgresql\n"
+  exit -1
+fi
+
+if ! command -v bundler > /dev/null; then
+  printf "${CLEAR_LINE}${RED}  You must install bundler before setup can continue${NO_COLOR}\n"
+  printf "    You should:\n"
+  printf "      $ gem install bundler\n"
+  exit -1
+fi
+
+if ! command -v copy_env > /dev/null; then
+  printf "${CLEAR_LINE}${RED}  You must install copy_env before setup can continue${NO_COLOR}\n"
+  printf "    You should:\n"
+  printf "      $ brew tap artsy/formulas\n"
+  printf "      $ brew install copy_env\n"
+  exit -1
+fi
+
+# STEP 2
+printf "${CLEAR_LINE}[2/${STEPS}]  installing gems"
+bundle install > /dev/null
+
+# STEP 3
+printf "${CLEAR_LINE}[3/${STEPS}]  adding remotes"
+git remote add upstream git@github.com:artsy/bearden.git
+git remote add staging git@heroku.com:bearden-staging.git
+git remote add production git@heroku.com:bearden-production.git
+
+# STEP 4
+printf "${CLEAR_LINE}[4/${STEPS}]  fetching remotes"
+git fetch --all --quiet > /dev/null
+
+# STEP 5
+printf "${CLEAR_LINE}[5/${STEPS}]  setting up dotenv"
+copy_env
+
+# STEP 6
+printf "${CLEAR_LINE}[6/${STEPS}]  database setup"
+bundle exec rake db:setup > /dev/null
+createdb bearden_mockburden
+createdb bearden_mockredshift
+
+# STEP 7
+printf "${CLEAR_LINE}[7/${STEPS}]  Rubocop pre-commit hook"
+cp lib/assets/pre-commit .git/hooks/pre-commit
+chmod 755 .git/hooks/pre-commit
+
+# FINISH
+printf "${CLEAR_LINE}[${STEPS}/${STEPS}]${GREEN}  finished!${NO_COLOR}\n"
