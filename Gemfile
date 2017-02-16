@@ -17,6 +17,7 @@ gem 'jquery-rails'
 gem 'paper_trail'
 gem 'paper_trail-globalid'
 gem 'sass-rails'
+gem 'sequel'
 gem 'sidekiq'
 gem 'uglifier'
 
