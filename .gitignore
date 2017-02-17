@@ -6,3 +6,4 @@
 .byebug_history
 .ruby-gemset
 .env
+db/structure.sql
