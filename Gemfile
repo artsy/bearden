@@ -9,7 +9,6 @@ gem 'puma'
 # rubocop:enable Bundler/OrderedGems
 
 gem 'coffee-rails'
-gem 'factual-api', require: 'factual'
 gem 'faraday'
 gem 'foreman'
 gem 'jbuilder'
