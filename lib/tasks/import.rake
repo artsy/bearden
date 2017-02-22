@@ -1,10 +1,12 @@
 require 'csv'
+require 'open-uri'
 
 desc 'Import csv file'
 task :import_csv, [:url] => :environment do |_, args|
   url = args[:url]
-  # this will end up being a Faraday call to grab the content of the url
-  data = File.read url
+  stringio = open(url)
+  stringio.set_encoding Encoding::UTF_8
+  data = stringio.read
 
   source = Source.find_by name: 'rake'
   import = source.imports.create(
