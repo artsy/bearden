@@ -22,7 +22,7 @@ gem 'sidekiq'
 gem 'uglifier'
 
 group :development, :test do
-  gem 'byebug'
+  gem 'pry-rails'
   gem 'rspec-rails'
   gem 'rubocop'
 end
