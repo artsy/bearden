@@ -1,4 +1,4 @@
-class CsvImportTransformer
+class CsvTransformer
   def self.transform(raw_input)
     new(raw_input).transform
   end

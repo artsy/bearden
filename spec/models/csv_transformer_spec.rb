@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe CsvImportTransformer do
+describe CsvTransformer do
   describe 'transform' do
     it 'returns attrs for an Organization' do
       data = {
@@ -14,7 +14,7 @@ describe CsvImportTransformer do
         state: 'NY'
       }
       raw_input = Fabricate :raw_input, data: data
-      attrs = CsvImportTransformer.transform raw_input
+      attrs = CsvTransformer.transform raw_input
       expected = {
         organization: {
           website: data[:host]

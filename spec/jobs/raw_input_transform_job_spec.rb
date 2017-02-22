@@ -7,7 +7,7 @@ describe RawInputTransformJob do
         source = Fabricate :source, name: 'rake'
         import = Fabricate(:import,
                            source: source,
-                           transformer: CsvImportTransformer)
+                           transformer: CsvTransformer)
         data = {
           address: '123 Main Street',
           city: 'New York',

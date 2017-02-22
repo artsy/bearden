@@ -9,7 +9,7 @@ task :import_csv, [:url] => :environment do |_, args|
   source = Source.find_by name: 'rake'
   import = source.imports.create(
     description: "importing file: #{url}",
-    transformer: CsvImportTransformer
+    transformer: CsvTransformer
   )
 
   CSV.parse(data, headers: true) do |row|
