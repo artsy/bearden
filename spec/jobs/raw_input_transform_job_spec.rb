@@ -4,7 +4,7 @@ describe RawInputTransformJob do
   describe '#perform' do
     context 'with a new record' do
       it 'creates that record and records the result' do
-        source = Fabricate :source, name: 'rake'
+        source = Fabricate :source
         import = Fabricate(:import,
                            source: source,
                            transformer: CsvTransformer)
