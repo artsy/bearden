@@ -7,17 +7,21 @@ describe CsvTransformer do
         address: '123 Main Street',
         city: 'New York',
         country: 'USA',
-        host: 'http://example.com',
         latitude: '47.5543105',
         longitude: '7.598538899999999',
+        organization_name: 'Best Gallery',
         postal_code: '22021',
-        state: 'NY'
+        state: 'NY',
+        website: 'http://example.com'
       }
       raw_input = Fabricate :raw_input, data: data
       attrs = CsvTransformer.transform raw_input
       expected = {
-        organization: {
-          website: data[:host]
+        organization_name: {
+          content: data[:organization_name]
+        },
+        website: {
+          content: data[:website]
         },
         location: {
           address1: data[:address],

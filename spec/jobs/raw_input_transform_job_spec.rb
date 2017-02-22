@@ -12,11 +12,12 @@ describe RawInputTransformJob do
           address: '123 Main Street',
           city: 'New York',
           country: 'USA',
-          host: 'http://example.com',
           latitude: '47.5543105',
           longitude: '7.598538899999999',
+          organization_name: 'Best Gallery',
           postal_code: '22021',
-          state: 'NY'
+          state: 'NY',
+          website: 'http://example.com'
         }
         raw_input = Fabricate :raw_input, import: import, data: data
         RawInputTransformJob.new.perform raw_input.id
@@ -24,9 +25,19 @@ describe RawInputTransformJob do
         expect(Organization.count).to eq 1
         organization = Organization.first
         expect(organization.versions.first.actor).to eq raw_input
+
         expect(Location.count).to eq 1
         location = Location.first
         expect(location.versions.first.actor).to eq raw_input
+
+        expect(Website.count).to eq 1
+        website = Location.first
+        expect(website.versions.first.actor).to eq raw_input
+
+        expect(OrganizationName.count).to eq 1
+        name = OrganizationName.first
+        expect(name.versions.first.actor).to eq raw_input
+
         expect(raw_input.reload.output_id).to eq organization.id
         expect(raw_input.output_type).to eq organization.class.to_s
         expect(raw_input.result).to eq 'created'

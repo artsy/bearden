@@ -9,18 +9,13 @@ class CsvTransformer
 
   def transform
     {
-      organization: organization_attrs,
-      location: location_attrs
+      location: location_attrs,
+      organization_name: organization_name_attrs,
+      website: website_attrs
     }
   end
 
   private
-
-  def organization_attrs
-    {
-      website: @data['host']
-    }
-  end
 
   def location_attrs
     {
@@ -31,6 +26,18 @@ class CsvTransformer
       country: @data['country'],
       lat: @data['latitude'],
       lng: @data['longitude']
+    }
+  end
+
+  def organization_name_attrs
+    {
+      content: @data['organization_name']
+    }
+  end
+
+  def website_attrs
+    {
+      content: @data['website']
     }
   end
 end
