@@ -25,6 +25,8 @@ describe RawInputTransformJob do
         organization = Organization.first
         expect(organization.versions.first.actor).to eq raw_input
         expect(Location.count).to eq 1
+        location = Location.first
+        expect(location.versions.first.actor).to eq raw_input
         expect(raw_input.reload.output_id).to eq organization.id
         expect(raw_input.output_type).to eq organization.class.to_s
         expect(raw_input.result).to eq 'created'
