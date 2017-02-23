@@ -4,14 +4,10 @@ describe CsvTransformer do
   describe 'transform' do
     it 'returns attrs for an Organization' do
       data = {
-        address: '123 Main Street',
-        city: 'New York',
-        country: 'USA',
+        location: '123 Main Street, New York, NY 10001',
         latitude: '47.5543105',
         longitude: '7.598538899999999',
         organization_name: 'Best Gallery',
-        postal_code: '22021',
-        state: 'NY',
         website: 'http://example.com'
       }
       raw_input = Fabricate :raw_input, data: data
@@ -24,13 +20,9 @@ describe CsvTransformer do
           content: data[:website]
         },
         location: {
-          address1: data[:address],
-          country: data[:country],
-          lat: data[:latitude],
-          lng: data[:longitude],
-          locality: data[:city],
-          postcode: data[:postal_code],
-          region: data[:state]
+          content: data[:location],
+          latitude: data[:latitude],
+          longitude: data[:longitude]
         }
       }
       expect(attrs).to eq(expected)

@@ -9,14 +9,10 @@ describe RawInputTransformJob do
                            source: source,
                            transformer: CsvTransformer)
         data = {
-          address: '123 Main Street',
-          city: 'New York',
-          country: 'USA',
+          location: '123 Main Street, New York, NY 10001',
           latitude: '47.5543105',
           longitude: '7.598538899999999',
           organization_name: 'Best Gallery',
-          postal_code: '22021',
-          state: 'NY',
           website: 'http://example.com'
         }
         raw_input = Fabricate :raw_input, import: import, data: data

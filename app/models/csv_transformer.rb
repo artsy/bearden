@@ -19,13 +19,9 @@ class CsvTransformer
 
   def location_attrs
     {
-      address1: @data['address'],
-      locality: @data['city'],
-      region: @data['state'],
-      postcode: @data['postal_code'],
-      country: @data['country'],
-      lat: @data['latitude'],
-      lng: @data['longitude']
+      content: @data['location'],
+      latitude: @data['latitude'],
+      longitude: @data['longitude']
     }
   end
 
