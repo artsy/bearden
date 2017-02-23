@@ -1,5 +1,6 @@
 class Organization < ApplicationRecord
   has_many :locations
+  has_many :websites
   has_many :organization_names
   has_many :import_organization_tags
   has_many :tags, through: :import_organization_tags
