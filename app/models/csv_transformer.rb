@@ -1,4 +1,8 @@
 class CsvTransformer
+  def self.allowed_headers
+    %w(location latitude longitude organization_name website)
+  end
+
   def self.transform(raw_input)
     new(raw_input).transform
   end
