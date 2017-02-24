@@ -1,3 +1,5 @@
+# rubocop:disable all
+
 # TODO: From firmographic score, Clearbit data was excluded. Check with Ani about this decision.
 
 # TODO: Hello, not everyone's computers are named 'lancew'
