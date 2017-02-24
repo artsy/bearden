@@ -7,3 +7,5 @@
 .ruby-gemset
 .env
 db/structure.sql
+data-exploration/sources/*
+data-exploration/exports/*
