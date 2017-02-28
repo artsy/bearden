@@ -1,8 +1,7 @@
 # rubocop:disable all
 
-# TODO: From firmographic score, Clearbit data was excluded. Check with Ani about this decision.
+# This file is seen as a one-off export. It's purpose is to take data from one CSV and combine it with data from the Burden database. Given its ephemeral nature, there are certain quirks that weren't dealt with. For instance, the script is run in a Burden `gris console` using the `load` command. To be in a Burden console, you must of course be in the Burden directory. Hence the hard-linked files below.
 
-# TODO: Hello, not everyone's computers are named 'lancew'
 input_file = '/Users/lancew/Code/bearden/data-exploration/sources/contacts_accounts.csv'
 
 output_file = '/Users/lancew/Code/bearden/data-exploration/exports/contacts_accounts_burden_ids.csv'
@@ -32,11 +31,11 @@ expanded_score_headers = [
   'locations_count',
   'fair_participations_count',
   'fair_participation_tiers_mean',
-  'inquiry_requests_count',
-  'purchases_count',
-  'purchases_total',
-  'artwork_bidders_count',
-  'auction_lots_price_realized_average'
+  'artists_inquiry_requests_count',
+  'artists_purchases_count',
+  'artists_purchases_total',
+  'artists_artwork_bidders_count',
+  'artists_auction_lots_price_realized_average'
 ]
 
 class ExpandedScoreFields
