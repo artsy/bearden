@@ -75,7 +75,7 @@ class ExpandedScoreFields
     sum = @organization.fair_participations.map { |p| p.fair.tier }.compact.sum || 0
     count = @organization.fair_participations_count || 0
     return nil if sum < 1 || count < 1
-    count.fdiv(sum)
+    sum.fdiv(count)
   end
 
   def inquiry_requests_count
