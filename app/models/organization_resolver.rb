@@ -29,22 +29,22 @@ class OrganizationResolver
   end
 
   def location
-    @organization.locations.first.content
+    @organization.locations.first&.content
   end
 
   def latitude
-    @organization.locations.first.latitude
+    @organization.locations.first&.latitude
   end
 
   def longitude
-    @organization.locations.first.longitude
+    @organization.locations.first&.longitude
   end
 
   def organization_name
-    @organization.organization_names.first.content
+    @organization.organization_names.first&.content
   end
 
   def website
-    @organization.websites.first.content
+    @organization.websites.first&.content
   end
 end
