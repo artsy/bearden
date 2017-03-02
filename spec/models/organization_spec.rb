@@ -20,8 +20,8 @@ RSpec.describe Organization, type: :model do
   end
 
   it 'has multiple locations' do
-    locations = Fabricate.times 2, :location
-    organization = Fabricate :organization, locations: locations
+    organization = Fabricate :organization
+    Fabricate.times 2, :location, organization: organization
     expect(organization.locations.count).to eql 2
   end
 
