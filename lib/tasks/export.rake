@@ -3,17 +3,18 @@ require 'csv'
 desc 'Export csv file of organizations'
 task export_csv: :environment do
   resolved = Organization.all.map(&OrganizationResolver.method(:resolve))
+  converted = CsvConverter.convert resolved
 
   filename = 'export.csv'
 
   options = {
-    headers: OrganizationResolver.headers,
+    headers: CsvConverter.headers,
     write_headers: true
   }
 
   CSV.open(filename, 'w', options) do |csv|
-    resolved.each { |row| csv << row }
+    converted.each { |row| csv << row }
   end
 
-  puts "#{resolved.count} Organizations exported to #{filename}"
+  puts "#{converted.count} Organizations exported to #{filename}"
 end

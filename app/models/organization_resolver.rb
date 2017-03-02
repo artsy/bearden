@@ -1,8 +1,4 @@
 class OrganizationResolver
-  def self.headers
-    %w(bearden_id location latitude longitude organization_name website)
-  end
-
   def self.resolve(organization)
     new(organization).resolve
   end
@@ -12,39 +8,31 @@ class OrganizationResolver
   end
 
   def resolve
-    [
-      id,
-      location,
-      latitude,
-      longitude,
-      organization_name,
-      website
-    ]
+    find_highest_rankables
+    highest_ranked_data
   end
 
   private
 
-  def id
-    @organization.id
+  def find_highest_rankables
+    @location = find_highest_rankable(@organization.locations)
+    @organization_name = find_highest_rankable(@organization.organization_names)
+    @website = find_highest_rankable(@organization.websites)
   end
 
-  def location
-    @organization.locations.first&.content
+  def find_highest_rankable(rankables)
+    highest_rank = rankables.map(&:rank).sort.first
+    rankables.find { |rankable| rankable.rank == highest_rank }
   end
 
-  def latitude
-    @organization.locations.first&.latitude
-  end
-
-  def longitude
-    @organization.locations.first&.longitude
-  end
-
-  def organization_name
-    @organization.organization_names.first&.content
-  end
-
-  def website
-    @organization.websites.first&.content
+  def highest_ranked_data
+    {
+      bearden_id: @organization.id,
+      latitude: @location&.latitude,
+      location: @location&.content,
+      longitude: @location&.longitude,
+      organization_name: @organization_name&.content,
+      website: @website&.content
+    }.compact
   end
 end
