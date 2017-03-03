@@ -5,7 +5,8 @@ task export_csv: :environment do
   resolved = Organization.all.map(&OrganizationResolver.method(:resolve))
   converted = CsvConverter.convert resolved
 
-  filename = 'export.csv'
+  timestamp = Time.now.strftime('%F%T').gsub(/[^0-9a-z ]/i, '')
+  filename = "export_#{timestamp}.csv"
 
   options = {
     headers: CsvConverter.headers,
