@@ -21,8 +21,7 @@ class OrganizationResolver
   end
 
   def find_highest_rankable(rankables)
-    highest_rank = rankables.map(&:rank).sort.first
-    rankables.find { |rankable| rankable.rank == highest_rank }
+    rankables.sort_by(&:rank).first
   end
 
   def highest_ranked_data
