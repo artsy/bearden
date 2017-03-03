@@ -4,13 +4,15 @@ RSpec.describe LocationsGeocodeJob, type: :job do
   include ActiveJob::TestHelper
 
   describe '#perform' do
+    let(:berlin_coordinates) { [52.52000659999999, 13.404954] }
+
     before do
-      allow(Geocoder).to receive(:coordinates).and_return([52.52000659999999, 13.404954])
+      allow(Geocoder).to receive(:coordinates).and_return(berlin_coordinates)
     end
 
     it 'does not use actual Geocoder API calls for these tests' do
       coordinates = Geocoder.coordinates 'Foo Street, Quxville, Barlandia'
-      expect(coordinates).to eq [52.52000659999999, 13.404954]
+      expect(coordinates).to eq berlin_coordinates
     end
 
     it 'enqueues one job after another' do
@@ -27,11 +29,16 @@ RSpec.describe LocationsGeocodeJob, type: :job do
     end
 
     it 'only enqueues jobs for Locations that are not geoencoded' do
-      location1 = Fabricate :location, content: 'Berlin, Germany'
-      Fabricate :location, content: 'New York City', latitude: 1234, longitude: 5678
+      location = Fabricate :location, content: 'Berlin, Germany'
+      Fabricate(
+        :location,
+        content: 'New York City',
+        latitude: 1234,
+        longitude: 5678
+      )
 
       perform_enqueued_jobs do
-        LocationsGeocodeJob.perform_later location1.id
+        LocationsGeocodeJob.perform_later location.id
       end
 
       perform_enqueued_jobs do
