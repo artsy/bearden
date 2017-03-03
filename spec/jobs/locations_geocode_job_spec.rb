@@ -15,7 +15,7 @@ RSpec.describe LocationsGeocodeJob, type: :job do
 
     it 'enqueues one job after another' do
       location1 = Fabricate :location, content: 'Berlin, Germany'
-      Fabricate :location, content: '401 Broadway New York City'
+      Fabricate :location, content: '401 Broadway, New York City'
 
       perform_enqueued_jobs do
         LocationsGeocodeJob.perform_later location1.id
@@ -34,8 +34,10 @@ RSpec.describe LocationsGeocodeJob, type: :job do
         LocationsGeocodeJob.perform_later location1.id
       end
 
-      assert_performed_jobs 1
-      assert_enqueued_jobs 0
+      perform_enqueued_jobs do
+        assert_performed_jobs 1
+        assert_enqueued_jobs 0
+      end
     end
   end
 end
