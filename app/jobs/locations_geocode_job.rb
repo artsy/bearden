@@ -14,7 +14,7 @@ class LocationsGeocodeJob < ApplicationJob
       location.update_attributes latitude: coordinates[0], longitude: coordinates[1]
 
       next_location = Location.where(latitude: nil).or(Location.where(longitude: nil)).first
-      self.class.perform_later next_location.id if next_location
+      self.class.set(wait: 0.2.seconds).perform_later(next_location.id) if next_location
 
     rescue Geocoder::OverQueryLimitError
       logger.warn "Geocoder is over its query limit"
