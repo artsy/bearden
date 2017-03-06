@@ -1,9 +1,11 @@
 class Organization < ApplicationRecord
-  has_many :locations
-  has_many :websites
-  has_many :organization_names
+  has_many :emails
   has_many :import_organization_tags
+  has_many :locations
+  has_many :organization_names
+  has_many :phone_numbers
   has_many :tags, through: :import_organization_tags
+  has_many :websites
 
   has_paper_trail ignore: [:created_at, :updated_at]
 
