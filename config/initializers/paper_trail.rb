@@ -1,7 +1,7 @@
 PaperTrail.config.track_associations = false
 
 module PaperTrail
-  def self.with_actor(actor)
+  def self.track_changes_with(actor)
     original_actor = self.actor
     self.whodunnit = actor
     yield

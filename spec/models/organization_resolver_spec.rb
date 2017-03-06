@@ -27,7 +27,7 @@ describe OrganizationResolver do
         organization_name = 'The Best Gallery'
         website = 'http://www.example.com'
 
-        PaperTrail.with_actor(raw_input) do
+        PaperTrail.track_changes_with(raw_input) do
           organization = Fabricate :organization
           Fabricate(:location,
                     organization: organization,
@@ -63,7 +63,7 @@ describe OrganizationResolver do
         lower_import = Fabricate :import, source: lower_source
         lower_raw_input = Fabricate :raw_input, import: lower_import
 
-        PaperTrail.with_actor(lower_raw_input) do
+        PaperTrail.track_changes_with(lower_raw_input) do
           organization = Fabricate :organization
           Fabricate :location, organization: organization
           Fabricate :organization_name, organization: organization
@@ -80,7 +80,7 @@ describe OrganizationResolver do
         organization_name = 'The Best Gallery'
         website = 'http://www.example.com'
 
-        PaperTrail.with_actor(raw_input) do
+        PaperTrail.track_changes_with(raw_input) do
           Fabricate(:location,
                     organization: organization,
                     content: location,

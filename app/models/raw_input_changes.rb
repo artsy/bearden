@@ -31,7 +31,7 @@ class RawInputChanges
   end
 
   def update_organization
-    PaperTrail.with_actor(@raw_input) do
+    PaperTrail.track_changes_with(@raw_input) do
       matching_organization.locations.create @attrs[:location]
       matching_organization.organization_names.create @attrs[:organization_name]
     end
@@ -42,7 +42,7 @@ class RawInputChanges
   def create_organization
     organization = nil
 
-    PaperTrail.with_actor(@raw_input) do
+    PaperTrail.track_changes_with(@raw_input) do
       organization = Organization.create
       organization.locations.create @attrs[:location]
       organization.organization_names.create @attrs[:organization_name]
