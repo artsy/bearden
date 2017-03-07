@@ -4,7 +4,7 @@ describe GeocodeLocationJob do
   include ActiveJob::TestHelper
 
   describe '#perform' do
-    let(:berlin_coordinates) { [52.52000659999999, 13.404954] }
+    let(:berlin_coordinates) { [52.5200066, 13.404954] }
 
     before do
       allow(Geocoder).to receive(:coordinates).and_return(berlin_coordinates)
@@ -25,8 +25,7 @@ describe GeocodeLocationJob do
         assert_performed_jobs 1
       end
 
-      # TODO: This fails because value from db is "52.520007 (0.52520007e2)"
-      # expect(org.locations.second.latitude).to eql berlin_coordinates[0]
+      expect(org.locations.second.latitude).to eql berlin_coordinates[0]
       expect(org.locations.second.longitude).to eql berlin_coordinates[1]
     end
 
@@ -92,19 +91,21 @@ describe GeocodeLocationJob do
       end
     end
 
-    # TODO: See note in `geocode_location_job.rb`
-    it 'raises an error when coordinates is falsy' do
+    it 'saves location with fallback value when Geocoder results are nil' do
+      fallback_coordinates = GeocodeLocationJob::FALLBACK_COORDINATES
+
+      allow(Geocoder).to receive(:coordinates)
+        .and_return(fallback_coordinates)
+
       org = Fabricate :organization
       org.locations.create content: 'Nil Town, USA'
-      org.locations.create content: 'Nil Town II, USA'
-
-      allow(Geocoder).to receive(:coordinates).and_return(nil)
 
       perform_enqueued_jobs do
-        expect do
-          GeocodeLocationJob.perform_later
-        end.to raise_error Geocoder::InvalidRequest
+        GeocodeLocationJob.perform_later
       end
+
+      expect(org.locations.first.latitude).to eql fallback_coordinates[0]
+      expect(org.locations.first.longitude).to eql fallback_coordinates[1]
     end
   end
 end
