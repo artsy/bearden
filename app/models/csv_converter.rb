@@ -13,7 +13,7 @@ class CsvConverter
 
   def convert
     [
-      @input[:id],
+      @input[:bearden_id],
       @input[:latitude],
       @input[:location],
       @input[:longitude],
