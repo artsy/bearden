@@ -4,9 +4,9 @@ class GeocodeLocationJob < ApplicationJob
 
   def perform
     location = next_location
-    return enqueue_next unless location&.geocodable?
-    geocode location
-    return unless enqueue_next_job
+    return unless location
+    geocode location if location&.geocodable?
+    enqueue_next_job
   end
 
   private
@@ -20,8 +20,6 @@ class GeocodeLocationJob < ApplicationJob
   end
 
   def enqueue_next_job
-    location = next_location
-    return nil unless location
     GeocodeLocationJob.set(wait: JOB_DELAY).perform_later
   end
 

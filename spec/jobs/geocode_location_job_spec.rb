@@ -22,11 +22,11 @@ describe GeocodeLocationJob do
       end
 
       perform_enqueued_jobs do
-        assert_performed_jobs 1
+        assert_performed_jobs 2
       end
 
-      expect(org.locations.second.latitude).to eql berlin_coordinates[0]
-      expect(org.locations.second.longitude).to eql berlin_coordinates[1]
+      expect(org.locations.last.latitude).to eql berlin_coordinates[0]
+      expect(org.locations.last.longitude).to eql berlin_coordinates[1]
     end
 
     it 'stops raises an error when OverQueryLimitError is raised' do
@@ -54,7 +54,7 @@ describe GeocodeLocationJob do
       end
 
       perform_enqueued_jobs do
-        assert_performed_jobs 2
+        assert_performed_jobs 3
       end
     end
 
@@ -70,7 +70,7 @@ describe GeocodeLocationJob do
       end
 
       perform_enqueued_jobs do
-        assert_performed_jobs 1
+        assert_performed_jobs 2
       end
     end
 
@@ -86,7 +86,7 @@ describe GeocodeLocationJob do
       end
 
       perform_enqueued_jobs do
-        assert_performed_jobs 1
+        assert_performed_jobs 2
         assert_enqueued_jobs 0
       end
     end
