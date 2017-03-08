@@ -15,10 +15,10 @@ task export_csv: :environment do
   end
 
   timestamp = Time.now.strftime('%F%T').gsub(/[^0-9a-z ]/i, '')
-  filename = "export_#{timestamp}.csv"
+  filename = "exports/#{timestamp}.csv"
 
   s3 = Aws::S3::Resource.new
-  object = s3.bucket('bearden-staging').object(filename)
+  object = s3.bucket(ENV['AWS_BUCKET']).object(filename)
   object.put acl: 'public-read', body: csv_data
 
   puts "#{converted.count} Organizations exported to #{object.public_url}"
