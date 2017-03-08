@@ -8,6 +8,7 @@ gem 'pg'
 gem 'puma'
 # rubocop:enable Bundler/OrderedGems
 
+gem 'aws-sdk'
 gem 'coffee-rails'
 gem 'faraday'
 gem 'foreman'
