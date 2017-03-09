@@ -20,7 +20,7 @@ task :import_csv, [:source_name, :url] => :environment do |_, args|
 
     CSV.parse(data, headers: true) do |row|
       input = import.raw_inputs.create data: row.to_h
-      RawInputTransformJob.perform_later input.id
+      RawInputTransformJob.perform_now input.id
       jobs_queued_count += 1
     end
 
