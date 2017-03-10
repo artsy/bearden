@@ -12,4 +12,11 @@ class RawInput < ApplicationRecord
       output_type: output.class
     )
   end
+
+  def record_error(error)
+    update_attributes(
+      result: 'error',
+      error: error
+    )
+  end
 end

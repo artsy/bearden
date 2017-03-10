@@ -40,8 +40,13 @@ class RawInputChanges
   end
 
   def create_organization
-    organization = nil
+    create_organization_with_transaction
+  rescue => e
+    @raw_input.record_error e
+  end
 
+  def create_organization_with_transaction
+    organization = nil
     PaperTrail.track_changes_with(@raw_input) do
       Website.transaction(isolation: :serializable) do
         organization = Organization.create
@@ -50,7 +55,6 @@ class RawInputChanges
         organization.websites.create @attrs[:website]
       end
     end
-
     @raw_input.record_result 'created', organization
   end
 end
