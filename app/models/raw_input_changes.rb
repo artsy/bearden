@@ -43,10 +43,12 @@ class RawInputChanges
     organization = nil
 
     PaperTrail.track_changes_with(@raw_input) do
-      organization = Organization.create
-      organization.locations.create @attrs[:location]
-      organization.organization_names.create @attrs[:organization_name]
-      organization.websites.create @attrs[:website]
+      Website.transaction(isolation: :serializable) do
+        organization = Organization.create
+        organization.locations.create @attrs[:location]
+        organization.organization_names.create @attrs[:organization_name]
+        organization.websites.create @attrs[:website]
+      end
     end
 
     @raw_input.record_result 'created', organization
