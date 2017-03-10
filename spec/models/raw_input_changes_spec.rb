@@ -36,7 +36,7 @@ describe RawInputChanges do
 
         expect(raw_input.reload.output_id).to eq organization.id
         expect(raw_input.output_type).to eq organization.class.to_s
-        expect(raw_input.result).to eq 'created'
+        expect(raw_input.result).to eq RawInput::CREATED
 
         expect(PaperTrail.whodunnit).to eq 'Test User'
       end
@@ -70,7 +70,7 @@ describe RawInputChanges do
 
         expect(raw_input.reload.output_id).to eq organization.id
         expect(raw_input.output_type).to eq organization.class.to_s
-        expect(raw_input.result).to eq 'updated'
+        expect(raw_input.result).to eq RawInput::UPDATED
       end
     end
   end

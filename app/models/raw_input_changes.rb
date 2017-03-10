@@ -36,7 +36,7 @@ class RawInputChanges
       matching_organization.organization_names.create @attrs[:organization_name]
     end
 
-    @raw_input.record_result 'updated', matching_organization
+    @raw_input.record_result RawInput::UPDATED, matching_organization
   end
 
   def create_organization
@@ -55,6 +55,6 @@ class RawInputChanges
         organization.websites.create @attrs[:website]
       end
     end
-    @raw_input.record_result 'created', organization
+    @raw_input.record_result RawInput::CREATED, organization
   end
 end

@@ -1,6 +1,10 @@
 class RawInput < ApplicationRecord
   belongs_to :import
 
+  CREATED = 'created'.freeze
+  UPDATED = 'updated'.freeze
+  ERROR = 'error'.freeze
+
   def transform
     import.transformer.constantize.transform self
   end
@@ -15,7 +19,7 @@ class RawInput < ApplicationRecord
 
   def record_error(error)
     update_attributes(
-      result: 'error',
+      result: ERROR,
       error: error
     )
   end
