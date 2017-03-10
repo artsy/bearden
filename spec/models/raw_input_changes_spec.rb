@@ -3,6 +3,19 @@ require 'rails_helper'
 describe RawInputChanges do
   describe '.apply' do
     context 'with a new organization' do
+      it 'records an error when the record cannot be created' do
+        allow(Website).to receive(:transaction).and_raise(StandardError)
+
+        source = Fabricate :source
+        import = Fabricate(:import, source: source, transformer: CsvTransformer)
+        data = { website: 'http://example.com' }
+        raw_input = Fabricate :raw_input, import: import, data: data
+
+        RawInputChanges.apply raw_input
+
+        expect(raw_input.reload.result).to eql RawInput::ERROR
+      end
+
       it 'creates that organization and records the result' do
         source = Fabricate :source
         import = Fabricate(:import,
