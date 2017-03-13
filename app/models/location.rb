@@ -11,4 +11,9 @@ class Location < ApplicationRecord
   def geocodable?
     content? && !geocoded?
   end
+
+  def self.geocoder_source
+    return if Source.find_by name: 'Geocoder'
+    Source.create name: 'Geocoder', rank: 100_000
+  end
 end
