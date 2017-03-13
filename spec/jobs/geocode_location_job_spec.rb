@@ -20,9 +20,6 @@ describe GeocodeLocationJob do
 
       perform_enqueued_jobs do
         GeocodeLocationJob.perform_later nil_import
-      end
-
-      perform_enqueued_jobs do
         assert_performed_jobs 2
       end
 
@@ -52,9 +49,6 @@ describe GeocodeLocationJob do
 
       perform_enqueued_jobs do
         GeocodeLocationJob.perform_later nil_import
-      end
-
-      perform_enqueued_jobs do
         assert_performed_jobs 3
       end
     end
@@ -68,9 +62,6 @@ describe GeocodeLocationJob do
 
       perform_enqueued_jobs do
         GeocodeLocationJob.perform_later nil_import
-      end
-
-      perform_enqueued_jobs do
         assert_performed_jobs 2
       end
     end
@@ -84,9 +75,6 @@ describe GeocodeLocationJob do
 
       perform_enqueued_jobs do
         GeocodeLocationJob.perform_later nil_import
-      end
-
-      perform_enqueued_jobs do
         assert_performed_jobs 2
         assert_enqueued_jobs 0
       end
