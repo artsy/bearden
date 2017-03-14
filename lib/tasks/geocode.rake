@@ -1,10 +1,8 @@
 desc 'Create coordinates for records that are not geocoded'
 task geocode_locations: :environment do
-  import = Import.create(
-    description: "Geocoded by rake task on #{DateTime.now}",
-    source: Location.geocoder_source
-  )
-  GeocodeLocationJob.perform_now import
-
+  source = Source.find_by name: 'Geocoder'
+  description = "Geocoded by rake task on #{DateTime.now}"
+  import = source.imports.create description: description
+  GeocodeLocationJob.perform_now import.id
   puts 'Starting background process to geocode locations ...'
 end
