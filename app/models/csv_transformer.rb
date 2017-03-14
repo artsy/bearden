@@ -1,6 +1,15 @@
 class CsvTransformer
   def self.allowed_headers
-    %w(location latitude longitude organization_name tag_names website)
+    %w(
+      email
+      location
+      latitude
+      longitude
+      organization_name
+      phone_number
+      tag_names
+      website
+    )
   end
 
   def self.transform(raw_input)
@@ -13,14 +22,22 @@ class CsvTransformer
 
   def transform
     {
+      email: email_attrs,
       location: location_attrs,
       organization_name: organization_name_attrs,
+      phone_number: phone_number_attrs,
       tag_names: tag_names,
       website: website_attrs
     }
   end
 
   private
+
+  def email_attrs
+    {
+      content: @data['email']
+    }
+  end
 
   def location_attrs
     {
@@ -33,6 +50,12 @@ class CsvTransformer
   def organization_name_attrs
     {
       content: @data['organization_name']
+    }
+  end
+
+  def phone_number_attrs
+    {
+      content: @data['phone_number']
     }
   end
 

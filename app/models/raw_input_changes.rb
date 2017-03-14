@@ -46,11 +46,13 @@ class RawInputChanges
     organization
   end
 
-  # rubocop:disable Metrics/LineLength
+  # rubocop:disable Metrics/AbcSize, Metrics/LineLength
   def add_relationships(organization)
+    organization.emails.create @attrs[:email] if @attrs[:email]
     organization.locations.create! @attrs[:location] if @attrs[:location]
     organization.organization_names.create! @attrs[:organization_name] if @attrs[:organization_name]
+    organization.phone_numbers.create @attrs[:phone_number] if @attrs[:phone_number]
     OrganizationTag.apply(@attrs[:tag_names], matching_organization)
   end
-  # rubocop:enable Metrics/LineLength
+  # rubocop:enable Metrics/AbcSize, Metrics/LineLength
 end
