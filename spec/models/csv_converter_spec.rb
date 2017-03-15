@@ -9,6 +9,7 @@ describe CsvConverter do
         location: '123 main street',
         longitude: 3.45,
         organization_name: 'Gallery A',
+        tag_names: 'design,modern',
         website: 'http://example.com'
       }
 
