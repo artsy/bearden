@@ -16,12 +16,10 @@ describe GeocodeLocationJob do
         content: 'New York City', latitude: 1234, longitude: 5678
       )
       org.locations.create content: '401 Broadway, New York City'
+      import = Fabricate :import
 
       perform_enqueued_jobs do
-        GeocodeLocationJob.perform_later
-      end
-
-      perform_enqueued_jobs do
+        GeocodeLocationJob.perform_later import.id
         assert_performed_jobs 2
       end
 
@@ -36,10 +34,11 @@ describe GeocodeLocationJob do
       org.locations.create(
         content: 'New York City', latitude: 1234, longitude: nil
       )
+      import = Fabricate :import
 
       perform_enqueued_jobs do
         expect do
-          GeocodeLocationJob.perform_later
+          GeocodeLocationJob.perform_later import.id
         end.to raise_error Geocoder::OverQueryLimitError
       end
     end
@@ -48,12 +47,10 @@ describe GeocodeLocationJob do
       org = Fabricate :organization
       org.locations.create content: 'Berlin, Germany'
       org.locations.create content: '401 Broadway, New York City'
+      import = Fabricate :import
 
       perform_enqueued_jobs do
-        GeocodeLocationJob.perform_later
-      end
-
-      perform_enqueued_jobs do
+        GeocodeLocationJob.perform_later import.id
         assert_performed_jobs 3
       end
     end
@@ -64,12 +61,10 @@ describe GeocodeLocationJob do
       org.locations.create(
         content: 'New York City', latitude: 1234, longitude: 5678
       )
+      import = Fabricate :import
 
       perform_enqueued_jobs do
-        GeocodeLocationJob.perform_later
-      end
-
-      perform_enqueued_jobs do
+        GeocodeLocationJob.perform_later import.id
         assert_performed_jobs 2
       end
     end
@@ -80,12 +75,10 @@ describe GeocodeLocationJob do
       org.locations.create(
         content: 'New York City', latitude: 1234, longitude: 5678
       )
+      import = Fabricate :import
 
       perform_enqueued_jobs do
-        GeocodeLocationJob.perform_later
-      end
-
-      perform_enqueued_jobs do
+        GeocodeLocationJob.perform_later import.id
         assert_performed_jobs 2
         assert_enqueued_jobs 0
       end
@@ -99,13 +92,39 @@ describe GeocodeLocationJob do
 
       org = Fabricate :organization
       org.locations.create content: 'Nil Town, USA'
+      import = Fabricate :import
 
       perform_enqueued_jobs do
-        GeocodeLocationJob.perform_later
+        GeocodeLocationJob.perform_later import.id
       end
 
       expect(org.locations.first.latitude).to eql fallback_coordinates[0]
       expect(org.locations.first.longitude).to eql fallback_coordinates[1]
+    end
+
+    it 'records an Import and Source for all records' do
+      organization = Fabricate :organization
+      Fabricate :location, latitude: nil, organization: organization
+      Fabricate :location, latitude: nil, organization: organization
+
+      source = Fabricate :source, name: 'Foo Geocoding, Inc.'
+      description = 'Testing, testing'
+      import = source.imports.create description: description
+
+      perform_enqueued_jobs do
+        GeocodeLocationJob.perform_later import.id
+
+        assert_performed_jobs 3
+        expect(Source.count).to eql 1
+        expect(Location.count).to eql 2
+
+        Location.all.each do |location|
+          actor = location.versions.last.actor
+          expect(actor).to eq import
+          expect(actor.description).to eq description
+          expect(actor.source).to eq source
+        end
+      end
     end
   end
 end

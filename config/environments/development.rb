@@ -20,4 +20,6 @@ Rails.application.configure do
     config.action_controller.perform_caching = false
     config.cache_store = :null_store
   end
+
+  PaperTrail.whodunnit = 'development'
 end
