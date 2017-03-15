@@ -20,7 +20,7 @@ class RawInput < ApplicationRecord
   def record_error(error)
     update_attributes(
       result: ERROR,
-      error: error
+      exception: error
     )
   end
 end

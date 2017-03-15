@@ -14,6 +14,7 @@ describe RawInputChanges do
         RawInputChanges.apply raw_input
 
         expect(raw_input.reload.result).to eql RawInput::ERROR
+        expect(raw_input.exception).to eql StandardError.to_s
       end
 
       it 'creates that organization and records the result' do
