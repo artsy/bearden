@@ -8,49 +8,48 @@ class RawInputChanges
     @attrs = raw_input.transform
   end
 
-  # rubocop:disable Metrics/MethodLength
-  # TODO: This method is one line too long!
   def apply
-    organization = matching_website&.organization
-    if organization.nil?
-      organization = create_organization
-      state = RawInput::CREATED
-    else
+    organization = nil
+
+    PaperTrail.track_changes_with_transaction(@raw_input) do
+      organization = find_or_create_organization
       add_relationships(organization)
-      state = RawInput::UPDATED
     end
-    @raw_input.record_result state, organization
+
+    @raw_input.record_result @state, organization
   rescue => e
     @raw_input.record_error e
   end
-  # rubocop:enable Metrics/MethodLength
 
   private
 
-  def url
-    @attrs.fetch(:website, {})[:content]
+  def find_or_create_organization
+    @state = matching_organization ? RawInput::UPDATED : RawInput::CREATED
+    matching_organization || create_organization
+  end
+
+  def matching_organization
+    matching_website&.organization
   end
 
   def matching_website
     @matching_website ||= Website.find_by(content: url)
   end
 
-  def add_relationships(organization)
-    PaperTrail.track_changes_with_transaction(@raw_input) do
-      organization.locations.create! @attrs[:location] if @attrs[:location]
-      if @attrs[:organization_name]
-        organization.organization_names.create! @attrs[:organization_name]
-      end
-    end
+  def url
+    @attrs.fetch(:website, {})[:content]
   end
 
   def create_organization
-    organization = nil
-    PaperTrail.track_changes_with_transaction(@raw_input) do
-      organization = Organization.create!
-      organization.websites.create! @attrs[:website] if @attrs[:website]
-      add_relationships(organization)
-    end
+    organization = Organization.create!
+    organization.websites.create! @attrs[:website] if @attrs[:website]
     organization
   end
+
+  # rubocop:disable Metrics/LineLength
+  def add_relationships(organization)
+    organization.locations.create! @attrs[:location] if @attrs[:location]
+    organization.organization_names.create! @attrs[:organization_name] if @attrs[:organization_name]
+  end
+  # rubocop:enable Metrics/LineLength
 end
