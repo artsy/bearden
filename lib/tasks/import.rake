@@ -23,9 +23,7 @@ task :import_csv, [:source_name, :url] => :environment do |_, args|
     csv.each_with_index do |row, index|
       input = import.raw_inputs.create data: row.to_h
       RawInputTransformJob.perform_later input.id
-      if csv.length == index + 1
-        RawInputErrorsJob.perform_later
-      end
+      RawInputErrorsJob.perform_later if csv.length == index + 1
     end
   else
     puts 'allowed headers:', CsvTransformer.allowed_headers
