@@ -6,7 +6,7 @@ class OrganizationTag < ApplicationRecord
   has_paper_trail ignore: [:created_at, :updated_at]
 
   def self.apply(tag_names, organization)
-    tag_names.each do |tag_name|
+    Array(tag_names).each do |tag_name|
       tag = Tag.find_or_create_by name: tag_name
       next if organization.tags.exists?(name: tag.name)
       organization.organization_tags.create!(tag: tag)

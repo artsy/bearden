@@ -15,6 +15,14 @@ describe OrganizationTag do
   end
 
   describe '.apply' do
+    context 'with nil tag names' do
+      it 'does nothing' do
+        organization = Fabricate :organization
+        OrganizationTag.apply nil, organization
+        expect(organization.tags.count).to eq 0
+      end
+    end
+
     context 'with a new tag' do
       it 'creates that tag and applies to the organization' do
         organization = Fabricate :organization
