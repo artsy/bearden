@@ -7,4 +7,13 @@ module PaperTrail
     yield
     self.whodunnit = original_actor
   end
+
+  def self.track_changes_with_transaction(actor)
+    original_actor = self.actor
+    self.whodunnit = actor
+    Organization.transaction do
+      yield
+    end
+    self.whodunnit = original_actor
+  end
 end

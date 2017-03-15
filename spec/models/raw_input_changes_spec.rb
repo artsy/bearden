@@ -3,7 +3,24 @@ require 'rails_helper'
 describe RawInputChanges do
   describe '.apply' do
     context 'with a new organization' do
-      it 'creates that organization and records the result' do
+      context 'with some invalid data' do
+        it 'rolls back all created records' do
+          source = Fabricate :source
+          import = Fabricate(
+            :import,
+            source: source,
+            transformer: CsvTransformer
+          )
+          data = { website: 'http://example.com', location: '' }
+          raw_input = Fabricate :raw_input, import: import, data: data
+          RawInputChanges.apply raw_input
+          expect(raw_input.exception).to eq 'ActiveRecord::RecordInvalid'
+          expect(raw_input.reload.state).to eq RawInput::ERROR
+          expect(Organization.count).to eq 0
+        end
+      end
+
+      it 'creates that organization and records the state' do
         source = Fabricate :source
         import = Fabricate(:import,
                            source: source,
@@ -36,7 +53,7 @@ describe RawInputChanges do
 
         expect(raw_input.reload.output_id).to eq organization.id
         expect(raw_input.output_type).to eq organization.class.to_s
-        expect(raw_input.result).to eq 'created'
+        expect(raw_input.state).to eq RawInput::CREATED
 
         expect(PaperTrail.whodunnit).to eq 'Test User'
       end
@@ -70,7 +87,32 @@ describe RawInputChanges do
 
         expect(raw_input.reload.output_id).to eq organization.id
         expect(raw_input.output_type).to eq organization.class.to_s
-        expect(raw_input.result).to eq 'updated'
+        expect(raw_input.state).to eq RawInput::UPDATED
+      end
+
+      context 'with some invalid data' do
+        it 'rolls back all created records' do
+          website = 'http://example.com'
+          organization = Fabricate :organization
+          Fabricate :website, organization: organization, content: website
+
+          source = Fabricate :source
+          import = Fabricate(
+            :import,
+            source: source,
+            transformer: CsvTransformer
+          )
+          data = {
+            website: website,
+            location: '123 main street',
+            organization_name: ''
+          }
+          raw_input = Fabricate :raw_input, import: import, data: data
+          RawInputChanges.apply raw_input
+          expect(raw_input.exception).to eq 'ActiveRecord::RecordInvalid'
+          expect(raw_input.reload.state).to eq RawInput::ERROR
+          expect(Location.count).to eq 0
+        end
       end
     end
   end

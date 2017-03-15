@@ -8,13 +8,22 @@ class RawInputChanges
     @attrs = raw_input.transform
   end
 
+  # rubocop:disable Metrics/MethodLength
+  # TODO: This method is one line too long!
   def apply
-    if matching_organization
-      update_organization
+    organization = matching_website&.organization
+    if organization.nil?
+      organization = create_organization
+      state = RawInput::CREATED
     else
-      create_organization
+      add_relationships(organization)
+      state = RawInput::UPDATED
     end
+    @raw_input.record_result state, organization
+  rescue => e
+    @raw_input.record_error e
   end
+  # rubocop:enable Metrics/MethodLength
 
   private
 
@@ -26,29 +35,22 @@ class RawInputChanges
     @matching_website ||= Website.find_by(content: url)
   end
 
-  def matching_organization
-    matching_website&.organization
-  end
-
-  def update_organization
-    PaperTrail.track_changes_with(@raw_input) do
-      matching_organization.locations.create @attrs[:location]
-      matching_organization.organization_names.create @attrs[:organization_name]
+  def add_relationships(organization)
+    PaperTrail.track_changes_with_transaction(@raw_input) do
+      organization.locations.create! @attrs[:location] if @attrs[:location]
+      if @attrs[:organization_name]
+        organization.organization_names.create! @attrs[:organization_name]
+      end
     end
-
-    @raw_input.record_result 'updated', matching_organization
   end
 
   def create_organization
     organization = nil
-
-    PaperTrail.track_changes_with(@raw_input) do
-      organization = Organization.create
-      organization.locations.create @attrs[:location]
-      organization.organization_names.create @attrs[:organization_name]
-      organization.websites.create @attrs[:website]
+    PaperTrail.track_changes_with_transaction(@raw_input) do
+      organization = Organization.create!
+      organization.websites.create! @attrs[:website] if @attrs[:website]
+      add_relationships(organization)
     end
-
-    @raw_input.record_result 'created', organization
+    organization
   end
 end

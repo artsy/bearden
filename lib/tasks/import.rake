@@ -16,12 +16,15 @@ task :import_csv, [:source_name, :url] => :environment do |_, args|
       transformer: CsvTransformer
     )
 
-    CSV.parse(data, headers: true) do |row|
-      input = import.raw_inputs.create data: row.to_h
-      RawInputTransformJob.perform_later input.id
+    csv = CSV.parse(data, headers: true)
+
+    puts "Records queued to be imported: #{csv.length}"
+
+    csv.each do |row|
+      import.raw_inputs.create data: row.to_h
     end
 
-    puts "import #{import.id}"
+    RawInputTransformJob.perform_later(import.id)
   else
     puts 'allowed headers:', CsvTransformer.allowed_headers
   end

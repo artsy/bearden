@@ -2,11 +2,11 @@ require 'rails_helper'
 
 describe RawInputTransformJob do
   describe '#perform' do
-    context 'with a valid raw_input id' do
+    context 'with a valid import id' do
       it 'applies the raw_input changes' do
         raw_input = Fabricate :raw_input
         expect(RawInputChanges).to receive(:apply).with(raw_input)
-        RawInputTransformJob.new.perform raw_input.id
+        RawInputTransformJob.new.perform raw_input.import.id
       end
     end
 
