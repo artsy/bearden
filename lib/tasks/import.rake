@@ -20,11 +20,11 @@ task :import_csv, [:source_name, :url] => :environment do |_, args|
 
     puts "Records queued to be imported: #{csv.length}"
 
-    csv.each_with_index do |row, index|
-      input = import.raw_inputs.create data: row.to_h
-      RawInputTransformJob.perform_later input.id
-      RawInputErrorsJob.perform_later if csv.length == index + 1
+    csv.each do |row|
+      import.raw_inputs.create data: row.to_h
     end
+
+    RawInputTransformJob.perform_later(import.id)
   else
     puts 'allowed headers:', CsvTransformer.allowed_headers
   end
