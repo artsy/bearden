@@ -9,9 +9,9 @@ class RawInput < ApplicationRecord
     import.transformer.constantize.transform self
   end
 
-  def record_result(result, output)
+  def record_result(state, output)
     update_attributes(
-      result: result,
+      state: state,
       output_id: output.id,
       output_type: output.class
     )
@@ -19,7 +19,7 @@ class RawInput < ApplicationRecord
 
   def record_error(error)
     update_attributes(
-      result: ERROR,
+      state: ERROR,
       exception: error
     )
   end

@@ -13,11 +13,11 @@ describe RawInputChanges do
 
         RawInputChanges.apply raw_input
 
-        expect(raw_input.reload.result).to eql RawInput::ERROR
+        expect(raw_input.reload.state).to eql RawInput::ERROR
         expect(raw_input.exception).to eql StandardError.to_s
       end
 
-      it 'creates that organization and records the result' do
+      it 'creates that organization and records the state' do
         source = Fabricate :source
         import = Fabricate(:import,
                            source: source,
@@ -50,7 +50,7 @@ describe RawInputChanges do
 
         expect(raw_input.reload.output_id).to eq organization.id
         expect(raw_input.output_type).to eq organization.class.to_s
-        expect(raw_input.result).to eq RawInput::CREATED
+        expect(raw_input.state).to eq RawInput::CREATED
 
         expect(PaperTrail.whodunnit).to eq 'Test User'
       end
@@ -84,7 +84,7 @@ describe RawInputChanges do
 
         expect(raw_input.reload.output_id).to eq organization.id
         expect(raw_input.output_type).to eq organization.class.to_s
-        expect(raw_input.result).to eq RawInput::UPDATED
+        expect(raw_input.state).to eq RawInput::UPDATED
       end
     end
   end
