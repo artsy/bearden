@@ -2,7 +2,8 @@ require 'truncation_helper'
 require 'open3'
 
 describe 'Import rake task', task: true do
-  let(:command) { "RAILS_ENV=test rake import_csv#{arguments}" }
+  let(:command) { "TEST_JOB_ADAPTER=inline RAILS_ENV=test rake import_csv#{arguments}" } # rubocop:disable Metrics/LineLength
+
   context 'with no arguments' do
     let(:arguments) { '' }
 
@@ -49,10 +50,14 @@ describe 'Import rake task', task: true do
     let(:arguments) { '[Example,spec/fixtures/one_complete_gallery.csv]' }
 
     it 'imports that csv file using that Source' do
-      Fabricate :source, name: 'Example'
+      source = Fabricate :source, name: 'Example'
       stdout, _, status = Open3.capture3 command
       expect(stdout).to eq "Records queued to be imported: 1\n"
       expect(status.exitstatus).to eq 0
+      expect(source.imports.count).to eq 1
+      import = source.imports.first
+      expect(import.raw_inputs.count).to eq 1
+      expect(Organization.count).to eq 1
     end
   end
 end
