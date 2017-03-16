@@ -22,15 +22,18 @@ describe OrganizationResolver do
         raw_input = Fabricate :raw_input, import: import
 
         organization = nil
+        email = 'info@example.com'
         latitude = 90.0
         location = '123 main street'
         longitude = 70.0
         organization_name = 'The Best Gallery'
+        phone_number = '1-800-123-4567'
         tag_names = 'design,modern'
         website = 'http://www.example.com'
 
         PaperTrail.track_changes_with(raw_input) do
           organization = Fabricate :organization
+          Fabricate :email, content: email, organization: organization
           Fabricate(:location,
                     organization: organization,
                     content: location,
@@ -39,6 +42,9 @@ describe OrganizationResolver do
           Fabricate(:organization_name,
                     organization: organization,
                     content: organization_name)
+          Fabricate(:phone_number,
+                    content: phone_number,
+                    organization: organization)
           tag_names.split(',').each do |tag_name|
             tag = Fabricate :tag, name: tag_name
             Fabricate :organization_tag, organization: organization, tag: tag
@@ -51,10 +57,12 @@ describe OrganizationResolver do
         expect(resolved).to eq(
           {
             bearden_id: organization.id,
+            email: email,
             latitude: latitude,
             location: location,
             longitude: longitude,
             organization_name: organization_name,
+            phone_number: phone_number,
             tag_names: tag_names,
             website: website
           }
@@ -73,8 +81,10 @@ describe OrganizationResolver do
 
         PaperTrail.track_changes_with(lower_raw_input) do
           organization = Fabricate :organization
+          Fabricate :email, organization: organization
           Fabricate :location, organization: organization
           Fabricate :organization_name, organization: organization
+          Fabricate :phone_number, organization: organization
           tag = Fabricate :tag, name: lower_tag_name
           Fabricate :organization_tag, organization: organization, tag: tag
           Fabricate :website, organization: organization
@@ -84,14 +94,17 @@ describe OrganizationResolver do
         import = Fabricate :import, source: higher_source
         raw_input = Fabricate :raw_input, import: import
 
+        email = 'info@example.com'
         latitude = 90.0
         location = '123 main street'
         longitude = 70.0
         organization_name = 'The Best Gallery'
+        phone_number = '1-800-123-4567'
         tag_name = 'design'
         website = 'http://www.example.com'
 
         PaperTrail.track_changes_with(raw_input) do
+          Fabricate :email, content: email, organization: organization
           Fabricate(:location,
                     organization: organization,
                     content: location,
@@ -100,6 +113,9 @@ describe OrganizationResolver do
           Fabricate(:organization_name,
                     organization: organization,
                     content: organization_name)
+          Fabricate(:phone_number,
+                    content: phone_number,
+                    organization: organization)
           tag = Fabricate :tag, name: tag_name
           Fabricate :organization_tag, organization: organization, tag: tag
           Fabricate :website, organization: organization, content: website
@@ -110,10 +126,12 @@ describe OrganizationResolver do
         expect(resolved).to eq(
           {
             bearden_id: organization.id,
+            email: email,
             latitude: latitude,
             location: location,
             longitude: longitude,
             organization_name: organization_name,
+            phone_number: phone_number,
             tag_names: [lower_tag_name, tag_name].join(','),
             website: website
           }

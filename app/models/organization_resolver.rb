@@ -15,8 +15,10 @@ class OrganizationResolver
   private
 
   def find_highest_rankables
+    @email = find_highest_rankable(@organization.emails)
     @location = find_highest_rankable(@organization.locations)
     @organization_name = find_highest_rankable(@organization.organization_names)
+    @phone_number = find_highest_rankable(@organization.phone_numbers)
     @website = find_highest_rankable(@organization.websites)
   end
 
@@ -24,17 +26,21 @@ class OrganizationResolver
     rankables.sort_by(&:rank).first
   end
 
+  # rubocop:disable Metrics/MethodLength
   def highest_ranked_data
     {
       bearden_id: @organization.id,
+      email: @email&.content,
       latitude: @location&.latitude,
       location: @location&.content,
       longitude: @location&.longitude,
       organization_name: @organization_name&.content,
+      phone_number: @phone_number&.content,
       tag_names: tag_names,
       website: @website&.content
     }.compact
   end
+  # rubocop:enable Metrics/MethodLength
 
   def organization_tag_names
     @organization&.tags || []
