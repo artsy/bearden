@@ -41,34 +41,21 @@ describe RawInputChanges do
         raw_input = Fabricate :raw_input, import: import, data: data
         RawInputChanges.apply raw_input
 
-        expect(Organization.count).to eq 1
+        [
+          Email,
+          Location,
+          Organization,
+          OrganizationName,
+          OrganizationTag,
+          PhoneNumber,
+          Website
+        ].each do |klass|
+          expect(klass.count).to eq 1
+          first = klass.first
+          expect(first.versions.first.actor).to eq raw_input
+        end
+
         organization = Organization.first
-        expect(organization.versions.first.actor).to eq raw_input
-
-        expect(Email.count).to eq 1
-        email = Email.first
-        expect(email.versions.first.actor).to eq raw_input
-
-        expect(Location.count).to eq 1
-        location = Location.first
-        expect(location.versions.first.actor).to eq raw_input
-
-        expect(OrganizationName.count).to eq 1
-        name = OrganizationName.first
-        expect(name.versions.first.actor).to eq raw_input
-
-        expect(OrganizationTag.count).to eq 1
-        tag = OrganizationTag.first
-        expect(tag.versions.first.actor).to eq raw_input
-
-        expect(PhoneNumber.count).to eq 1
-        phone_number = PhoneNumber.first
-        expect(phone_number.versions.first.actor).to eq raw_input
-
-        expect(Website.count).to eq 1
-        website = Location.first
-        expect(website.versions.first.actor).to eq raw_input
-
         expect(raw_input.reload.output_id).to eq organization.id
         expect(raw_input.output_type).to eq organization.class.to_s
         expect(raw_input.state).to eq RawInput::CREATED
