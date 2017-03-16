@@ -29,6 +29,10 @@ class BurdenCSV
     new(query, location).export
   end
 
+  def self.export_row(query:, location:)
+    new(query, location).export_row
+  end
+
   def initialize(query, location)
     @query = query
     @location = location
@@ -39,10 +43,20 @@ class BurdenCSV
     CSV.open(@location, 'wb', headers: headers, write_headers: true) do |csv|
       Organization.where(@query).each do |org|
         export_organization(org, csv)
-        export_locations(org, csv) if org.locations_count > 1
-        export_emails(org, csv) if org.email_addresses_count > 1
-        export_phone_numbers(org, csv) if org.phone_numbers_count > 1
+        export_locations(org, csv) if org.locations_count > 0
+        export_emails(org, csv) if org.email_addresses_count > 0
+        export_phone_numbers(org, csv) if org.phone_numbers_count > 0
       end
+    end
+  end
+
+  def export_row
+    CSV.open(@location, 'ab', write_headers: false) do |csv|
+      org = Organization.where(@query).first
+      return unless org
+      export_locations(org, csv) if org.locations_count > 0
+      export_emails(org, csv) if org.email_addresses_count > 0
+      export_phone_numbers(org, csv) if org.phone_numbers_count > 0
     end
   end
 
