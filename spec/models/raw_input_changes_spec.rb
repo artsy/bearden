@@ -5,13 +5,16 @@ describe RawInputChanges do
     context 'with a new organization' do
       context 'with some invalid data' do
         it 'rolls back all created records' do
+          allow_any_instance_of(Organization).to receive(:websites).and_raise(
+            ActiveRecord::RecordInvalid
+          )
           source = Fabricate :source
           import = Fabricate(
             :import,
             source: source,
             transformer: CsvTransformer
           )
-          data = { website: 'http://example.com', location: '' }
+          data = { website: 'raise hell' }
           raw_input = Fabricate :raw_input, import: import, data: data
           RawInputChanges.apply raw_input
           expect(raw_input.exception).to eq 'ActiveRecord::RecordInvalid'
@@ -113,6 +116,9 @@ describe RawInputChanges do
 
       context 'with some invalid data' do
         it 'rolls back all created records' do
+          allow_any_instance_of(Organization).to receive(:emails).and_raise(
+            ActiveRecord::RecordInvalid
+          )
           website = 'http://example.com'
           organization = Fabricate :organization
           Fabricate :website, organization: organization, content: website
@@ -125,8 +131,7 @@ describe RawInputChanges do
           )
           data = {
             website: website,
-            location: '123 main street',
-            organization_name: ''
+            email: 'raise hell'
           }
           raw_input = Fabricate :raw_input, import: import, data: data
           RawInputChanges.apply raw_input
