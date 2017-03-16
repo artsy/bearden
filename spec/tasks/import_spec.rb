@@ -19,7 +19,7 @@ describe 'Import rake task', task: true do
 
     it 'returns an error message' do
       _, stderr, status = Open3.capture3 command
-      expect(stderr).to eq "Please specify both a Source name and URL.\n"
+      expect(stderr).to eq "Please specify both a Source name and URI.\n"
       expect(status.exitstatus).to eq 1
     end
   end
@@ -34,18 +34,18 @@ describe 'Import rake task', task: true do
     end
   end
 
-  context 'with an invalid url' do
+  context 'with an invalid uri' do
     let(:arguments) { '[Example,http://example.com/invalid.csv]' }
 
     it 'returns an error message' do
       Fabricate :source, name: 'Example'
       _, stderr, status = Open3.capture3 command
-      expect(stderr).to eq "URL could not be opened.\n"
+      expect(stderr).to eq "URI could not be opened.\n"
       expect(status.exitstatus).to eq 1
     end
   end
 
-  context 'with a valid Source name and url' do
+  context 'with a valid Source name and uri' do
     let(:arguments) { '[Example,spec/fixtures/one_complete_gallery.csv]' }
 
     it 'imports that csv file using that Source' do
