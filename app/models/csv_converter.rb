@@ -1,6 +1,14 @@
 class CsvConverter
   def self.headers
-    %w(bearden_id latitude location longitude organization_name website)
+    %w(
+      bearden_id
+      latitude
+      location
+      longitude
+      organization_name
+      tag_names
+      website
+    )
   end
 
   def self.convert(input)
@@ -18,6 +26,7 @@ class CsvConverter
       @input[:location],
       @input[:longitude],
       @input[:organization_name],
+      @input[:tag_names],
       @input[:website]
     ]
   end

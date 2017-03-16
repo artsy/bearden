@@ -50,6 +50,7 @@ class RawInputChanges
   def add_relationships(organization)
     organization.locations.create! @attrs[:location] if @attrs[:location]
     organization.organization_names.create! @attrs[:organization_name] if @attrs[:organization_name]
+    OrganizationTag.apply(@attrs[:tag_names], matching_organization)
   end
   # rubocop:enable Metrics/LineLength
 end

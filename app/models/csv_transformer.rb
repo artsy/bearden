@@ -1,6 +1,6 @@
 class CsvTransformer
   def self.allowed_headers
-    %w(location latitude longitude organization_name website)
+    %w(location latitude longitude organization_name tag_names website)
   end
 
   def self.transform(raw_input)
@@ -15,6 +15,7 @@ class CsvTransformer
     {
       location: location_attrs,
       organization_name: organization_name_attrs,
+      tag_names: tag_names,
       website: website_attrs
     }
   end
@@ -33,6 +34,10 @@ class CsvTransformer
     {
       content: @data['organization_name']
     }
+  end
+
+  def tag_names
+    @data.fetch('tag_names', '').split ','
   end
 
   def website_attrs

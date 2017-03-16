@@ -31,7 +31,16 @@ class OrganizationResolver
       location: @location&.content,
       longitude: @location&.longitude,
       organization_name: @organization_name&.content,
+      tag_names: tag_names,
       website: @website&.content
     }.compact
+  end
+
+  def organization_tag_names
+    @organization&.tags || []
+  end
+
+  def tag_names
+    organization_tag_names.pluck(:name).join(',')
   end
 end

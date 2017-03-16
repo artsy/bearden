@@ -8,7 +8,8 @@ describe OrganizationResolver do
         resolved = OrganizationResolver.resolve organization
         expect(resolved).to eq(
           {
-            bearden_id: organization.id
+            bearden_id: organization.id,
+            tag_names: ''
           }
         )
       end
@@ -25,6 +26,7 @@ describe OrganizationResolver do
         location = '123 main street'
         longitude = 70.0
         organization_name = 'The Best Gallery'
+        tag_names = 'design,modern'
         website = 'http://www.example.com'
 
         PaperTrail.track_changes_with(raw_input) do
@@ -37,6 +39,10 @@ describe OrganizationResolver do
           Fabricate(:organization_name,
                     organization: organization,
                     content: organization_name)
+          tag_names.split(',').each do |tag_name|
+            tag = Fabricate :tag, name: tag_name
+            Fabricate :organization_tag, organization: organization, tag: tag
+          end
           Fabricate :website, organization: organization, content: website
         end
 
@@ -49,6 +55,7 @@ describe OrganizationResolver do
             location: location,
             longitude: longitude,
             organization_name: organization_name,
+            tag_names: tag_names,
             website: website
           }
         )
@@ -62,11 +69,14 @@ describe OrganizationResolver do
         lower_source = Fabricate :source, rank: 2
         lower_import = Fabricate :import, source: lower_source
         lower_raw_input = Fabricate :raw_input, import: lower_import
+        lower_tag_name = 'modern'
 
         PaperTrail.track_changes_with(lower_raw_input) do
           organization = Fabricate :organization
           Fabricate :location, organization: organization
           Fabricate :organization_name, organization: organization
+          tag = Fabricate :tag, name: lower_tag_name
+          Fabricate :organization_tag, organization: organization, tag: tag
           Fabricate :website, organization: organization
         end
 
@@ -78,6 +88,7 @@ describe OrganizationResolver do
         location = '123 main street'
         longitude = 70.0
         organization_name = 'The Best Gallery'
+        tag_name = 'design'
         website = 'http://www.example.com'
 
         PaperTrail.track_changes_with(raw_input) do
@@ -89,6 +100,8 @@ describe OrganizationResolver do
           Fabricate(:organization_name,
                     organization: organization,
                     content: organization_name)
+          tag = Fabricate :tag, name: tag_name
+          Fabricate :organization_tag, organization: organization, tag: tag
           Fabricate :website, organization: organization, content: website
         end
 
@@ -101,6 +114,7 @@ describe OrganizationResolver do
             location: location,
             longitude: longitude,
             organization_name: organization_name,
+            tag_names: [lower_tag_name, tag_name].join(','),
             website: website
           }
         )
