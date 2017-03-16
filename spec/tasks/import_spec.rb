@@ -1,0 +1,58 @@
+require 'truncation_helper'
+require 'open3'
+
+describe 'Import rake task', task: true do
+  let(:command) { "RAILS_ENV=test rake import_csv#{arguments}" }
+  context 'with no arguments' do
+    let(:arguments) { '' }
+
+    it 'returns the valid header row' do
+      headers = CsvTransformer.allowed_headers.join("\n")
+      stdout, _, status = Open3.capture3 command
+      expect(stdout).to eq "allowed headers:\n#{headers}\n"
+      expect(status.exitstatus).to eq 0
+    end
+  end
+
+  context 'with only one argument' do
+    let(:arguments) { '[arg]' }
+
+    it 'returns an error message' do
+      _, stderr, status = Open3.capture3 command
+      expect(stderr).to eq "Please specify both a Source name and URL.\n"
+      expect(status.exitstatus).to eq 1
+    end
+  end
+
+  context 'with an invalid Source name' do
+    let(:arguments) { '[InvalidSource,http://example.com/invalid.csv]' }
+
+    it 'returns an error message' do
+      _, stderr, status = Open3.capture3 command
+      expect(stderr).to eq "Source not found.\n"
+      expect(status.exitstatus).to eq 1
+    end
+  end
+
+  context 'with an invalid url' do
+    let(:arguments) { '[Example,http://example.com/invalid.csv]' }
+
+    it 'returns an error message' do
+      Fabricate :source, name: 'Example'
+      _, stderr, status = Open3.capture3 command
+      expect(stderr).to eq "URL could not be opened.\n"
+      expect(status.exitstatus).to eq 1
+    end
+  end
+
+  context 'with a valid Source name and url' do
+    let(:arguments) { '[Example,spec/fixtures/one_complete_gallery.csv]' }
+
+    it 'imports that csv file using that Source' do
+      Fabricate :source, name: 'Example'
+      stdout, _, status = Open3.capture3 command
+      expect(stdout).to eq "Records queued to be imported: 1\n"
+      expect(status.exitstatus).to eq 0
+    end
+  end
+end
