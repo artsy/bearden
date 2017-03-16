@@ -52,7 +52,7 @@ describe 'Import rake task', task: true do
     it 'imports that csv file using that Source' do
       source = Fabricate :source, name: 'Example'
       stdout, status = Open3.capture2 command
-      expect(stdout).to eq "Records queued to be imported: 1\n"
+      expect(stdout).to eq "Import ##{source.imports.first.id} created.\n"
       expect(status.exitstatus).to eq 0
       expect(source.imports.count).to eq 1
       import = source.imports.first
@@ -73,7 +73,7 @@ describe 'Import rake task', task: true do
     it 'imports whatever information the file has for us' do
       source = Fabricate :source, name: 'Example'
       stdout, status = Open3.capture2 command
-      expect(stdout).to eq "Records queued to be imported: 1\n"
+      expect(stdout).to eq "Import ##{source.imports.first.id} created.\n"
       expect(status.exitstatus).to eq 0
       expect(source.imports.count).to eq 1
       import = source.imports.first
