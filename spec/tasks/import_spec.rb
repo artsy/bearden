@@ -9,7 +9,7 @@ describe 'Import rake task', task: true do
 
     it 'returns the valid header row' do
       headers = CsvTransformer.allowed_headers.join("\n")
-      stdout, _, status = Open3.capture3 command
+      stdout, status = Open3.capture2 command
       expect(stdout).to eq "allowed headers:\n#{headers}\n"
       expect(status.exitstatus).to eq 0
     end
@@ -19,7 +19,7 @@ describe 'Import rake task', task: true do
     let(:arguments) { '[arg]' }
 
     it 'returns an error message' do
-      _, stderr, status = Open3.capture3 command
+      stderr, status = Open3.capture2e command
       expect(stderr).to eq "Please specify both a Source name and URI.\n"
       expect(status.exitstatus).to eq 1
     end
@@ -29,7 +29,7 @@ describe 'Import rake task', task: true do
     let(:arguments) { '[InvalidSource,http://example.com/invalid.csv]' }
 
     it 'returns an error message' do
-      _, stderr, status = Open3.capture3 command
+      stderr, status = Open3.capture2e command
       expect(stderr).to eq "Source not found.\n"
       expect(status.exitstatus).to eq 1
     end
@@ -40,7 +40,7 @@ describe 'Import rake task', task: true do
 
     it 'returns an error message' do
       Fabricate :source, name: 'Example'
-      _, stderr, status = Open3.capture3 command
+      stderr, status = Open3.capture2e command
       expect(stderr).to eq "URI could not be opened.\n"
       expect(status.exitstatus).to eq 1
     end
@@ -51,7 +51,7 @@ describe 'Import rake task', task: true do
 
     it 'imports that csv file using that Source' do
       source = Fabricate :source, name: 'Example'
-      stdout, _, status = Open3.capture3 command
+      stdout, status = Open3.capture2 command
       expect(stdout).to eq "Records queued to be imported: 1\n"
       expect(status.exitstatus).to eq 0
       expect(source.imports.count).to eq 1
