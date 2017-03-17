@@ -29,8 +29,12 @@ class BurdenCSV
     new(query, location).export
   end
 
-  def self.export_row(query:, location:)
-    new(query, location).export_row
+  def self.export_row(query:, location:, write_headers:)
+    new(query, location).export_row(write_headers)
+  end
+
+  def self.get_headers
+    Record.create({}).keys.map(&:to_s)
   end
 
   def initialize(query, location)
@@ -39,8 +43,7 @@ class BurdenCSV
   end
 
   def export
-    headers = Record.create({}).keys.map(&:to_s)
-    CSV.open(@location, 'wb', headers: headers, write_headers: true) do |csv|
+    CSV.open(@location, 'wb', write_headers: true, headers: get_headers) do |csv|
       Organization.where(@query).each do |org|
         export_organization(org, csv)
         export_locations(org, csv) if org.locations_count > 0
@@ -50,8 +53,8 @@ class BurdenCSV
     end
   end
 
-  def export_row
-    CSV.open(@location, 'ab', write_headers: false) do |csv|
+  def export_row(write_headers)
+    CSV.open(@location, 'ab', write_headers: write_headers, headers: get_headers) do |csv|
       org = Organization.where(@query).first
       return unless org
       export_locations(org, csv) if org.locations_count > 0

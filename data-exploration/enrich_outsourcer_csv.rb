@@ -1,5 +1,7 @@
 # rubocop:disable all
 
+require_relative './burden_csv'
+
 # Use a CSV with Burden IDs to create a new CSV with complementary data from Burden
 #
 # Usage:
@@ -10,7 +12,7 @@
 # EnrichOutsourcerCSV.create_burden_csv(input_file)
 
 class EnrichOutsourcerCSV
-  def create_burden_csv(input_file)
+  def self.create_burden_csv(input_file)
     new(input_file).create_burden_csv
   end
 
@@ -18,13 +20,14 @@ class EnrichOutsourcerCSV
     @input_file = input_file
   end
 
-  def self.create_burden_csv
-    CSV.open(input_file, headers: true).each do |input|
+  def create_burden_csv
+    CSV.foreach(@input_file, headers: true).with_index(1) do |input, lineno|
       next if input['id'].nil?
-      puts input
+      puts "#{lineno}: #{input}"
       BurdenCSV.export_row(
         query: { id: input['id'] },
-        location: output_file
+        location: output_file,
+        write_headers: lineno == 1
       )
     end
   end
