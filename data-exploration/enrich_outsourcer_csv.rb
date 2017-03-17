@@ -1,21 +1,21 @@
 # rubocop:disable all
 
-# Usage:
-# From a Burden `gris console`:
+# Use a CSV with Burden IDs to create a new CSV with complementary data from Burden
 #
-# load '/path/to/this/file.rb'
+# Usage:
+# From within a Burden `gris console`:
+#
+# load '/full/path/to/enrich_outsourcer_csv.rb'
 # input_file = "/Users/lancew/Code/bearden/data/outsourcers/artist-rosters/01/artist-rosters-batch-1-combined.csv"
-# output_file = "/Users/lancew/Code/bearden/data/outsourcers/artist-rosters/01/burden-artist-rosters-batch-1-combined.csv"
-# EnrichOutsourcerCSV.create_burden_csv(input_file, output_file)
+# EnrichOutsourcerCSV.create_burden_csv(input_file)
 
 class EnrichOutsourcerCSV
-  def create_burden_csv(input_file, output_file)
-    new(input_file, output_file).create_burden_csv
+  def create_burden_csv(input_file)
+    new(input_file).create_burden_csv
   end
 
-  def initialize(input_file, output_file)
+  def initialize(input_file)
     @input_file = input_file
-    @output_file = output_file
   end
 
   def self.create_burden_csv
@@ -28,4 +28,13 @@ class EnrichOutsourcerCSV
       )
     end
   end
+
+  private
+
+  def output_file
+    path = @input_file.split('/')
+    file_name = path.pop
+    (path << "burden-complement-#{file_name}").join('/')
+  end
+
 end
