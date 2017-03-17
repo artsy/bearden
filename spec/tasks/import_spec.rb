@@ -72,7 +72,7 @@ describe 'Import rake task', task: true do
 
     it 'imports whatever information the file has for us' do
       source = Fabricate :source, name: 'Example'
-      stdout, _, status = Open3.capture3 command
+      stdout, status = Open3.capture2 command
       expect(stdout).to eq "Records queued to be imported: 1\n"
       expect(status.exitstatus).to eq 0
       expect(source.imports.count).to eq 1
