@@ -20,6 +20,34 @@ describe CsvTransformer do
       end
     end
 
+    context 'with some fields' do
+      it 'returns only those fields that are not empty' do
+        data = {
+          email: 'info@example.com',
+          organization_name: 'Best Gallery',
+          phone_number: '1-800-123-4567',
+          website: 'http://example.com'
+        }
+        raw_input = Fabricate :raw_input, data: data
+        attrs = CsvTransformer.transform raw_input
+        expected = {
+          email: {
+            content: data[:email]
+          },
+          organization_name: {
+            content: data[:organization_name]
+          },
+          phone_number: {
+            content: data[:phone_number]
+          },
+          website: {
+            content: data[:website]
+          }
+        }
+        expect(attrs).to eq(expected)
+      end
+    end
+
     context 'with all fields' do
       it 'returns attrs for an Organization' do
         data = {
