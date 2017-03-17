@@ -28,44 +28,44 @@ class CsvTransformer
       phone_number: phone_number_attrs,
       tag_names: tag_names,
       website: website_attrs
-    }
+    }.delete_if { |_, v| v.empty? }
   end
 
   private
 
   def email_attrs
     {
-      content: @data['email']
-    }
+      content: @data['email'].presence
+    }.compact
   end
 
   def location_attrs
     {
-      content: @data['location'],
-      latitude: @data['latitude'],
-      longitude: @data['longitude']
-    }
+      content: @data['location'].presence,
+      latitude: @data['latitude'].presence,
+      longitude: @data['longitude'].presence
+    }.compact
   end
 
   def organization_name_attrs
     {
-      content: @data['organization_name']
-    }
+      content: @data['organization_name'].presence
+    }.compact
   end
 
   def phone_number_attrs
     {
-      content: @data['phone_number']
-    }
+      content: @data['phone_number'].presence
+    }.compact
   end
 
   def tag_names
-    @data.fetch('tag_names', '').split ','
+    @data['tag_names']&.split(',') || []
   end
 
   def website_attrs
     {
-      content: @data['website']
-    }
+      content: @data['website'].presence
+    }.compact
   end
 end

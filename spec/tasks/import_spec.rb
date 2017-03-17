@@ -57,7 +57,34 @@ describe 'Import rake task', task: true do
       expect(source.imports.count).to eq 1
       import = source.imports.first
       expect(import.raw_inputs.count).to eq 1
+      expect(Email.count).to eq 1
+      expect(Location.count).to eq 1
       expect(Organization.count).to eq 1
+      expect(OrganizationName.count).to eq 1
+      expect(OrganizationTag.count).to eq 2
+      expect(PhoneNumber.count).to eq 1
+      expect(Website.count).to eq 1
+    end
+  end
+
+  context 'with a csv file that has valid partial information' do
+    let(:arguments) { '[Example,spec/fixtures/one_partial_gallery.csv]' }
+
+    it 'imports whatever information the file has for us' do
+      source = Fabricate :source, name: 'Example'
+      stdout, status = Open3.capture2 command
+      expect(stdout).to eq "Records queued to be imported: 1\n"
+      expect(status.exitstatus).to eq 0
+      expect(source.imports.count).to eq 1
+      import = source.imports.first
+      expect(import.raw_inputs.count).to eq 1
+      expect(Email.count).to eq 1
+      expect(Location.count).to eq 0
+      expect(Organization.count).to eq 1
+      expect(OrganizationName.count).to eq 1
+      expect(OrganizationTag.count).to eq 0
+      expect(PhoneNumber.count).to eq 1
+      expect(Website.count).to eq 1
     end
   end
 end
