@@ -23,12 +23,12 @@ describe OrganizationTag do
       end
     end
 
-    context 'with a new tag' do
-      it 'creates that tag and applies to the organization' do
+    context "with a tag that doesn't exist" do
+      it 'raises TagNotFound' do
         organization = Fabricate :organization
-        OrganizationTag.apply ['new_tag'], organization
-        expect(organization.tags.count).to eq 1
-        expect(organization.tags.first.name).to eq 'new_tag'
+        expect {
+          OrganizationTag.apply ['new_tag'], organization
+        }.to raise_error(OrganizationTag::TagNotFound)
       end
     end
 
@@ -68,8 +68,10 @@ describe OrganizationTag do
 
     context 'with a few tags' do
       it 'applies each of them' do
+        tags = %w(new_tag another last_tag)
+        tags.each { |t| Fabricate :tag, name: t }
         organization = Fabricate :organization
-        OrganizationTag.apply %w(new_tag another last_tag), organization
+        OrganizationTag.apply tags, organization
         expect(organization.tags.count).to eq 3
       end
     end

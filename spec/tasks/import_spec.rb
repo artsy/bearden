@@ -50,6 +50,8 @@ describe 'Import rake task', task: true do
     let(:arguments) { '[Example,spec/fixtures/one_complete_gallery.csv]' }
 
     it 'imports that csv file using that Source' do
+      Fabricate :tag, name: 'design'
+      Fabricate :tag, name: 'modern'
       source = Fabricate :source, name: 'Example'
       stdout, status = Open3.capture2 command
       expect(stdout).to eq "Import ##{source.imports.first.id} created.\n"
