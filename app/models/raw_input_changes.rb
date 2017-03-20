@@ -1,4 +1,6 @@
 class RawInputChanges
+  class InvalidData < StandardError; end
+
   def self.apply(raw_input)
     new(raw_input).apply
   end
@@ -6,26 +8,31 @@ class RawInputChanges
   def initialize(raw_input)
     @raw_input = raw_input
     @attrs = raw_input.transform
+    @organization = nil
+    @relations = {}
+    @relations_to_build = [:email, :location, :organization_name, :phone_number]
+    @error_details = {}
   end
 
   def apply
-    organization = nil
-
     PaperTrail.track_changes_with_transaction(@raw_input) do
-      organization = find_or_create_organization
-      add_relationships(organization)
+      find_or_create_organization
+      build_relations
+      apply_tags
+      save_relations
+      check_errors
     end
 
-    @raw_input.record_result @state, organization
+    @raw_input.record_result @state, @organization
   rescue => e
-    @raw_input.record_error e
+    @raw_input.record_error e, @error_details
   end
 
   private
 
   def find_or_create_organization
     @state = matching_organization ? RawInput::UPDATED : RawInput::CREATED
-    matching_organization || create_organization
+    @organization = matching_organization || create_organization
   end
 
   def matching_organization
@@ -41,18 +48,35 @@ class RawInputChanges
   end
 
   def create_organization
-    organization = Organization.create!
-    organization.websites.create! @attrs[:website] if @attrs[:website]
-    organization
+    @relations_to_build << :website
+    @organization = Organization.create!
   end
 
-  # rubocop:disable Metrics/AbcSize, Metrics/LineLength
-  def add_relationships(organization)
-    organization.emails.create @attrs[:email] if @attrs[:email]
-    organization.locations.create! @attrs[:location] if @attrs[:location]
-    organization.organization_names.create! @attrs[:organization_name] if @attrs[:organization_name]
-    organization.phone_numbers.create @attrs[:phone_number] if @attrs[:phone_number]
-    OrganizationTag.apply(@attrs[:tag_names], matching_organization)
+  def build_relations
+    @relations_to_build.each do |relation|
+      next unless @attrs[relation]
+      method = relation.to_s.pluralize
+      object = @organization.send(method).build @attrs[relation]
+      @relations[relation] = object
+    end
   end
-  # rubocop:enable Metrics/AbcSize, Metrics/LineLength
+
+  def apply_tags
+    OrganizationTag.apply(@attrs[:tag_names], @organization)
+  rescue OrganizationTag::TagNotFound
+    @error_details[:tags] = "all tags could not be applied: #{@attrs[:tag_names].join(',')}"
+  end
+
+  def save_relations
+    @relations.values.each(&:save)
+  end
+
+  def check_errors
+    @relations.each do |type, object|
+      error_details = object.errors.details.presence
+      @error_details[type] = error_details if error_details
+    end
+
+    raise InvalidData if @error_details.any?
+  end
 end

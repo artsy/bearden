@@ -17,10 +17,11 @@ class RawInput < ApplicationRecord
     )
   end
 
-  def record_error(error)
+  def record_error(error, error_details)
     update_attributes(
       state: ERROR,
-      exception: error.class
+      exception: error.class,
+      error_details: error_details
     )
   end
 end
