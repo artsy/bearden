@@ -78,10 +78,12 @@ describe RawInputChanges do
             expect(klass.count).to eq 0
           end
           expect(raw_input.exception).to eq 'RawInputChanges::InvalidData'
-          expect(raw_input.error_details).to eq({
-            'email' => { 'content' => [{'error' => 'invalid', 'value' => 'infoexample.com'}] },
-            'tags' => 'all tags could not be applied: invalid',
-          })
+          expect(raw_input.error_details).to eq(
+            {
+              'email' => { 'content' => [{ 'error' => 'invalid', 'value' => 'infoexample.com' }] }, # rubocop:disable Metrics/LineLength
+              'tags' => 'all tags could not be applied: invalid'
+            }
+          )
           expect(raw_input.state).to eq RawInput::ERROR
 
           expect(PaperTrail.whodunnit).to eq 'Test User'
@@ -120,12 +122,14 @@ describe RawInputChanges do
             expect(klass.count).to eq 0
           end
           expect(raw_input.exception).to eq 'RawInputChanges::InvalidData'
-          expect(raw_input.error_details).to eq({
-            'email' => { 'content' => [{'error' => 'invalid', 'value' => 'infoexample.com'}] },
-            'location' => { 'content' => [{'error' => 'blank'}] },
-            'tags' => 'all tags could not be applied: invalid',
-            'website' => { 'content' => [{'error' => 'invalid', 'value' => 'examplecom'}] }
-          })
+          expect(raw_input.error_details).to eq(
+            {
+              'email' => { 'content' => [{ 'error' => 'invalid', 'value' => 'infoexample.com' }] }, # rubocop:disable Metrics/LineLength
+              'location' => { 'content' => [{ 'error' => 'blank' }] },
+              'tags' => 'all tags could not be applied: invalid',
+              'website' => { 'content' => [{ 'error' => 'invalid', 'value' => 'examplecom' }] } # rubocop:disable Metrics/LineLength
+            }
+          )
           expect(raw_input.state).to eq RawInput::ERROR
 
           expect(PaperTrail.whodunnit).to eq 'Test User'
@@ -164,7 +168,7 @@ describe RawInputChanges do
             Location,
             OrganizationName,
             OrganizationTag,
-            PhoneNumber,
+            PhoneNumber
           ].each do |klass|
             expect(klass.count).to eq 1
             first = klass.first
@@ -210,15 +214,17 @@ describe RawInputChanges do
             Location,
             OrganizationName,
             OrganizationTag,
-            PhoneNumber,
+            PhoneNumber
           ].each do |klass|
             expect(klass.count).to eq 0
           end
           expect(raw_input.exception).to eq 'RawInputChanges::InvalidData'
-          expect(raw_input.error_details).to eq({
-            'email' => { 'content' => [{'error' => 'invalid', 'value' => 'infoexample.com'}] },
-            'tags' => 'all tags could not be applied: invalid',
-          })
+          expect(raw_input.error_details).to eq(
+            {
+              'email' => { 'content' => [{ 'error' => 'invalid', 'value' => 'infoexample.com' }] }, # rubocop:disable Metrics/LineLength
+              'tags' => 'all tags could not be applied: invalid'
+            }
+          )
           expect(raw_input.state).to eq RawInput::ERROR
 
           expect(PaperTrail.whodunnit).to eq 'Test User'
@@ -256,16 +262,18 @@ describe RawInputChanges do
             Location,
             OrganizationName,
             OrganizationTag,
-            PhoneNumber,
+            PhoneNumber
           ].each do |klass|
             expect(klass.count).to eq 0
           end
           expect(raw_input.exception).to eq 'RawInputChanges::InvalidData'
-          expect(raw_input.error_details).to eq({
-            'email' => { 'content' => [{'error' => 'invalid', 'value' => 'infoexample.com'}] },
-            'location' => { 'content' => [{'error' => 'blank'}] },
-            'tags' => 'all tags could not be applied: invalid',
-          })
+          expect(raw_input.error_details).to eq(
+            {
+              'email' => { 'content' => [{ 'error' => 'invalid', 'value' => 'infoexample.com' }] }, # rubocop:disable Metrics/LineLength
+              'location' => { 'content' => [{ 'error' => 'blank' }] },
+              'tags' => 'all tags could not be applied: invalid'
+            }
+          )
           expect(raw_input.state).to eq RawInput::ERROR
 
           expect(PaperTrail.whodunnit).to eq 'Test User'

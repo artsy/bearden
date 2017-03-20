@@ -64,7 +64,8 @@ class RawInputChanges
   def apply_tags
     OrganizationTag.apply(@attrs[:tag_names], @organization)
   rescue OrganizationTag::TagNotFound
-    @error_details[:tags] = "all tags could not be applied: #{@attrs[:tag_names].join(',')}"
+    message = "all tags could not be applied: #{@attrs[:tag_names].join(',')}"
+    @error_details[:tags] = message
   end
 
   def save_relations

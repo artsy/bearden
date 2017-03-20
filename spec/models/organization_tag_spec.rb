@@ -26,9 +26,9 @@ describe OrganizationTag do
     context "with a tag that doesn't exist" do
       it 'raises TagNotFound' do
         organization = Fabricate :organization
-        expect {
+        expect do
           OrganizationTag.apply ['new_tag'], organization
-        }.to raise_error(OrganizationTag::TagNotFound)
+        end.to raise_error(OrganizationTag::TagNotFound)
       end
     end
 
