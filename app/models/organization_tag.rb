@@ -7,7 +7,7 @@ class OrganizationTag < ApplicationRecord
 
   def self.apply(tag_names, organization)
     Array(tag_names).each do |tag_name|
-      tag = Tag.find_or_create_by name: tag_name
+      tag = Tag.find_or_create_by name: tag_name.downcase
       next if organization.tags.exists?(name: tag.name)
       organization.organization_tags.create!(tag: tag)
     end

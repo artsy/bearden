@@ -54,6 +54,18 @@ describe OrganizationTag do
       end
     end
 
+    context 'with an existing tag with different case' do
+      it 'ignores that tag for that organization' do
+        organization = Fabricate :organization
+        tag = Fabricate :tag, name: 'foo'
+        Fabricate :organization_tag, organization: organization, tag: tag
+        OrganizationTag.apply ['FOO'], organization
+        expect(OrganizationTag.count).to eq 1
+        expect(Tag.count).to eq 1
+        expect(organization.tags.count).to eq 1
+      end
+    end
+
     context 'with a few tags' do
       it 'applies each of them' do
         organization = Fabricate :organization
