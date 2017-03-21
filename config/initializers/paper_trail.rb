@@ -14,6 +14,7 @@ module PaperTrail
     Organization.transaction do
       yield
     end
+  ensure
     self.whodunnit = original_actor
   end
 end
