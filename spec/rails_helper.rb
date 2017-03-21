@@ -21,6 +21,13 @@ RSpec.configure do |config|
     PaperTrail.whodunnit = 'Test User'
   end
 
+  config.around(:each, type: :feature) do |example|
+    original_adapter = ActiveJob::Base.queue_adapter
+    ActiveJob::Base.queue_adapter = :inline
+    example.run
+    ActiveJob::Base.queue_adapter = original_adapter
+  end
+
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
   config.use_transactional_fixtures = true
   config.infer_spec_type_from_file_location!
