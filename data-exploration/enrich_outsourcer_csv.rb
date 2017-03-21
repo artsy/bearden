@@ -27,7 +27,8 @@ class EnrichOutsourcerCSV
       BurdenCSV.export_row(
         query: { id: input['id'] },
         location: output_file,
-        write_headers: lineno == 1
+        write_headers: lineno == 1,
+        id: input['website']
       )
     end
   end
