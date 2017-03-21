@@ -25,37 +25,20 @@ end
 
 
 class BurdenCSV
-  def self.export(query:, location:)
-    new(query, location).export
+  def self.export_row(query:, location:, write_headers:, id:)
+    new(query, location, id).export_row(write_headers)
   end
 
-  def self.export_row(query:, location:, write_headers:)
-    new(query, location).export_row(write_headers)
-  end
-
-  def self.get_headers
-    Record.create({}).keys.map(&:to_s)
-  end
-
-  def initialize(query, location)
+  def initialize(query, location, id = nil)
     @query = query
     @location = location
-  end
-
-  def export
-    CSV.open(@location, 'wb', write_headers: true, headers: get_headers) do |csv|
-      Organization.where(@query).each do |org|
-        export_organization(org, csv)
-        export_locations(org, csv) if org.locations_count > 0
-        export_emails(org, csv) if org.email_addresses_count > 0
-        export_phone_numbers(org, csv) if org.phone_numbers_count > 0
-      end
-    end
+    @id = id
   end
 
   def export_row(write_headers)
-    CSV.open(@location, 'ab', write_headers: write_headers, headers: get_headers) do |csv|
-      org = Organization.where(@query).first
+    org = Organization.where(@query).first
+    headers = get_headers
+    CSV.open(@location, 'ab', write_headers: write_headers, headers: headers) do |csv|
       return unless org
       export_locations(org, csv) if org.locations_count > 0
       export_emails(org, csv) if org.email_addresses_count > 0
@@ -63,9 +46,13 @@ class BurdenCSV
     end
   end
 
+  def get_headers
+    Record.create({}).keys.map(&:to_s)
+  end
+
   def export_organization(org, csv)
     org_row = Record.create(
-      website: org.websites.first.host,
+      website: @id,
       burden_id: org.id,
       organization_name: org.name
     )
@@ -75,7 +62,7 @@ class BurdenCSV
   def export_locations(org, csv)
     org.locations.each do |location|
       location_row = Record.create(
-        website: org.websites.first.host,
+        website: @id,
         burden_id: org.id,
         location: location.content,
         latitude: location.latitude,
@@ -89,7 +76,7 @@ class BurdenCSV
     emails = org.email_addresses
     emails.each do |email|
       email_row = Record.create(
-        website: org.websites.first.host,
+        website: @id,
         burden_id: org.id,
         email: email.content
       )
@@ -101,7 +88,7 @@ class BurdenCSV
     phones = org.phone_numbers
     phones.each do |phone|
       phone_row = Record.create(
-        website: org.websites.first.host,
+        website: @id,
         burden_id: org.id,
         phone_number: phone.content
       )
