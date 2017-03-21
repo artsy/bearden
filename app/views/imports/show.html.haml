@@ -1,0 +1,18 @@
+%h1 #{import_result.name} (#{import_result.status})
+
+%p= import_result.description
+
+%table.table
+  %tbody
+    %tr
+      %td Raw Inputs
+      %td= import_result.total_count
+    %tr
+      %td Created
+      %td= import_result.created_count
+    %tr
+      %td Updated
+      %td= import_result.updated_count
+    %tr
+      %td Errors
+      %td= import_result.error_count
