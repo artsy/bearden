@@ -25,6 +25,10 @@ gem 'sequel'
 gem 'sidekiq'
 gem 'uglifier'
 
+source 'https://rails-assets.org' do
+  gem 'rails-assets-tether', '>= 1.3.3'
+end
+
 group :development, :test do
   gem 'pry-rails'
   gem 'rspec-rails'
