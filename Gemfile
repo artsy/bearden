@@ -10,9 +10,11 @@ gem 'puma'
 
 gem 'aws-sdk'
 gem 'coffee-rails'
+gem 'decent_exposure'
 gem 'faraday'
 gem 'foreman'
 gem 'geocoder'
+gem 'haml'
 gem 'jbuilder'
 gem 'jquery-rails'
 gem 'paper_trail'
@@ -38,6 +40,7 @@ group :development do
 end
 
 group :test do
+  gem 'capybara'
   gem 'database_cleaner'
   gem 'fabrication'
 end
