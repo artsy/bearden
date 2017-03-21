@@ -10,8 +10,11 @@ ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|
   config.after(:each) do
-    ActiveJob::Base.queue_adapter.enqueued_jobs = []
-    ActiveJob::Base.queue_adapter.performed_jobs = []
+    adapter_class = ActiveJob::Base.queue_adapter.class
+    if adapter_class == ActiveJob::QueueAdapters::TestAdapter
+      ActiveJob::Base.queue_adapter.enqueued_jobs = []
+      ActiveJob::Base.queue_adapter.performed_jobs = []
+    end
   end
 
   config.before do
