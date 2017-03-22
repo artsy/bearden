@@ -6,4 +6,13 @@
     = stylesheet_link_tag 'application', media: 'all'
     = javascript_include_tag 'application'
   %body
-    .container= yield
+    .container
+      %header
+        %h1 Bearden
+
+        %nav
+          %ul.nav.nav-pills
+            %li.nav-item= link_to 'Imports', imports_path, { class: nav_class(:imports) }
+            %li.nav-item= link_to 'Tags', tags_path, { class: nav_class(:tags) }
+
+      %section= yield
