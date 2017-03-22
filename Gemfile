@@ -9,6 +9,7 @@ gem 'puma'
 # rubocop:enable Bundler/OrderedGems
 
 gem 'aws-sdk'
+gem 'bootstrap', '~> 4.0.0.alpha6'
 gem 'coffee-rails'
 gem 'decent_exposure'
 gem 'faraday'
@@ -23,6 +24,10 @@ gem 'sass-rails'
 gem 'sequel'
 gem 'sidekiq'
 gem 'uglifier'
+
+source 'https://rails-assets.org' do
+  gem 'rails-assets-tether', '>= 1.3.3'
+end
 
 group :development, :test do
   gem 'pry-rails'
