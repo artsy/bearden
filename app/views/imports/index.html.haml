@@ -1,0 +1,5 @@
+%h1 Imports
+
+%ul
+  - for import_result in import_results
+    %li= link_to import_result.name, import_path(import_result.import)

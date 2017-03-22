@@ -12,6 +12,7 @@
 
         %nav
           %ul.nav.nav-pills
+            %li.nav-item= link_to 'Imports', imports_path, { class: nav_class(:imports) }
             %li.nav-item= link_to 'Tags', tags_path, { class: nav_class(:tags) }
 
       %section= yield

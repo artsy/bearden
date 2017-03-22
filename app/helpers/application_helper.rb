@@ -3,6 +3,7 @@ module ApplicationHelper
     class_string = 'nav-link'
 
     navigation_elements = {
+      imports: imports_path,
       tags: tags_path
     }
 
