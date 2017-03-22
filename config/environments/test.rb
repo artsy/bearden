@@ -4,7 +4,8 @@ Rails.application.configure do
   config.action_dispatch.show_exceptions = false
   config.action_mailer.delivery_method = :test
   config.action_mailer.perform_caching = false
-  config.active_job.queue_adapter = :test
+  # allow env to override adapter - makes testing rake tasks easier
+  config.active_job.queue_adapter = ENV['TEST_JOB_ADAPTER']&.to_sym || :test
   config.active_support.deprecation = :stderr
   config.cache_classes = true
   config.consider_all_requests_local = true

@@ -22,6 +22,7 @@ module Bearden
     config.action_controller.per_form_csrf_tokens = true
     config.active_job.queue_adapter = :sidekiq
     config.active_record.belongs_to_required_by_default = true
+    config.active_record.schema_format = :sql
     config.active_support.halt_callback_chains_on_return_false = false
     config.active_support.to_time_preserves_timezone = true
     config.ssl_options = { hsts: { subdomains: true } }

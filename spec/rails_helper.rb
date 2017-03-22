@@ -10,12 +10,22 @@ ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|
   config.after(:each) do
-    ActiveJob::Base.queue_adapter.enqueued_jobs = []
-    ActiveJob::Base.queue_adapter.performed_jobs = []
+    adapter_class = ActiveJob::Base.queue_adapter.class
+    if adapter_class == ActiveJob::QueueAdapters::TestAdapter
+      ActiveJob::Base.queue_adapter.enqueued_jobs = []
+      ActiveJob::Base.queue_adapter.performed_jobs = []
+    end
   end
 
   config.before do
     PaperTrail.whodunnit = 'Test User'
+  end
+
+  config.around(:each, type: :feature) do |example|
+    original_adapter = ActiveJob::Base.queue_adapter
+    ActiveJob::Base.queue_adapter = :inline
+    example.run
+    ActiveJob::Base.queue_adapter = original_adapter
   end
 
   config.fixture_path = "#{::Rails.root}/spec/fixtures"

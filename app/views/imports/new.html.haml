@@ -1,0 +1,13 @@
+%h1 Create Import
+
+= form_for import do |f|
+  .form-group
+    = f.label :source_id
+    = f.collection_select(:source_id, Source.all, :id, :name, {}, { class: 'form-control' })
+  .form-group
+    = label_tag :uri, 'File'
+    = text_field_tag :uri, nil, { class: 'form-control' }
+  .form-group
+    = f.label :description
+    = f.text_area :description, { class: 'form-control' }
+  = f.submit 'Create', { class: 'btn btn-primary' }

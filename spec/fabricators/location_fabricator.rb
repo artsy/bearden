@@ -1,3 +1,5 @@
 Fabricator :location do
-  address1 { Fabricate.sequence(:address1) { |i| "Street address ##{i}" } }
+  content '123 Main Street, New York, NY 10001'
+  latitude '10'
+  longitude '20'
 end

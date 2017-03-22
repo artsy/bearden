@@ -10,9 +10,3 @@ development:
 test:
   <<: *default
   database: bearden_test
-
-production:
-  <<: *default
-  database: bearden_production
-  username: bearden
-  password: <%= ENV['BEARDEN_DATABASE_PASSWORD'] %>
