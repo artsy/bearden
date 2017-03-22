@@ -56,7 +56,7 @@ class RawInputChanges
     @relations_to_build.each do |relation|
       next unless @attrs[relation]
       method = relation.to_s.pluralize
-      object = @organization.send(method).build @attrs[relation]
+      object = @organization.public_send(method).build @attrs[relation]
       @relations[relation] = object
     end
   end
