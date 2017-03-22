@@ -60,7 +60,7 @@ class CsvTransformer
   end
 
   def tag_names
-    @data['tag_names']&.split(',') || []
+    @data['tag_names']&.split(',')&.map(&:strip) || []
   end
 
   def website_attrs
