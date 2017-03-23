@@ -60,3 +60,7 @@ with [this handy link][deploy].
 [jonallured]: https://github.com/jonallured
 [gnilekaw]: https://github.com/gnilekaw
 [deploy]: https://github.com/artsy/bearden/compare/release...master?expand=1
+
+## License
+
+MIT License. See [LICENSE](LICENSE).
