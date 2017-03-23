@@ -2,6 +2,8 @@ require 'rails_helper'
 
 feature 'CSV Import' do
   scenario 'Import one complete gallery' do
+    basic_auth
+
     Fabricate :tag, name: 'design'
     Fabricate :tag, name: 'modern'
     source = Fabricate :source, name: 'Factual'

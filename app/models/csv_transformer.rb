@@ -60,7 +60,10 @@ class CsvTransformer
   end
 
   def tag_names
-    @data['tag_names']&.split(',') || []
+    return [] unless @data['tag_names']
+    tags_array = @data['tag_names'].split(',')
+    tags = tags_array.map(&:strip).delete_if(&:empty?)
+    tags || []
   end
 
   def website_attrs
