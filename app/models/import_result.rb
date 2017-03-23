@@ -30,4 +30,14 @@ class ImportResult
   def error_count
     raw_inputs.where(state: RawInput::ERROR).count
   end
+
+  def as_json(_)
+    {
+      status: status,
+      total_count: total_count,
+      created_count: created_count,
+      updated_count: updated_count,
+      error_count: error_count
+    }
+  end
 end

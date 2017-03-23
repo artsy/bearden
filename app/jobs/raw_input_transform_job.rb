@@ -6,6 +6,8 @@ class RawInputTransformJob < ActiveJob::Base
     return unless raw_input
 
     RawInputChanges.apply raw_input
+    import_result = ImportResult.new(import)
+    ActionCable.server.broadcast "import_#{import_id}", import_result
     self.class.perform_later(import_id)
   end
 end

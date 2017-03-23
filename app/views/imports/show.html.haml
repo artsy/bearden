@@ -1,18 +1,29 @@
-%h1 #{import_result.name} (#{import_result.status})
+:coffee
+  App.cable.subscriptions.create { channel: 'ImportChannel', import_id: '#{import_result.import.id}' },
+    received: (data) ->
+      $('.status').text data.status
+      $('.total_count').text data.total_count
+      $('.created_count').text data.created_count
+      $('.updated_count').text data.updated_count
+      $('.error_count').text data.error_count
+
+%h1
+  #{import_result.name} -
+  %span.status= import_result.status
 
 %p= import_result.description
 
 %table.table
   %tbody
     %tr
-      %td Raw Inputs
-      %td= import_result.total_count
-    %tr
       %td Created
-      %td= import_result.created_count
+      %td.created_count= import_result.created_count
     %tr
       %td Updated
-      %td= import_result.updated_count
+      %td.updated_count= import_result.updated_count
     %tr
       %td Errors
-      %td= import_result.error_count
+      %td.error_count= import_result.error_count
+    %tr
+      %td Total Raw Inputs
+      %td.total_count= import_result.total_count
