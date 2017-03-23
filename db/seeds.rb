@@ -1,7 +1,18 @@
-Source.create name: 'Factual', rank: 1
-Source.create name: 'HumanOutsourcer', rank: 2
-Source.create name: 'Geocoder', rank: 3
-Source.create name: 'Burden', rank: 4
+ranks = %i(
+  email_rank location_rank organization_name_rank phone_number_rank website_rank
+)
+
+[
+  { name: 'Factual', rank: 1 },
+  { name: 'HumanOutsourcer', rank: 2 },
+  { name: 'Geocoder', rank: 3 },
+  { name: 'Burden', rank: 4 }
+].each do |source|
+  source_attrs = ranks.each_with_object({}) do |key, memo|
+    memo[key] = source[:rank]
+  end
+  Source.create source_attrs.merge(name: source[:name])
+end
 
 [
   'ancient art / artifacts / antiquities',

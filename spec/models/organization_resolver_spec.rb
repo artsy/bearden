@@ -74,51 +74,61 @@ describe OrganizationResolver do
       it 'returns only the highest ranked data' do
         organization = nil
 
-        lower_source = Fabricate :source, rank: 2
-        lower_import = Fabricate :import, source: lower_source
-        lower_raw_input = Fabricate :raw_input, import: lower_import
-        lower_tag_name = 'modern'
-
-        PaperTrail.track_changes_with(lower_raw_input) do
-          organization = Fabricate :organization
-          Fabricate :email, organization: organization
-          Fabricate :location, organization: organization
-          Fabricate :organization_name, organization: organization
-          Fabricate :phone_number, organization: organization
-          tag = Fabricate :tag, name: lower_tag_name
-          Fabricate :organization_tag, organization: organization, tag: tag
-          Fabricate :website, organization: organization
-        end
-
-        higher_source = Fabricate :source, rank: 1
-        import = Fabricate :import, source: higher_source
-        raw_input = Fabricate :raw_input, import: import
-
         email = 'info@example.com'
         latitude = 90.0
         location = '123 main street'
         longitude = 70.0
         organization_name = 'The Best Gallery'
         phone_number = '1-800-123-4567'
-        tag_name = 'design'
         website = 'http://www.example.com'
 
-        PaperTrail.track_changes_with(raw_input) do
+        first_source = Fabricate(:source,
+                                 email_rank: 1,
+                                 location_rank: 2,
+                                 organization_name_rank: 1,
+                                 phone_number_rank: 2,
+                                 website_rank: 1)
+        first_import = Fabricate :import, source: first_source
+        first_raw_input = Fabricate :raw_input, import: first_import
+        first_tag_name = 'modern'
+
+        PaperTrail.track_changes_with(first_raw_input) do
+          organization = Fabricate :organization
           Fabricate :email, content: email, organization: organization
+          Fabricate :location, organization: organization
+          Fabricate(:organization_name,
+                    organization: organization,
+                    content: organization_name)
+          Fabricate :phone_number, organization: organization
+          tag = Fabricate :tag, name: first_tag_name
+          Fabricate :organization_tag, organization: organization, tag: tag
+          Fabricate :website, organization: organization, content: website
+        end
+
+        second_source = Fabricate(:source,
+                                  email_rank: 2,
+                                  location_rank: 1,
+                                  organization_name_rank: 2,
+                                  phone_number_rank: 1,
+                                  website_rank: 2)
+        second_import = Fabricate :import, source: second_source
+        second_raw_input = Fabricate :raw_input, import: second_import
+        second_tag_name = 'design'
+
+        PaperTrail.track_changes_with(second_raw_input) do
+          Fabricate :email, organization: organization
           Fabricate(:location,
                     organization: organization,
                     content: location,
                     latitude: latitude,
                     longitude: longitude)
-          Fabricate(:organization_name,
-                    organization: organization,
-                    content: organization_name)
+          Fabricate :organization_name, organization: organization
           Fabricate(:phone_number,
                     content: phone_number,
                     organization: organization)
-          tag = Fabricate :tag, name: tag_name
+          tag = Fabricate :tag, name: second_tag_name
           Fabricate :organization_tag, organization: organization, tag: tag
-          Fabricate :website, organization: organization, content: website
+          Fabricate :website, organization: organization
         end
 
         resolved = OrganizationResolver.resolve organization
@@ -132,7 +142,7 @@ describe OrganizationResolver do
             longitude: longitude,
             organization_name: organization_name,
             phone_number: phone_number,
-            tag_names: [lower_tag_name, tag_name].join(','),
+            tag_names: [first_tag_name, second_tag_name].join(','),
             website: website
           }
         )
