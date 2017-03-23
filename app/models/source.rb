@@ -1,8 +1,8 @@
 class Source < ApplicationRecord
   class UnknownRankable < StandardError; end
   has_many :imports
-  validates :name, presence: true
 
+  validates :name, presence: true, uniqueness: true
   validates :email_rank, presence: true, uniqueness: true
   validates :location_rank, presence: true, uniqueness: true
   validates :organization_name_rank, presence: true, uniqueness: true
