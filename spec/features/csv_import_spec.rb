@@ -22,7 +22,7 @@ feature 'CSV Import' do
     expect(page).to have_text import.description
 
     actual_counts = page.all('td + td').map(&:text)
-    expected_counts = %w(1 1 0 0)
+    expected_counts = %w(1 0 0 1)
     expect(actual_counts).to eq expected_counts
   end
 end
