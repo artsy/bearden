@@ -36,13 +36,14 @@ Note: the default rake task is setup to run tests and Rubocop.
 ## Starting Server
 
 Foreman is used to manage the server configuration, so starting a server is as
-easy as:
+easy as `foreman start`, but you might want to use the development version
+instead:
 
 ```
-$ foreman start
+$ foreman start -f Procfile.dev
 ```
 
-See the Procfile for more.
+See the Procfiles for more.
 
 ## Deploying
 
