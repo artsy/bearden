@@ -61,6 +61,16 @@ with [this handy link][deploy].
 [gnilekaw]: https://github.com/gnilekaw
 [deploy]: https://github.com/artsy/bearden/compare/release...master?expand=1
 
+## About the name Bearden
+For its ability to "collage" together different data sources, this project was named in honor of **[Romare Bearden](https://www.artsy.net/artist/romare-bearden)** (1911–1988), painter, collagist and founding member of [The Spiral Group](https://www.artsy.net/gene/spiral-group). 
+
+
+> A pioneer of African-American art and celebrated collagist, Romare Bearden seamlessly blended images of African-American life in the urban and rural South with references to popular culture, religion, and Classical art and myth. He depicted jazz musicians, monumental subjects, nudes, or mythological characters set against abstract, fragmented backgrounds. Each of his collages integrated images painted in gouache, watercolors, oil paints, which he would then fix to paper or canvas. Bearden sought to give the African-American experience a universal, monumental, and Classical representation: he would often recast Classical events with African-American subjects, as in _The Return of Odysseus (Homage to Pintoricchio and Benin)_ (1977). By rendering Odysseus, Penelope, and Telemachus as African-Americans, Bearden drew the political injustices of his time into a universal, allegorical context.
+—Artsy
+
 ## License
 
 MIT License. See [LICENSE](LICENSE).
+
+
+
