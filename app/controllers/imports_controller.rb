@@ -7,7 +7,7 @@ class ImportsController < ApplicationController
 
   def create
     if import.save
-      ParseCsvImportJob.perform_later(import.id)
+      import.parse
       redirect_to import_path(import)
     else
       render :new

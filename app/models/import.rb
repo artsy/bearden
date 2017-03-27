@@ -8,10 +8,12 @@ class Import < ApplicationRecord
 
   def parse
     machine.trigger ImportMicroMachine::PARSE
+    ParseCsvImportJob.perform_later id
   end
 
   def transform
     machine.trigger ImportMicroMachine::TRANSFORM
+    RawInputTransformJob.perform_later id
   end
 
   def finish

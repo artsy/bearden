@@ -24,7 +24,7 @@ task :import_csv, [:source_name, :uri] => :environment do |_, args|
       uri: uri
     )
 
-    ParseCsvImportJob.perform_later(import.id)
+    import.parse
 
     puts "Import ##{import.id} created."
   else

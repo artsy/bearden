@@ -12,6 +12,6 @@ class ParseCsvImportJob < ActiveJob::Base
 
     csv = CSV.parse(data, headers: true)
     csv.each { |row| import.raw_inputs.create data: row.to_h }
-    RawInputTransformJob.perform_later(import.id)
+    import.transform
   end
 end
