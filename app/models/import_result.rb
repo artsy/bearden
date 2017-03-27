@@ -1,7 +1,7 @@
 class ImportResult
   attr_reader :import
 
-  delegate :description, :id, :raw_inputs, :source, to: :import
+  delegate :description, :id, :raw_inputs, :source, :state, to: :import
 
   def initialize(import)
     @import = import
@@ -9,10 +9,6 @@ class ImportResult
 
   def name
     "#{source.name} import ##{id}"
-  end
-
-  def status
-    raw_inputs.where(state: nil).count.zero? ? 'finished' : 'in-progress'
   end
 
   def total_count
@@ -33,7 +29,7 @@ class ImportResult
 
   def as_json(_)
     {
-      status: status,
+      state: state,
       total_count: total_count,
       created_count: created_count,
       updated_count: updated_count,

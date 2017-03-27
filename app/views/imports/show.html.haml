@@ -1,7 +1,7 @@
 :coffee
   App.cable.subscriptions.create { channel: 'ImportChannel', import_id: '#{import_result.import.id}' },
     received: (data) ->
-      $('.status').text data.status
+      $('.state').text data.state
       $('.total_count').text data.total_count
       $('.created_count').text data.created_count
       $('.updated_count').text data.updated_count
@@ -9,7 +9,7 @@
 
 %h1
   #{import_result.name} -
-  %span.status= import_result.status
+  %span.state= import_result.state
 
 %p= import_result.description
 
