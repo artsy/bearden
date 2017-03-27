@@ -28,7 +28,7 @@ class SourceResolver
   end
 
   def sources_to_adjust(rank_type)
-    cutoff = @new_source.public_send rank_type
+    cutoff = @new_source.rank_for rank_type
     Source.where("#{rank_type} >= ?", cutoff).order("#{rank_type} DESC")
   end
 end
