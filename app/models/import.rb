@@ -3,6 +3,7 @@ class Import < ApplicationRecord
   has_many :raw_inputs
 
   validates :source, presence: true
+  validates :uri, presence: true
   validates :state, presence: true, inclusion: ImportMicroMachine.valid_states
 
   def parse

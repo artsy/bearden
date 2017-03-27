@@ -7,7 +7,7 @@ class ImportsController < ApplicationController
 
   def create
     if import.save
-      ParseCsvImportJob.perform_later(import.id, params[:uri])
+      ParseCsvImportJob.perform_later(import.id)
       redirect_to import_path(import)
     else
       render :new
@@ -21,7 +21,7 @@ class ImportsController < ApplicationController
       state: ImportMicroMachine::UNSTARTED,
       transformer: CsvTransformer
     }
-    permitted = [:source_id, :description]
+    permitted = [:description, :source_id, :uri]
     params.require(:import).permit(permitted).merge(defaults)
   end
 end
