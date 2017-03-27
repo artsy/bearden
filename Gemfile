@@ -24,6 +24,7 @@ gem 'paper_trail-globalid'
 gem 'sass-rails'
 gem 'sequel'
 gem 'sidekiq'
+gem 'slack-ruby-client'
 gem 'uglifier'
 
 source 'https://rails-assets.org' do
