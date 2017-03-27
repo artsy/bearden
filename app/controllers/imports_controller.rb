@@ -17,8 +17,11 @@ class ImportsController < ApplicationController
   private
 
   def import_params
-    default = { transformer: CsvTransformer }
+    defaults = {
+      state: ImportMicroMachine::UNSTARTED,
+      transformer: CsvTransformer
+    }
     permitted = [:source_id, :description]
-    params.require(:import).permit(permitted).merge(default)
+    params.require(:import).permit(permitted).merge(defaults)
   end
 end

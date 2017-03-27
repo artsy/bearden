@@ -19,6 +19,7 @@ task :import_csv, [:source_name, :uri] => :environment do |_, args|
 
     import = source.imports.create(
       description: "importing file: #{uri}",
+      state: ImportMicroMachine::UNSTARTED,
       transformer: CsvTransformer
     )
 

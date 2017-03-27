@@ -109,7 +109,7 @@ describe GeocodeLocationJob do
 
       source = Fabricate :source, name: 'Foo Geocoding, Inc.'
       description = 'Testing, testing'
-      import = source.imports.create description: description
+      import = Fabricate :import, source: source, description: description
 
       perform_enqueued_jobs do
         GeocodeLocationJob.perform_later import.id
