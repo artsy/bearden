@@ -2,7 +2,6 @@ require 'rails_helper'
 
 describe 'List Imports' do
   scenario 'Importer views list of imports' do
-    basic_auth
     source = Fabricate :source, name: 'Clearbit'
     imports = Fabricate.times 3, :import, source: source
 

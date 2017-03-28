@@ -1,5 +1,5 @@
 class Source < ApplicationRecord
-  class UnknownRankable < StandardError; end
+  class UnknownRankType < StandardError; end
   has_many :imports
 
   validates :name, presence: true, uniqueness: true
@@ -9,14 +9,15 @@ class Source < ApplicationRecord
   validates :phone_number_rank, presence: true, uniqueness: true
   validates :website_rank, presence: true, uniqueness: true
 
-  def rank_for(rankable)
-    case rankable
-    when Email then email_rank
-    when Location then location_rank
-    when OrganizationName then organization_name_rank
-    when PhoneNumber then phone_number_rank
-    when Website then website_rank
-    else raise UnknownRankable
-    end
+  def rank_for(type)
+    types = {
+      email_rank: email_rank,
+      location_rank: location_rank,
+      organization_name_rank: organization_name_rank,
+      phone_number_rank: phone_number_rank,
+      website_rank: website_rank
+    }
+
+    types[type] || raise(UnknownRankType)
   end
 end

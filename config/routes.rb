@@ -8,5 +8,6 @@ Rails.application.routes.draw do
   mount ActionCable.server => :cable
 
   resources :imports, only: [:new, :create, :show, :index]
+  resources :sources, only: [:index, :new, :create]
   resources :tags, only: :index
 end
