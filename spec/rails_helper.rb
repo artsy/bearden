@@ -25,6 +25,8 @@ RSpec.configure do |config|
     username = Rails.application.secrets.admin_username
     password = Rails.application.secrets.admin_password
     page.driver.browser.basic_authorize(username, password)
+    allow(SlackBot).to receive(:post)
+    allow(S3CsvExport).to receive(:create)
   end
 
   config.around(:each, type: :feature) do |example|
