@@ -25,8 +25,11 @@ describe ImportErrors do
         exception = 'RawInputChanges::InvalidData'
 
         error_details = {
-          email: { content: [{ error: :invalid }] },
-          website: { content: [{ error: :invalid }, { error: :taken }] }
+          email: { content: [{ error: :invalid, value: email }] },
+          website: { content: [
+            { error: :invalid, value: website },
+            { error: :taken, value: website }
+          ] }
         }
 
         Fabricate(
