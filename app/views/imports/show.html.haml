@@ -1,11 +1,20 @@
-:coffee
-  App.cable.subscriptions.create { channel: 'ImportChannel', import_id: '#{import_result.import.id}' },
-    received: (data) ->
-      $('.state').text data.state
-      $('.total_count').text data.total_count
-      $('.created_count').text data.created_count
-      $('.updated_count').text data.updated_count
-      $('.error_count').text data.error_count
+- if import_result.finished?
+  :coffee
+    $ ->
+      $('.errors_url').toggleClass('hidden-xl-down')
+
+- else
+  :coffee
+    App.cable.subscriptions.create { channel: 'ImportChannel', import_id: '#{import_result.import.id}' },
+      received: (data) ->
+        $('.state').text data.state
+        $('.total_count').text data.total_count
+        $('.created_count').text data.created_count
+        $('.updated_count').text data.updated_count
+        $('.error_count').text data.error_count
+        if data.exported_errors_url != null
+          $('.errors_url a').prop('href', data.exported_errors_url)
+          $('.errors_url').toggleClass('hidden-xl-down')
 
 %h1
   #{import_result.name} -
@@ -27,3 +36,5 @@
     %tr
       %td Total Raw Inputs
       %td.total_count= import_result.total_count
+
+%p.errors_url.hidden-xl-down= link_to 'Download Errors', import_result.exported_errors_url
