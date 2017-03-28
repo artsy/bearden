@@ -10,26 +10,6 @@ describe ImportResult do
     end
   end
 
-  describe '#status' do
-    context 'with a finished import' do
-      it 'returns finished' do
-        import = Fabricate :import
-        Fabricate :raw_input, import: import, state: RawInput::CREATED
-        import_result = ImportResult.new(import)
-        expect(import_result.status).to eq 'finished'
-      end
-    end
-
-    context 'with an in-progress import' do
-      it 'returns in-progress' do
-        import = Fabricate :import
-        Fabricate :raw_input, import: import, state: nil
-        import_result = ImportResult.new(import)
-        expect(import_result.status).to eq 'in-progress'
-      end
-    end
-  end
-
   describe 'result counts' do
     it 'returns the right counts' do
       import = Fabricate :import

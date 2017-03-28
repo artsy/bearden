@@ -19,10 +19,12 @@ task :import_csv, [:source_name, :uri] => :environment do |_, args|
 
     import = source.imports.create(
       description: "importing file: #{uri}",
-      transformer: CsvTransformer
+      state: ImportMicroMachine::UNSTARTED,
+      transformer: CsvTransformer,
+      uri: uri
     )
 
-    ParseCsvImportJob.perform_later(import.id, uri)
+    import.parse
 
     puts "Import ##{import.id} created."
   else
