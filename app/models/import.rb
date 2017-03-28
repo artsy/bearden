@@ -16,6 +16,11 @@ class Import < ApplicationRecord
     RawInputTransformJob.perform_later id
   end
 
+  def finalize
+    machine.trigger ImportMicroMachine::FINALIZE
+    FinalizeImportJob.perform_later id
+  end
+
   def finish
     machine.trigger ImportMicroMachine::FINISH
   end
