@@ -18,7 +18,7 @@ class S3CsvExport
   private
 
   def s3_bucket
-    Aws::S3::Resource.new.bucket ENV['AWS_BUCKET']
+    Aws::S3::Resource.new.bucket Rails.application.secrets.aws_bucket
   end
 
   def csv_data
