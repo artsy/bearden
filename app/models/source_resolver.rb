@@ -16,14 +16,14 @@ class SourceResolver
   private
 
   def adjust_ranks
-    taken_rank_types.each do |rank_type|
+    conflicted_rank_types.each do |rank_type|
       sources_to_adjust(rank_type).each do |source|
         source.increment!(rank_type)
       end
     end
   end
 
-  def taken_rank_types
+  def conflicted_rank_types
     @new_source.errors.keys
   end
 
