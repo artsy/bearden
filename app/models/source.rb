@@ -10,12 +10,14 @@ class Source < ApplicationRecord
   validates :website_rank, presence: true, uniqueness: true
 
   def rank_for(type)
-    {
+    types = {
       email_rank: email_rank,
       location_rank: location_rank,
       organization_name_rank: organization_name_rank,
       phone_number_rank: phone_number_rank,
       website_rank: website_rank
-    }[type] || raise(UnknownRankType)
+    }
+
+    types[type] || raise(UnknownRankType)
   end
 end
