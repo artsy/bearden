@@ -32,13 +32,13 @@ source 'https://rails-assets.org' do
 end
 
 group :development, :test do
+  gem 'dotenv-rails'
   gem 'pry-rails'
   gem 'rspec-rails'
   gem 'rubocop'
 end
 
 group :development do
-  gem 'dotenv-rails'
   gem 'listen'
   gem 'rails-erd'
   gem 'spring'
