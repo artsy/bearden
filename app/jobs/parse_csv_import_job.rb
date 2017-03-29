@@ -1,7 +1,7 @@
 require 'csv'
 require 'open-uri'
 
-class ParseCsvImportJob < ActiveJob::Base
+class ParseCsvImportJob < ApplicationJob
   def perform(import_id)
     import = Import.find_by id: import_id
     return unless import

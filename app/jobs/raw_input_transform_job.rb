@@ -1,4 +1,4 @@
-class RawInputTransformJob < ActiveJob::Base
+class RawInputTransformJob < ApplicationJob
   def perform(import_id)
     import = Import.find_by id: import_id
     return unless import

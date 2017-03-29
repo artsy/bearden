@@ -1,4 +1,4 @@
-class FinalizeImportJob < ActiveJob::Base
+class FinalizeImportJob < ApplicationJob
   attr_reader :import
 
   def perform(import_id)
