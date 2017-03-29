@@ -34,9 +34,9 @@ class ImportErrors
   end
 
   def errors_from_details(details)
-    details.map do |field, detail|
-      errors = detail['content'].map { |obj| obj['error'] }
-      errors.map { |error| [field, error].join(' ') }.flatten
-    end.flatten.join(', ')
+    details.flat_map do |field, detail|
+      errors = detail['content'].pluck('error')
+      errors.flat_map { |error| [field, error].join(' ') }
+    end.join(', ')
   end
 end
