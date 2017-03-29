@@ -1,5 +1,6 @@
 class RawInputChanges
   class InvalidData < StandardError; end
+  class NoWebsiteBuilt < StandardError; end
 
   def self.apply(raw_input)
     new(raw_input).apply
@@ -59,6 +60,13 @@ class RawInputChanges
       object = @organization.public_send(method).build @attrs[relation]
       @relations[relation] = object
     end
+
+    ensure_website
+  end
+
+  def ensure_website
+    missing_website = @relations_to_build.include?(:website) && @organization.websites.none? # rubocop:disable Metrics/LineLength
+    raise NoWebsiteBuilt if missing_website
   end
 
   def apply_tags
