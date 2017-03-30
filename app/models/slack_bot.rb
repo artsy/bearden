@@ -19,7 +19,7 @@ class SlackBot
   end
 
   def channel
-    '#bearden-burden'
+    Rails.application.secrets.slack_channel
   end
 
   def default_options
