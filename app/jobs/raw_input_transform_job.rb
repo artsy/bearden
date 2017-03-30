@@ -1,9 +1,9 @@
-class RawInputTransformJob < ActiveJob::Base
+class RawInputTransformJob < ApplicationJob
   def perform(import_id)
     import = Import.find_by id: import_id
     return unless import
     raw_input = import.raw_inputs.where(state: nil).first
-    import.finish && return unless raw_input
+    import.finalize && return unless raw_input
 
     RawInputChanges.apply raw_input
     import_result = ImportResult.new(import)

@@ -4,6 +4,8 @@ class ImportMicroMachine < MicroMachine
   PARSING = 'parsing'.freeze
   TRANSFORM = 'transform'.freeze
   TRANSFORMING = 'transforming'.freeze
+  FINALIZE = 'finalize'.freeze
+  FINALIZING = 'finalizing'.freeze
   FINISH = 'finish'.freeze
   FINISHED = 'finished'.freeze
 
@@ -22,6 +24,7 @@ class ImportMicroMachine < MicroMachine
 
     self.when(PARSE, UNSTARTED => PARSING)
     self.when(TRANSFORM, PARSING => TRANSFORMING)
-    self.when(FINISH, TRANSFORMING => FINISHED)
+    self.when(FINALIZE, TRANSFORMING => FINALIZING)
+    self.when(FINISH, FINALIZING => FINISHED)
   end
 end

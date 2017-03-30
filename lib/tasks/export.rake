@@ -3,23 +3,13 @@ require 'csv'
 desc 'Export csv file of organizations'
 task export_csv: :environment do
   resolved = Organization.all.map(&OrganizationResolver.method(:resolve))
-  converted = resolved.map(&CsvConverter.method(:convert))
-
-  options = {
-    headers: CsvConverter.headers,
-    write_headers: true
-  }
-
-  csv_data = CSV.generate(options) do |csv|
-    converted.each { |row| csv << row }
-  end
+  rows = resolved.map(&CsvConverter.method(:convert))
 
   timestamp = Time.now.strftime('%F%T').gsub(/[^0-9a-z ]/i, '')
   filename = "exports/#{timestamp}.csv"
+  headers = CsvConverter.headers
 
-  s3 = Aws::S3::Resource.new
-  object = s3.bucket(ENV['AWS_BUCKET']).object(filename)
-  object.put acl: 'public-read', body: csv_data
+  object = S3CsvExport.create(rows, filename, headers)
 
-  puts "#{converted.count} Organizations exported to #{object.public_url}"
+  puts "#{rows.count} Organizations exported to #{object.public_url}"
 end

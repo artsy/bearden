@@ -6,6 +6,7 @@
 .byebug_history
 .ruby-gemset
 .env
+.env.development
 db/structure.sql
 data-exploration/sources/*
 data-exploration/exports/*

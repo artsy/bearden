@@ -22,9 +22,11 @@ RSpec.configure do |config|
   end
 
   config.before(:each, type: :feature) do
-    user = Rails.application.secrets.user
-    password = Rails.application.secrets.password
-    page.driver.browser.basic_authorize(user, password)
+    username = Rails.application.secrets.admin_username
+    password = Rails.application.secrets.admin_password
+    page.driver.browser.basic_authorize(username, password)
+    allow(SlackBot).to receive(:post)
+    allow(S3CsvExport).to receive(:create)
   end
 
   config.around(:each, type: :feature) do |example|
