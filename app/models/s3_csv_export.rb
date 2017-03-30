@@ -1,17 +1,23 @@
+require 'csv'
+
 class S3CsvExport
-  def self.create(rows, filename, headers)
-    new(rows, filename, headers).create
+  PUBLIC = 'public-read'.freeze
+  PRIVATE = 'private'.freeze
+
+  def self.create(rows:, filename:, headers:, acl: PRIVATE)
+    new(rows, filename, headers, acl).create
   end
 
-  def initialize(rows, filename, headers)
+  def initialize(rows, filename, headers, acl)
     @rows = rows
     @filename = filename
     @headers = headers
+    @acl = acl
   end
 
   def create
     object = s3_bucket.object(@filename)
-    object.put acl: 'public-read', body: csv_data
+    object.put acl: @acl, body: csv_data
     object
   end
 

@@ -49,7 +49,15 @@ describe ImportErrors do
 
         filename = "errors/#{import.id}.csv"
         headers = %w(email website exception error_details)
-        expect(S3CsvExport).to receive(:create).with(rows, filename, headers)
+
+        options = {
+          rows: rows,
+          filename: filename,
+          headers: headers,
+          acl: S3CsvExport::PUBLIC
+        }
+
+        expect(S3CsvExport).to receive(:create).with(options)
         ImportErrors.export(import)
       end
     end

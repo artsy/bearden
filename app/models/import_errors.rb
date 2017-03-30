@@ -8,7 +8,16 @@ class ImportErrors
   end
 
   def export
-    S3CsvExport.create(rows, filename, headers) if raw_inputs_with_errors.any?
+    return unless raw_inputs_with_errors.any?
+
+    options = {
+      rows: rows,
+      filename: filename,
+      headers: headers,
+      acl: S3CsvExport::PUBLIC
+    }
+
+    S3CsvExport.create(options)
   end
 
   private
