@@ -29,6 +29,18 @@ class Import < ApplicationRecord
     state == ImportMicroMachine::FINISHED
   end
 
+  def sync
+    machine.trigger ImportMicroMachine::SYNC
+  end
+
+  def insync
+    machine.trigger ImportMicroMachine::INSYNC
+  end
+
+  def revert
+    machine.trigger ImportMicroMachine::REVERT
+  end
+
   private
 
   def machine

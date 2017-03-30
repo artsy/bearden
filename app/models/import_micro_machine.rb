@@ -8,6 +8,11 @@ class ImportMicroMachine < MicroMachine
   FINALIZING = 'finalizing'.freeze
   FINISH = 'finish'.freeze
   FINISHED = 'finished'.freeze
+  SYNC = 'sync'.freeze
+  SYNCING = 'syncing'.freeze
+  INSYNC = 'insync'.freeze
+  SYNCED = 'synced'.freeze
+  REVERT = 'revert'.freeze
 
   def self.valid_states
     machine = new(UNSTARTED)
@@ -26,5 +31,8 @@ class ImportMicroMachine < MicroMachine
     self.when(TRANSFORM, PARSING => TRANSFORMING)
     self.when(FINALIZE, TRANSFORMING => FINALIZING)
     self.when(FINISH, FINALIZING => FINISHED)
+    self.when(SYNC, FINISHED => SYNCING)
+    self.when(INSYNC, SYNCING => SYNCED)
+    self.when(REVERT, SYNCING => FINISHED)
   end
 end

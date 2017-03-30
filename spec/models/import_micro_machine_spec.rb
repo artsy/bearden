@@ -10,6 +10,8 @@ describe ImportMicroMachine do
         transforming
         finalizing
         finished
+        syncing
+        synced
       )
     end
   end
