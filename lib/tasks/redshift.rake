@@ -1,4 +1,9 @@
 namespace :redshift do
+  desc 'Sync Redshift table'
+  task sync: :environment do
+    DataWarehouseSyncJob.perform_later
+  end
+
   desc 'Drop the Redshift table'
   task drop: :environment do
     Redshift.connect do |conn|
