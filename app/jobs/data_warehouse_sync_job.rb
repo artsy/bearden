@@ -1,5 +1,7 @@
 class DataWarehouseSyncJob < ApplicationJob
   def perform
+    return if nothing_to_sync?
+
     SlackBot.post('sync starting')
     update_finished_imports
 
@@ -11,6 +13,10 @@ class DataWarehouseSyncJob < ApplicationJob
   end
 
   private
+
+  def nothing_to_sync?
+    Import.where(state: ImportMicroMachine::FINISHED).empty?
+  end
 
   def update_finished_imports
     Import.where(state: ImportMicroMachine::FINISHED).each(&:sync)
