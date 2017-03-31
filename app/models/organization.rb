@@ -7,5 +7,5 @@ class Organization < ApplicationRecord
   has_many :tags, through: :organization_tags
   has_many :websites
 
-  has_paper_trail ignore: [:created_at, :updated_at]
+  has_paper_trail ignore: %i(created_at updated_at)
 end
