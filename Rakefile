@@ -6,5 +6,5 @@ if %w(development test).include? Rails.env
   require 'rubocop/rake_task'
   desc 'Run RuboCop'
   RuboCop::RakeTask.new(:rubocop)
-  task default: [:rubocop, :spec]
+  task default: %i(rubocop spec)
 end

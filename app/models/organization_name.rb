@@ -4,6 +4,6 @@ class OrganizationName < ApplicationRecord
   validates :content, presence: true
   validates_uniqueness_of :content, scope: :organization
 
-  has_paper_trail ignore: [:created_at, :updated_at]
+  has_paper_trail ignore: %i(created_at updated_at)
   include Rankable
 end

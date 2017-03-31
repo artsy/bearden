@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 
   mount ActionCable.server => :cable
 
-  resources :imports, only: [:new, :create, :show, :index]
-  resources :sources, only: [:index, :new, :create]
+  resources :imports, only: %i(create index new show)
+  resources :sources, only: %i(create index new)
   resources :tags, only: :index
 end
