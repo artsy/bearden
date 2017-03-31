@@ -5,3 +5,15 @@
 %ul
   - for source in sources
     %li= source.name
+
+%table.table
+  %thead
+    %tr
+      - for type in ordered_sources.keys
+        %th= type.to_s.humanize
+  %tbody
+    - (0...Source.count).to_a.each do |position|
+      %tr
+        - for type in ordered_sources.keys
+          - source = ordered_sources[type][position]
+          %td #{source.rank_for(type)}. #{source.name}
