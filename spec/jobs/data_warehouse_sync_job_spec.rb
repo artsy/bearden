@@ -1,6 +1,14 @@
 require 'rails_helper'
 
 describe DataWarehouseSyncJob do
+  context 'with nothing to sync' do
+    it 'does nothing' do
+      expect(SlackBot).to_not receive(:post)
+      expect(DataWarehouseReset).to_not receive(:run)
+      DataWarehouseSyncJob.new.perform
+    end
+  end
+
   context 'with a successful reset' do
     it 'reverts Imports and posts errors to Slack' do
       import = Fabricate :import, state: ImportMicroMachine::FINISHED
