@@ -11,6 +11,7 @@ ranks = %i(
   source_attrs = ranks.each_with_object({}) do |key, memo|
     memo[key] = source[:rank]
   end
+  next if Source.exists?(name: source[:name])
   Source.create source_attrs.merge(name: source[:name])
 end
 
@@ -43,5 +44,6 @@ end
   'publications / publishers / archives',
   'university museums / educational institutions'
 ].each do |name|
+  next if Tag.exists?(name: name)
   Tag.create name: name
 end
