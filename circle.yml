@@ -9,7 +9,6 @@ test:
 database:
   post:
     - createdb bearden_mockburden
-    - createdb bearden_mockredshift
 
 deployment:
   staging:
