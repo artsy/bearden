@@ -1,5 +1,4 @@
 class ImportsController < ApplicationController
-  # expose(:imports) { Import.order('created_at desc') }
   expose(:import_results) do
     Import.order('created_at desc').map(&ImportResult.method(:new))
   end
