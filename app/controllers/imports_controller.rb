@@ -1,10 +1,11 @@
 class ImportsController < ApplicationController
+  # expose(:imports) { Import.order('created_at desc') }
   expose(:import_results) do
     Import.order('created_at desc').map(&ImportResult.method(:new))
   end
+
   expose(:import)
   expose(:import_result) { ImportResult.new(import) }
-  expose(:imports) { Import.order(id: :desc) }
 
   def create
     if import.save

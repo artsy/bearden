@@ -2,9 +2,11 @@ class ImportResult
   attr_reader :import
 
   delegate(
+    :created_at,
     :description,
     :finished?,
     :id,
+    :uri,
     :raw_inputs,
     :source,
     :state,
@@ -16,7 +18,7 @@ class ImportResult
   end
 
   def name
-    "#{source.name} import ##{id}"
+    "#{source.name} import: #{id}"
   end
 
   def total_count
