@@ -1,8 +1,13 @@
 Rails.application.routes.draw do
+  root to: redirect('/imports')
+
   require 'sidekiq/web'
   # see config/initializers/sidekiq.rb for security details
   mount Sidekiq::Web, at: '/sidekiq'
 
-  resources :imports, only: [:new, :create, :show]
+  mount ActionCable.server => :cable
+
+  resources :imports, only: %i(create index new show)
+  resources :sources, only: %i(create index new)
   resources :tags, only: :index
 end

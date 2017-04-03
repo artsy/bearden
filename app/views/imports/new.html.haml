@@ -1,3 +1,11 @@
+:coffee
+  $ ->
+    $requiredFields = $('#uri, #import_description')
+    $submit = $('input[type=submit]').prop('disabled', true)
+    $requiredFields.change ->
+      formComplete = $requiredFields.filter(-> @value == '').length == 0
+      $submit.removeAttr 'disabled' if formComplete
+
 %h1 Create Import
 
 = form_for import do |f|
@@ -5,9 +13,9 @@
     = f.label :source_id
     = f.collection_select(:source_id, Source.all, :id, :name, {}, { class: 'form-control' })
   .form-group
-    = label_tag :uri, 'File'
-    = text_field_tag :uri, nil, { class: 'form-control' }
+    = f.label :uri, 'File'
+    = f.text_field :uri, { class: 'form-control', required: true }
   .form-group
     = f.label :description
-    = f.text_area :description, { class: 'form-control' }
+    = f.text_area :description, { class: 'form-control', required: true }
   = f.submit 'Create', { class: 'btn btn-primary' }

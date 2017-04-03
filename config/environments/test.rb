@@ -14,4 +14,7 @@ Rails.application.configure do
   config.public_file_server.headers = {
     'Cache-Control' => 'public, max-age=3600'
   }
+
+  # there's gotta be a cuter way to do this...
+  Rails.application.routes.default_url_options[:host] = 'localhost:5000'
 end

@@ -4,10 +4,12 @@ require 'sidekiq/web'
 if Rails.env.production?
   Sidekiq::Web.use Rack::Auth::Basic do |username, password|
     input_user = ::Digest::SHA256.hexdigest username
-    actual_user = ::Digest::SHA256.hexdigest ENV['SIDEKIQ_USERNAME']
+    secret_user = Rails.application.secrets.sidekiq_username
+    actual_user = ::Digest::SHA256.hexdigest secret_user
 
     input_pass = ::Digest::SHA256.hexdigest password
-    actual_pass = ::Digest::SHA256.hexdigest ENV['SIDEKIQ_PASSWORD']
+    secret_pass = Rails.application.secrets.sidekiq_password
+    actual_pass = ::Digest::SHA256.hexdigest secret_pass
 
     ActiveSupport::SecurityUtils.secure_compare(input_user, actual_user) &
       ActiveSupport::SecurityUtils.secure_compare(input_pass, actual_pass)

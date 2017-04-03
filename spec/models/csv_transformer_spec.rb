@@ -46,6 +46,18 @@ describe CsvTransformer do
         }
         expect(attrs).to eq(expected)
       end
+
+      it 'returns a clean list of tag names from a messy list' do
+        data = {
+          tag_names: ', design, modern , '
+        }
+        raw_input = Fabricate :raw_input, data: data
+        attrs = CsvTransformer.transform raw_input
+        expected = {
+          tag_names: %w(design modern)
+        }
+        expect(attrs).to eq(expected)
+      end
     end
 
     context 'with sparse fields' do

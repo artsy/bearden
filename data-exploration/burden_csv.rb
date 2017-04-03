@@ -37,16 +37,16 @@ class BurdenCSV
 
   def export_row(write_headers)
     org = Organization.where(@query).first
-    headers = get_headers
-    CSV.open(@location, 'ab', write_headers: write_headers, headers: headers) do |csv|
+    CSV.open(@location, 'ab', headers: headers, write_headers: write_headers) do |csv|
       return unless org
+      export_organization(org, csv)
       export_locations(org, csv) if org.locations_count > 0
       export_emails(org, csv) if org.email_addresses_count > 0
       export_phone_numbers(org, csv) if org.phone_numbers_count > 0
     end
   end
 
-  def get_headers
+  def headers
     Record.create({}).keys.map(&:to_s)
   end
 

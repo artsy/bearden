@@ -1,0 +1,17 @@
+%p.float-right= link_to 'New Source', new_source_path, { class: 'btn btn-primary' }
+
+%h1 Sources
+
+%table.table
+  %thead
+    %tr
+      %th &nbsp;
+      - for type in ordered_sources.keys
+        %th= type.to_s.humanize
+  %tbody
+    - (0...Source.count).each do |position|
+      %tr
+        %td #{position + 1}
+        - for type in ordered_sources.keys
+          - source = ordered_sources[type][position]
+          %td #{source.name}

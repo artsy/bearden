@@ -3,8 +3,8 @@
 ## Meta
 
 * State: development
-* Production: no ui | [Heroku][production_heroku]
-* Staging: no ui | [Heroku][staging_heroku]
+* Production: [https://bearden.artsy.net][production] | [Heroku][production_heroku]
+* Staging: [https://bearden-staging.artsy.net][staging] | [Heroku][staging_heroku]
 * GitHub: [https://github.com/artsy/bearden/][bearden]
 * Point People: [@jonallured][jonallured], [@gnilekaw][gnilekaw]
 
@@ -36,13 +36,14 @@ Note: the default rake task is setup to run tests and Rubocop.
 ## Starting Server
 
 Foreman is used to manage the server configuration, so starting a server is as
-easy as:
+easy as `foreman start`, but you might want to use the development version
+instead:
 
 ```
-$ foreman start
+$ foreman start -f Procfile.dev
 ```
 
-See the Procfile for more.
+See the Procfiles for more.
 
 ## Deploying
 
@@ -50,11 +51,38 @@ PRs merged to the `master` branch are automatically deployed to staging.
 Production is automatically deployed upon merges to `release`. Create such a PR
 with [this handy link][deploy].
 
+## About the name Bearden
+
+For its ability to "collage" together different data sources, this project was
+named in honor of [Romare Bearden][romare] (1911–1988), painter, collagist and
+founding member of [The Spiral Group][spiral].
+
+> A pioneer of African-American art and celebrated collagist, Romare Bearden
+> seamlessly blended images of African-American life in the urban and rural
+> South with references to popular culture, religion, and Classical art and
+> myth. He depicted jazz musicians, monumental subjects, nudes, or mythological
+> characters set against abstract, fragmented backgrounds. Each of his collages
+> integrated images painted in gouache, watercolors, oil paints, which he would
+> then fix to paper or canvas. Bearden sought to give the African-American
+> experience a universal, monumental, and Classical representation: he would
+> often recast Classical events with African-American subjects, as in _The
+> Return of Odysseus (Homage to Pintoricchio and Benin)_ (1977). By rendering
+> Odysseus, Penelope, and Telemachus as African-Americans, Bearden drew the
+> political injustices of his time into a universal, allegorical context. —Artsy
+
+## License
+
+MIT License. See [LICENSE](LICENSE).
+
 [badge]: https://circleci.com/gh/artsy/bearden.svg?style=svg&circle-token=d5dcd30a0660190450379057eead64bbb53e00b8
 [circleci]: https://circleci.com/gh/artsy/bearden/
+[production]: https://bearden.artsy.com
 [production_heroku]: https://dashboard.heroku.com/apps/bearden-production
+[staging]: https://bearden-staging.artsy.com
 [staging_heroku]: https://dashboard.heroku.com/apps/bearden-staging
 [bearden]: https://github.com/artsy/bearden
 [jonallured]: https://github.com/jonallured
 [gnilekaw]: https://github.com/gnilekaw
 [deploy]: https://github.com/artsy/bearden/compare/release...master?expand=1
+[romare]: https://www.artsy.net/artist/romare-bearden
+[spiral]: https://www.artsy.net/gene/spiral-group

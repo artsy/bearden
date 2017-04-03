@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.4.0'
+ruby '2.4.1'
 
 # rubocop:disable Bundler/OrderedGems
 gem 'rails', '5.0.2'
@@ -18,11 +18,13 @@ gem 'geocoder'
 gem 'haml'
 gem 'jbuilder'
 gem 'jquery-rails'
+gem 'micromachine'
 gem 'paper_trail'
 gem 'paper_trail-globalid'
 gem 'sass-rails'
 gem 'sequel'
 gem 'sidekiq'
+gem 'slack-ruby-client'
 gem 'uglifier'
 
 source 'https://rails-assets.org' do
@@ -30,13 +32,13 @@ source 'https://rails-assets.org' do
 end
 
 group :development, :test do
+  gem 'dotenv-rails'
   gem 'pry-rails'
   gem 'rspec-rails'
   gem 'rubocop'
 end
 
 group :development do
-  gem 'dotenv-rails'
   gem 'listen'
   gem 'rails-erd'
   gem 'spring'

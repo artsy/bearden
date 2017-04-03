@@ -1,6 +1,6 @@
 machine:
   ruby:
-    version: 2.4.0
+    version: 2.4.1
 
 test:
   override:
@@ -9,7 +9,6 @@ test:
 database:
   post:
     - createdb bearden_mockburden
-    - createdb bearden_mockredshift
 
 deployment:
   staging:

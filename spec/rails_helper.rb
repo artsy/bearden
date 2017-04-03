@@ -21,6 +21,14 @@ RSpec.configure do |config|
     PaperTrail.whodunnit = 'Test User'
   end
 
+  config.before(:each, type: :feature) do
+    username = Rails.application.secrets.admin_username
+    password = Rails.application.secrets.admin_password
+    page.driver.browser.basic_authorize(username, password)
+    allow(SlackBot).to receive(:post)
+    allow(S3CsvExport).to receive(:create)
+  end
+
   config.around(:each, type: :feature) do |example|
     original_adapter = ActiveJob::Base.queue_adapter
     ActiveJob::Base.queue_adapter = :inline

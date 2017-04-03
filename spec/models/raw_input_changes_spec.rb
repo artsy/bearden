@@ -46,6 +46,44 @@ describe RawInputChanges do
         end
       end
 
+      context 'with a nil website' do
+        it 'rolls back all records, saves exception and notes the result' do
+          Fabricate :tag, name: 'design'
+          source = Fabricate :source
+          import = Fabricate(:import,
+                             source: source,
+                             transformer: CsvTransformer)
+          data = {
+            email: 'info@example.com',
+            location: '123 Main Street, New York, NY 10001',
+            latitude: '47.5543105',
+            longitude: '7.598538899999999',
+            organization_name: 'Best Gallery',
+            phone_number: '1-800-123-4567',
+            tag_names: 'design',
+            website: nil
+          }
+          raw_input = Fabricate :raw_input, import: import, data: data
+          RawInputChanges.apply raw_input
+
+          [
+            Email,
+            Location,
+            Organization,
+            OrganizationName,
+            OrganizationTag,
+            PhoneNumber,
+            Website
+          ].each do |klass|
+            expect(klass.count).to eq 0
+          end
+          expect(raw_input.exception).to eq 'RawInputChanges::NoWebsiteBuilt'
+          expect(raw_input.state).to eq RawInput::ERROR
+
+          expect(PaperTrail.whodunnit).to eq 'Test User'
+        end
+      end
+
       context 'with some invalid data' do
         it 'rolls back all records, saves errors and notes the result' do
           Fabricate :tag, name: 'design'
