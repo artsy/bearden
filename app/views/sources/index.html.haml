@@ -2,18 +2,16 @@
 
 %h1 Sources
 
-%ul
-  - for source in sources
-    %li= source.name
-
 %table.table
   %thead
     %tr
+      %th &nbsp;
       - for type in ordered_sources.keys
         %th= type.to_s.humanize
   %tbody
-    - (0...Source.count).to_a.each do |position|
+    - (0...Source.count).to_a.each_with_index do |position, index|
       %tr
+        %td #{index + 1}
         - for type in ordered_sources.keys
           - source = ordered_sources[type][position]
-          %td #{source.rank_for(type)}. #{source.name}
+          %td #{source.name}
