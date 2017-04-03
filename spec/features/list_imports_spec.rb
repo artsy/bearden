@@ -8,7 +8,7 @@ describe 'List Imports' do
     visit '/imports'
 
     imports.each do |import|
-      expect(page).to have_text "Clearbit import ##{import.id}"
+      expect(page).to have_text "Clearbit import: #{import.id}"
     end
   end
 end

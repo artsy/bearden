@@ -2,6 +2,22 @@
 
 %h1 Imports
 
-%ul
-  - for import_result in import_results
-    %li= link_to import_result.name, import_path(import_result.import)
+%table.table
+  %thead
+    %tr
+      %th Name
+      %th Description
+      %th State
+      %th Total Count
+      %th Created Date
+
+    %tbody
+      - for import_result in import_results
+        %tr
+          %td
+            %a{ href: import_result.uri }= import_result.name
+          %td
+            %em= import_result.description
+          %td= import_result.state.humanize
+          %td= import_result.total_count
+          %td{ class: 'text-muted' }= import_result.created_at.strftime('%d %b %Y, %H:%M:%S')

@@ -7,11 +7,11 @@
     = javascript_include_tag 'application'
   %body
     .container
-      %header
-        %h1 Bearden
-
-        %nav
-          %ul.nav.nav-pills
+      %nav{ class: %w(navbar navbar-toggleable-md navbar-light bg-faded) }
+        %a{ class: 'navbar-brand' }
+          Bearden
+        %div{ class: %w(collapse navbar-collapse) }
+          %ul{ class: %w(navbar-nav mr-auto) }
             %li.nav-item= link_to 'Imports', imports_path, { class: nav_class(:imports) }
             %li.nav-item= link_to 'Sources', sources_path, { class: nav_class(:sources) }
             %li.nav-item= link_to 'Tags', tags_path, { class: nav_class(:tags) }

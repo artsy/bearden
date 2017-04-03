@@ -16,7 +16,7 @@ feature 'CSV Import' do
 
     expect(source.imports.count).to eq 1
     import = source.imports.first
-    expect(page).to have_text "Factual import ##{import.id} - finished"
+    expect(page).to have_text "Factual import: #{import.id} - finished"
     expect(page).to have_text import.description
 
     actual_counts = page.all('td + td').map(&:text)
