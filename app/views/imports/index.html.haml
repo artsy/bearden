@@ -2,6 +2,23 @@
 
 %h1 Imports
 
-%ul
-  - for import_result in import_results
-    %li= link_to import_result.name, import_path(import_result.import)
+%table.table
+  %thead
+    %tr
+      %th
+        &nbsp;
+      %th
+        Description
+      %th
+        State
+      %th
+        Created Date
+
+    %tbody
+      - for import in imports
+        %tr
+          %td= import.id
+          %td
+            %a{ href: import.uri }= import.description
+          %td= import.state.humanize
+          %td= import.created_at.strftime('%d %b %Y, %H:%M:%S')

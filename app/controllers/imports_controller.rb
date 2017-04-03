@@ -4,6 +4,7 @@ class ImportsController < ApplicationController
   end
   expose(:import)
   expose(:import_result) { ImportResult.new(import) }
+  expose(:imports) { Import.order(id: :desc) }
 
   def create
     if import.save
