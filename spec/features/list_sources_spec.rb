@@ -40,31 +40,34 @@ feature 'List Sources' do
 
     expect(first_row.all('td').map(&:text)).to eq(
       [
-        '1. Source 1',
-        '1. Source 2',
-        '1. Source 1',
-        '1. Source 1',
-        '1. Source 2'
+        '1',
+        'Source 1',
+        'Source 2',
+        'Source 1',
+        'Source 1',
+        'Source 2'
       ]
     )
 
     expect(second_row.all('td').map(&:text)).to eq(
       [
-        '2. Source 3',
-        '2. Source 1',
-        '2. Source 2',
-        '2. Source 2',
-        '2. Source 3'
+        '2',
+        'Source 3',
+        'Source 1',
+        'Source 2',
+        'Source 2',
+        'Source 3'
       ]
     )
 
     expect(third_row.all('td').map(&:text)).to eq(
       [
-        '3. Source 2',
-        '3. Source 3',
-        '3. Source 3',
-        '3. Source 3',
-        '3. Source 1'
+        '3',
+        'Source 2',
+        'Source 3',
+        'Source 3',
+        'Source 3',
+        'Source 1'
       ]
     )
   end

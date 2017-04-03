@@ -5,7 +5,7 @@ describe ImportResult do
     it 'returns the name' do
       import = Fabricate :import
       import_result = ImportResult.new(import)
-      expected_name = "#{import.source.name} import ##{import.id}"
+      expected_name = "#{import.source.name} import: #{import.id}"
       expect(import_result.name).to eq expected_name
     end
   end

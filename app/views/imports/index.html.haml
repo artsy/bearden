@@ -5,20 +5,17 @@
 %table.table
   %thead
     %tr
-      %th
-        &nbsp;
-      %th
-        Description
-      %th
-        State
-      %th
-        Created Date
+      %th Name
+      %th Description
+      %th State
+      %th Created Date
 
     %tbody
-      - for import in imports
+      - for import_result in import_results
         %tr
-          %td= import.id
           %td
-            %a{ href: import.uri }= import.description
-          %td= import.state.humanize
-          %td= import.created_at.strftime('%d %b %Y, %H:%M:%S')
+            %a{ href: import_result.uri }= import_result.name
+          %td
+            %em= import_result.description
+          %td= import_result.state.humanize
+          %td{ class: 'text-muted' }= import_result.created_at.strftime('%d %b %Y, %H:%M:%S')
