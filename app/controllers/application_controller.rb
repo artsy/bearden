@@ -1,10 +1,12 @@
-class ApplicationController < ActionController::Base
-  http_basic_authenticate_with(
-    name: Rails.application.secrets.admin_username,
-    password: Rails.application.secrets.admin_password
-  )
+class ApplicationController < ArtsyAuth::ApplicationController
   protect_from_forgery with: :exception
   force_ssl if: :ssl_configured?
+
+  def authorized_artsy_token?(token)
+    secret = Rails.application.secrets.artsy_internal_secret
+    decoded_token, _headers = JWT.decode(token, secret)
+    decoded_token['roles'].include? 'admin'
+  end
 
   private
 
