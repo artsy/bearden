@@ -14,36 +14,32 @@ class GeocodeLocationJob < ApplicationJob
   private
 
   def geocode(location)
-    result = Geocoder.search(location.content)
-    if result
-      save_result(location, result.first)
-    else
-      save_fallback(location)
+    results = Geocoder.search(location.content)
+    import = Import.find @import_id
+
+    PaperTrail.track_changes_with(import) do
+      attrs = location_attrs(results&.first)
+      location.update_attributes(attrs)
     end
   end
 
-  def save_fallback(location)
-    import = Import.find @import_id
-    PaperTrail.track_changes_with(import) do
-      location.update_attributes(
-        latitude: FALLBACK_COORDINATES[0],
-        longitude: FALLBACK_COORDINATES[1],
-        country: FALLBACK_COUNTRY,
-        city: FALLBACK_CITY
-      )
-    end
+  def location_attrs(result)
+    return fallback_attrs unless result
+    {
+      latitude: result.coordinates[0],
+      longitude: result.coordinates[1],
+      country: result.country,
+      city: result.city
+    }
   end
 
-  def save_result(location, result)
-    import = Import.find @import_id
-    PaperTrail.track_changes_with(import) do
-      location.update_attributes(
-        latitude: result.coordinates[0],
-        longitude: result.coordinates[1],
-        country: result.country,
-        city: result.city
-      )
-    end
+  def fallback_attrs
+    {
+      latitude: FALLBACK_COORDINATES[0],
+      longitude: FALLBACK_COORDINATES[1],
+      country: FALLBACK_COUNTRY,
+      city: FALLBACK_CITY
+    }
   end
 
   def enqueue_next_job

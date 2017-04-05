@@ -10,12 +10,13 @@ describe GeocodeLocationJob do
     end
 
     it 'moves on to geocode the next location when geocodable? is false' do
-      results = [double(
+      result = double(
+        :result,
         city: 'Berlin',
         country: 'Germany',
         coordinates: [52.5200066, 13.404954]
-      )]
-      allow(Geocoder).to receive(:search).and_return(results)
+      )
+      allow(Geocoder).to receive(:search).and_return([result])
 
       org = Fabricate :organization
       org.locations.create(
@@ -29,10 +30,10 @@ describe GeocodeLocationJob do
         assert_performed_jobs 2
       end
 
-      expect(org.locations.last.latitude).to eql results.first.coordinates[0]
-      expect(org.locations.last.longitude).to eql results.first.coordinates[1]
-      expect(org.locations.last.country).to eql results.first.country
-      expect(org.locations.last.city).to eql results.first.city
+      expect(org.locations.last.latitude).to eql result.coordinates[0]
+      expect(org.locations.last.longitude).to eql result.coordinates[1]
+      expect(org.locations.last.country).to eql result.country
+      expect(org.locations.last.city).to eql result.city
     end
 
     it 'stops raises an error when OverQueryLimitError is raised' do
