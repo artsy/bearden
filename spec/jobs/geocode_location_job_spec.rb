@@ -4,13 +4,20 @@ describe GeocodeLocationJob do
   include ActiveJob::TestHelper
 
   describe '#perform' do
-    let(:berlin_coordinates) { [52.5200066, 13.404954] }
-
     before do
-      allow(Geocoder).to receive(:coordinates).and_return(berlin_coordinates)
+      # Stub Geocoder.search so that tests don't use precious API
+      allow(Geocoder).to receive(:search)
     end
 
     it 'moves on to geocode the next location when geocodable? is false' do
+      result = double(
+        :result,
+        city: 'Berlin',
+        country: 'Germany',
+        coordinates: [52.5200066, 13.404954]
+      )
+      allow(Geocoder).to receive(:search).and_return([result])
+
       org = Fabricate :organization
       org.locations.create(
         content: 'New York City', latitude: 1234, longitude: 5678
@@ -23,12 +30,14 @@ describe GeocodeLocationJob do
         assert_performed_jobs 2
       end
 
-      expect(org.locations.last.latitude).to eql berlin_coordinates[0]
-      expect(org.locations.last.longitude).to eql berlin_coordinates[1]
+      expect(org.locations.last.latitude).to eql result.coordinates[0]
+      expect(org.locations.last.longitude).to eql result.coordinates[1]
+      expect(org.locations.last.country).to eql result.country
+      expect(org.locations.last.city).to eql result.city
     end
 
     it 'stops raises an error when OverQueryLimitError is raised' do
-      expect(Geocoder).to receive(:coordinates)
+      expect(Geocoder).to receive(:search)
         .and_raise(Geocoder::OverQueryLimitError)
       org = Fabricate :organization
       org.locations.create(
@@ -87,8 +96,8 @@ describe GeocodeLocationJob do
     it 'saves location with fallback value when Geocoder results are nil' do
       fallback_coordinates = GeocodeLocationJob::FALLBACK_COORDINATES
 
-      allow(Geocoder).to receive(:coordinates)
-        .and_return(fallback_coordinates)
+      allow(Geocoder).to receive(:search)
+        .and_return(nil)
 
       org = Fabricate :organization
       org.locations.create content: 'Nil Town, USA'
@@ -100,6 +109,8 @@ describe GeocodeLocationJob do
 
       expect(org.locations.first.latitude).to eql fallback_coordinates[0]
       expect(org.locations.first.longitude).to eql fallback_coordinates[1]
+      expect(org.locations.first.country).to eql nil
+      expect(org.locations.first.city).to eql nil
     end
 
     it 'records an Import and Source for all records' do

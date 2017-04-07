@@ -7,6 +7,8 @@ Rails.application.routes.draw do
 
   mount ActionCable.server => :cable
 
+  mount ArtsyAuth::Engine => '/'
+
   resources :imports, only: %i(create index new show)
   resources :sources, only: %i(create index new)
   resources :tags, only: :index

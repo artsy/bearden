@@ -10,7 +10,7 @@ describe DataWarehouse do
         allow(connection).to receive(:exec).and_raise PG::Error
 
         expect do
-          DataWarehouse.new(object, result, connection).reset
+          DataWarehouse.new([object], result, connection).reset
         end.to raise_error PG::Error
       end
     end
@@ -29,7 +29,7 @@ describe DataWarehouse do
           after_count_result
         )
 
-        DataWarehouse.new(object, result, connection).reset
+        DataWarehouse.new([object], result, connection).reset
 
         expect(result).to be_success
         expect(result.before_count).to eq 0

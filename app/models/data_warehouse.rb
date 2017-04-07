@@ -7,11 +7,11 @@ class DataWarehouse
     end
   end
 
-  def self.reset(object)
+  def self.reset(objects)
     Result.new.tap do |result|
       Redshift.connect do |connection|
         begin
-          warehouse = new(object, result, connection)
+          warehouse = new(objects, result, connection)
           warehouse.reset
         rescue PG::Error
           result.errors = warehouse.load_errors
@@ -20,8 +20,10 @@ class DataWarehouse
     end
   end
 
-  def initialize(object, result, connection)
-    @source = "s3://#{object.bucket_name}/#{object.key}"
+  def initialize(objects, result, connection)
+    @sources = objects.map do |object|
+      "s3://#{object.bucket_name}/#{object.key}"
+    end
     @region = Rails.application.secrets.aws_region
     @result = result
     @connection = connection
@@ -46,18 +48,20 @@ class DataWarehouse
   end
 
   def copy_source_data
-    @connection.exec(
-      "COPY #{Redshift::SCHEMA_TABLE} \
-      (#{columns}) \
-      FROM '#{@source}' \
-      WITH CREDENTIALS '#{s3_auth}' \
-      DELIMITER ',' \
-      REGION '#{@region}' \
-      CSV IGNOREHEADER 1 EMPTYASNULL"
-    )
+    @sources.each do |source|
+      @connection.exec(
+        "COPY #{Redshift::SCHEMA_TABLE} \
+        (#{columns}) \
+        FROM '#{source}' \
+        WITH CREDENTIALS '#{s3_auth}' \
+        DELIMITER ',' REGION '#{@region}' \
+        CSV IGNOREHEADER 1 EMPTYASNULL"
+      )
+    end
   end
 
   def load_errors
+    # not sure about what to do with this one yet...
     results = @connection.exec(
       "SELECT line_number, colname, err_reason, \
         raw_field_value, raw_line \

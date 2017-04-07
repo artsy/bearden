@@ -22,9 +22,11 @@ RSpec.configure do |config|
   end
 
   config.before(:each, type: :feature) do
-    username = Rails.application.secrets.admin_username
-    password = Rails.application.secrets.admin_password
-    page.driver.browser.basic_authorize(username, password)
+    # disable authentication for feature tests
+    allow_any_instance_of(ApplicationController).to(
+      receive(:require_artsy_authentication)
+    )
+
     allow(SlackBot).to receive(:post)
     allow(S3CsvExport).to receive(:create)
   end
