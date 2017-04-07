@@ -20,6 +20,7 @@ describe SyncMicroMachine do
       expect(valid_states).to eq %w(
         unstarted
         starting
+        skipped
         exporting
         copying
         finalizing

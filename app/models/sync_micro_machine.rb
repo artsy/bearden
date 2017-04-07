@@ -11,8 +11,11 @@ class SyncMicroMachine < MicroMachine
   FINISH = 'finish'.freeze
   FINISHED = 'finished'.freeze
 
+  SKIP = 'skip'.freeze
+  SKIPPED = 'skipped'.freeze
+
   def self.in_progress_states
-    valid_states - [FINISHED]
+    valid_states - [SKIPPED, FINISHED]
   end
 
   def self.valid_states
@@ -29,6 +32,7 @@ class SyncMicroMachine < MicroMachine
     on(:any, &callback) if callback
 
     self.when(START, UNSTARTED => STARTING)
+    self.when(SKIP, STARTING => SKIPPED)
     self.when(EXPORT, STARTING => EXPORTING)
     self.when(COPY, EXPORTING => COPYING)
     self.when(FINALIZE, COPYING => FINALIZING)

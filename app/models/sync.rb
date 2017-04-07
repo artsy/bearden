@@ -14,6 +14,10 @@ class Sync < ApplicationRecord
     StartSyncJob.perform_later id
   end
 
+  def skip
+    machine.trigger SyncMicroMachine::SKIP
+  end
+
   def export
     machine.trigger SyncMicroMachine::EXPORT
   end
@@ -41,8 +45,8 @@ class Sync < ApplicationRecord
     "data_warehouse_reset/#{timestamp}"
   end
 
-  def all_parts_uploaded?
-    total_parts == uploaded_parts
+  def ready_for_copy?
+    state == SyncMicroMachine::EXPORTING && total_parts == uploaded_parts
   end
 
   private
