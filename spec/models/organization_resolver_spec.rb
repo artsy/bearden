@@ -70,6 +70,75 @@ describe OrganizationResolver do
       end
     end
 
+    context 'data with tied ranks' do
+      it 'breaks ties with created_at - newest wins' do
+        organization = nil
+
+        source = Fabricate :source
+
+        first_import = Fabricate :import, source: source
+        first_raw_input = Fabricate :raw_input, import: first_import
+        first_tag_name = 'modern'
+
+        PaperTrail.track_changes_with(first_raw_input) do
+          organization = Fabricate :organization
+          Fabricate :email, organization: organization
+          Fabricate :location, organization: organization
+          Fabricate :organization_name, organization: organization
+          Fabricate :phone_number, organization: organization
+          tag = Fabricate :tag, name: first_tag_name
+          Fabricate :organization_tag, organization: organization, tag: tag
+          Fabricate :website, organization: organization
+        end
+
+        email = 'info@example.com'
+        latitude = 90.0
+        location = '123 main street'
+        longitude = 70.0
+        organization_name = 'The Best Gallery'
+        phone_number = '1-800-123-4567'
+        website = 'http://www.example.com'
+
+        second_import = Fabricate :import, source: source
+        second_raw_input = Fabricate :raw_input, import: second_import
+        second_tag_name = 'design'
+
+        PaperTrail.track_changes_with(second_raw_input) do
+          Fabricate :email, content: email, organization: organization
+          Fabricate(:location,
+                    organization: organization,
+                    content: location,
+                    latitude: latitude,
+                    longitude: longitude)
+          Fabricate(:organization_name,
+                    organization: organization,
+                    content: organization_name)
+          Fabricate(:phone_number,
+                    content: phone_number,
+                    organization: organization)
+          tag = Fabricate :tag, name: second_tag_name
+          Fabricate :organization_tag, organization: organization, tag: tag
+          Fabricate :website, organization: organization, content: website
+        end
+
+        resolved = OrganizationResolver.resolve organization
+
+        expect(resolved).to eq(
+          {
+            bearden_id: organization.id,
+            email: email,
+            latitude: latitude,
+            location: location,
+            longitude: longitude,
+            organization_name: organization_name,
+            phone_number: phone_number,
+            tag_names: [first_tag_name, second_tag_name].join(','),
+            website: website
+          }
+        )
+      end
+    end
+
     context 'with two sets of data' do
       it 'returns only the highest ranked data' do
         organization = nil
