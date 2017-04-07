@@ -1,5 +1,5 @@
 class OrganizationExportJob < ApplicationJob
-  PART_SIZE = 10_000
+  PART_SIZE = 1_000
 
   attr_accessor :sync, :part_number, :part_size
 
