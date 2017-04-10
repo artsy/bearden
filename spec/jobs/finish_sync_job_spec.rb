@@ -4,7 +4,7 @@ describe FinishSyncJob do
   describe '#perform' do
     context 'with successful reset' do
       it 'resets the data warehouse, updates the imports, posts to Slack and updates the Sync' do # rubocop:disable Metrics/LineLength
-        sources = ['s3:///folder/timestamp/1']
+        sources = ['s3://testing/folder/timestamp/1']
         result = double(
           :result,
           success?: true,
