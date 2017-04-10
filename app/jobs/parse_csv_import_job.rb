@@ -6,7 +6,7 @@ class ParseCsvImportJob < ApplicationJob
     import = Import.find_by id: import_id
     return unless import
 
-    stringio = open(import.uri)
+    stringio = open(import.csv.url)
     stringio.set_encoding Encoding::UTF_8
     data = stringio.read
 

@@ -9,7 +9,7 @@ feature 'CSV Import' do
     visit '/imports/new'
 
     select source.name, from: 'Source'
-    fill_in 'File', with: 'spec/fixtures/one_complete_gallery.csv'
+    attach_file('import_csv', 'spec/fixtures/one_complete_gallery.csv')
     fill_in 'Description', with: 'Monthly Data Import'
 
     click_button 'Create'

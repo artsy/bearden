@@ -15,7 +15,7 @@
       - for import_result in import_results
         %tr
           %td
-            %a{ href: import_result.uri }= import_result.name
+            %a{ href: import_path(import_result.id) }= import_result.name
           %td
             %em= import_result.description
           %td= import_result.state.humanize
