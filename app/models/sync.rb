@@ -35,7 +35,6 @@ class Sync < ApplicationRecord
     machine.trigger SyncMicroMachine::FINISH
   end
 
-  # this might not be neccessary
   def increment_uploaded_parts
     increment! :uploaded_parts
   end
