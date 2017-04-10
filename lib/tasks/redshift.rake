@@ -1,7 +1,7 @@
 namespace :redshift do
   desc 'Sync Redshift table'
   task sync: :environment do
-    DataWarehouseSyncJob.perform_later
+    SyncManagementJob.perform_later
   end
 
   desc 'Drop the Redshift table'

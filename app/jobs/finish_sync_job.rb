@@ -1,25 +1,29 @@
-class DataWarehouseSyncJob < ApplicationJob
-  def perform
-    return if nothing_to_sync?
+class FinishSyncJob < ApplicationJob
+  attr_accessor :sync
 
-    SlackBot.post('sync starting')
-    update_finished_imports
+  def perform(sync_id)
+    @sync = Sync.find_by id: sync_id
+    return unless sync
 
-    result = DataWarehouseReset.run
+    result = DataWarehouse.reset(sources)
+
+    sync.finalize
     update_syncing_imports(result.success?)
 
     result_message = message_for(result)
     SlackBot.post(result_message)
+
+    sync.finish
   end
 
   private
 
-  def nothing_to_sync?
-    Import.where(state: ImportMicroMachine::FINISHED).empty?
-  end
-
-  def update_finished_imports
-    Import.where(state: ImportMicroMachine::FINISHED).each(&:sync)
+  def sources
+    (1..sync.total_parts).map do |part|
+      bucket_name = Rails.application.secrets.aws_bucket
+      key = "#{sync.export_folder}/#{part}"
+      "s3://#{bucket_name}/#{key}"
+    end
   end
 
   def update_syncing_imports(success)
