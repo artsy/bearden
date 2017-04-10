@@ -40,7 +40,7 @@ class Sync < ApplicationRecord
   end
 
   def export_folder
-    timestamp = created_at.strftime('%F%T').gsub(/[^0-9a-z ]/i, '')
+    timestamp = created_at.to_s(:export_folder)
     "data_warehouse_reset/#{timestamp}"
   end
 
