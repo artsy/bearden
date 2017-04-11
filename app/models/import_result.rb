@@ -6,7 +6,7 @@ class ImportResult
     :description,
     :finished?,
     :id,
-    :csv,
+    :file_identifier,
     :raw_inputs,
     :source,
     :state,

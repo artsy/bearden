@@ -1,6 +1,5 @@
 class AddCsvToImports < ActiveRecord::Migration[5.0]
   def change
-    add_column :imports, :csv, :string
-    remove_column :imports, :uri
+    rename_column :imports, :uri, :file_identifier
   end
 end

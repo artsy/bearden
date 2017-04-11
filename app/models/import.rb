@@ -1,5 +1,5 @@
 class Import < ApplicationRecord
-  mount_uploader :csv, S3CsvUploader
+  mount_uploader :file_identifier, S3CsvUploader
 
   belongs_to :source
   has_many :raw_inputs

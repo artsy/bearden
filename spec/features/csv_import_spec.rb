@@ -15,7 +15,7 @@ feature 'CSV Import' do
     visit '/imports/new'
 
     select source.name, from: 'Source'
-    attach_file('import_csv', csv_file)
+    attach_file('import_file_identifier', csv_file)
     fill_in 'Description', with: 'Monthly Data Import'
 
     click_button 'Create'

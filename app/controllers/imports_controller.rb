@@ -22,7 +22,7 @@ class ImportsController < ApplicationController
       state: ImportMicroMachine::UNSTARTED,
       transformer: CsvTransformer
     }
-    permitted = %i(description source_id csv)
+    permitted = %i(description source_id file_identifier)
     params.require(:import).permit(permitted).merge(defaults)
   end
 end
