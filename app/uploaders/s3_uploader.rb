@@ -1,4 +1,4 @@
-class S3CsvUploader < CarrierWave::Uploader::Base
+class S3Uploader < CarrierWave::Uploader::Base
   include CarrierWaveDirect::Uploader
 
   def extension_white_list

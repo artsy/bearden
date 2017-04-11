@@ -4,7 +4,7 @@ feature 'CSV Import' do
   scenario 'Import one complete gallery' do
     csv_file = 'spec/fixtures/one_complete_gallery.csv'
 
-    allow_any_instance_of(S3CsvUploader).to receive(:store!)
+    allow_any_instance_of(S3Uploader).to receive(:store!)
     allow_any_instance_of(Fog::Storage::AWS::GetObjectUrl)
       .to receive(:get_object_url).and_return(csv_file)
 
