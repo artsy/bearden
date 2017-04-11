@@ -23,7 +23,7 @@ class OrganizationResolver
   end
 
   def find_highest_rankable(rankables)
-    rankables.sort_by(&:rank).first
+    rankables.order(created_at: :desc).sort_by(&:rank).first
   end
 
   # rubocop:disable Metrics/MethodLength
