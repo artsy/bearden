@@ -39,7 +39,7 @@ class ImportErrors
   end
 
   def headers
-    raw_inputs_with_errors.first.data.keys + %w(exception error_details)
+    raw_inputs_with_errors.first.data.keys + %w[exception error_details]
   end
 
   def errors_from_details(details)

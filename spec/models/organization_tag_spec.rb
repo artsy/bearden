@@ -68,7 +68,7 @@ describe OrganizationTag do
 
     context 'with a few tags' do
       it 'applies each of them' do
-        tags = %w(new_tag another last_tag)
+        tags = %w[new_tag another last_tag]
         tags.each { |t| Fabricate :tag, name: t }
         organization = Fabricate :organization
         OrganizationTag.apply tags, organization

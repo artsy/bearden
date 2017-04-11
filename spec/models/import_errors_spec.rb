@@ -46,7 +46,7 @@ describe ImportErrors do
         rows = [[email, website, exception, error_messages]]
 
         filename = "errors/#{import.id}.csv"
-        headers = %w(email website exception error_details)
+        headers = %w[email website exception error_details]
 
         options = {
           rows: rows,
@@ -65,7 +65,7 @@ describe ImportErrors do
         import = Fabricate :import
         exception = 'RawInputChanges::InvalidData'
 
-        tag_names = %w(design)
+        tag_names = %w[design]
 
         data = {
           tag_names: tag_names
@@ -87,7 +87,7 @@ describe ImportErrors do
         error_message = 'all tags could not be applied'
         rows = [[tag_names, exception, error_message]]
         filename = "errors/#{import.id}.csv"
-        headers = %w(tag_names exception error_details)
+        headers = %w[tag_names exception error_details]
 
         options = {
           rows: rows,

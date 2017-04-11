@@ -54,7 +54,7 @@ describe CsvTransformer do
         raw_input = Fabricate :raw_input, data: data
         attrs = CsvTransformer.transform raw_input
         expected = {
-          tag_names: %w(design modern)
+          tag_names: %w[design modern]
         }
         expect(attrs).to eq(expected)
       end
@@ -117,7 +117,7 @@ describe CsvTransformer do
           phone_number: {
             content: data[:phone_number]
           },
-          tag_names: %w(design modern),
+          tag_names: %w[design modern],
           website: {
             content: data[:website]
           }

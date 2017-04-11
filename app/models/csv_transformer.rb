@@ -1,6 +1,6 @@
 class CsvTransformer
   def self.allowed_headers
-    %w(
+    %w[
       email
       location
       latitude
@@ -9,7 +9,7 @@ class CsvTransformer
       phone_number
       tag_names
       website
-    )
+    ]
   end
 
   def self.transform(raw_input)
