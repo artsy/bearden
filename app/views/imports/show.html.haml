@@ -22,8 +22,7 @@
 
 %p= import_result.description
 
-%p
-  %a{ href: import_result.csv.url } Source File
+%p= link_to 'Source File', import_result.csv.url
 
 %table.table
   %tbody

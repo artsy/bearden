@@ -14,8 +14,7 @@
     %tbody
       - for import_result in import_results
         %tr
-          %td
-            %a{ href: import_path(import_result.id) }= import_result.name
+          %td= link_to import_result.name, import_path(import_result.id)
           %td
             %em= import_result.description
           %td= import_result.state.humanize
