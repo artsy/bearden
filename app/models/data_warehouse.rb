@@ -7,11 +7,11 @@ class DataWarehouse
     end
   end
 
-  def self.reset(objects)
+  def self.reset(sources)
     Result.new.tap do |result|
       Redshift.connect do |connection|
         begin
-          warehouse = new(objects, result, connection)
+          warehouse = new(sources, result, connection)
           warehouse.reset
         rescue PG::Error
           result.errors = warehouse.load_errors
@@ -20,10 +20,8 @@ class DataWarehouse
     end
   end
 
-  def initialize(objects, result, connection)
-    @sources = objects.map do |object|
-      "s3://#{object.bucket_name}/#{object.key}"
-    end
+  def initialize(sources, result, connection)
+    @sources = sources
     @region = Rails.application.secrets.aws_region
     @result = result
     @connection = connection

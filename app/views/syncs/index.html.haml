@@ -1,0 +1,18 @@
+%h1 Syncs
+
+%table.table
+  %thead
+    %tr
+      %th Number
+      %th State
+      %th Parts
+      %th Duration
+      %th Created At
+  %tbody
+    - for sync_result in recent_sync_results
+      %tr
+        %td= sync_result.id
+        %td= sync_result.state
+        %td= sync_result.parts
+        %td= sync_result.duration
+        %td= sync_result.created_at.to_s(:list_page)
