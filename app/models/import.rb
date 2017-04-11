@@ -1,9 +1,10 @@
 class Import < ApplicationRecord
+  mount_uploader :file_identifier, S3Uploader
+
   belongs_to :source
   has_many :raw_inputs
 
   validates :source, presence: true
-  validates :uri, presence: true
   validates :state, presence: true, inclusion: ImportMicroMachine.valid_states
 
   def parse

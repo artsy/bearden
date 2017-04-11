@@ -277,10 +277,8 @@ describe RawInputChanges do
           organization = Fabricate :organization
           Fabricate :website, organization: organization, content: website
 
-          source = Fabricate :source
           import = Fabricate(
             :import,
-            source: source,
             transformer: CsvTransformer
           )
           data = {

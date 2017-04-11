@@ -6,7 +6,7 @@ class ImportResult
     :description,
     :finished?,
     :id,
-    :uri,
+    :file_identifier,
     :raw_inputs,
     :source,
     :state,

@@ -1,6 +1,6 @@
 :coffee
   $ ->
-    $requiredFields = $('#uri, #import_description')
+    $requiredFields = $('#import_file_identifier, #import_description')
     $submit = $('input[type=submit]').prop('disabled', true)
     $requiredFields.change ->
       formComplete = $requiredFields.filter(-> @value == '').length == 0
@@ -10,11 +10,11 @@
 
 = form_for import do |f|
   .form-group
+    = f.label :file_identifier, "Upload a CSV"
+    = f.file_field :file_identifier, required: true
+  .form-group
     = f.label :source_id
     = f.collection_select(:source_id, Source.all, :id, :name, {}, { class: 'form-control' })
-  .form-group
-    = f.label :uri, 'File'
-    = f.text_field :uri, { class: 'form-control', required: true }
   .form-group
     = f.label :description
     = f.text_area :description, { class: 'form-control', required: true }

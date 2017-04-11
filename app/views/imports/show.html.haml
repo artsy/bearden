@@ -22,8 +22,7 @@
 
 %p= import_result.description
 
-%p
-  %a{ href: import.uri }= import.uri
+%p= link_to 'Source File', import_result.file_identifier.url
 
 %table.table
   %tbody
