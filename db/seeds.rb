@@ -1,6 +1,6 @@
-ranks = %i(
+ranks = %i[
   email_rank location_rank organization_name_rank phone_number_rank website_rank
-)
+]
 
 [
   { name: 'Factual', rank: 1 },

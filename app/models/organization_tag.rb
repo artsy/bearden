@@ -5,7 +5,7 @@ class OrganizationTag < ApplicationRecord
   belongs_to :tag
   validates_uniqueness_of :tag, scope: :organization
 
-  has_paper_trail ignore: %i(created_at updated_at)
+  has_paper_trail ignore: %i[created_at updated_at]
 
   def self.apply(tag_names, organization)
     Array(tag_names).each do |tag_name|

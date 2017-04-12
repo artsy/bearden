@@ -9,8 +9,8 @@ Rails.application.routes.draw do
 
   mount ArtsyAuth::Engine => '/'
 
-  resources :imports, only: %i(create index new show)
-  resources :sources, only: %i(create index new)
+  resources :imports, only: %i[create index new show]
+  resources :sources, only: %i[create index new]
   resources :syncs, only: :index
   resources :tags, only: :index
 end
