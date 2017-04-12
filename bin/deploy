@@ -4,7 +4,7 @@
 project=$(git remote show upstream | grep Fetch | cut -d ':' -f 3 | cut -d '.' -f 1)
 
 # show included PRs
-prs=$(git log upstream/release...upstream/master --merges --oneline | cut -d ' ' -f 5 | cut -d '#' -f 2)
+prs=$(git log upstream/release...upstream/master --merges --oneline --grep 'from artsy/master' --invert-grep | cut -d ' ' -f 5 | cut -d '#' -f 2)
 
 body="Included PRs:\n\n"
 for pr in $prs; do
