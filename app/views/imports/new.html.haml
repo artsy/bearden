@@ -13,14 +13,50 @@
 
 %h1 Create Import
 
-= form_for import do |f|
-  .form-group
-    = f.label :file_identifier, "Upload a CSV"
-    = f.file_field :file_identifier, required: true
-  .form-group
-    = f.label :source_id
-    = f.collection_select(:source_id, Source.all, :id, :name, {}, { class: 'form-control' })
-  .form-group
-    = f.label :description
-    = f.text_area :description, { class: 'form-control', required: true }
-  = f.submit 'Create', { class: 'btn btn-primary' }
+%ul{ class: %w[nav nav-tabs], role: 'tablist' }
+  %li{ class: 'nav-item'}
+    %a{ class: 'nav-link', href: '#help', data: { toggle: 'tab' }} Help
+  %li{ class: 'nav-item'}
+    %a{ class: %w[nav-link active], href: '#new', data: { toggle: 'tab' }} New
+
+.tab-content
+  %div{ class: %w[tab-pane], id: 'help' }
+    %p Bearden expects a CSV with the folowing headers and types of data.
+    %p It will skip columns that do not match.
+    %table.table
+      %thead
+        %tr
+          %th Field
+          %th Example
+      %tbody
+        %tr
+          %td <code>organization_name</code>
+          %td Artsy
+        %tr
+          %td <code>location</code>
+          %td 401 Broadway, 25th Floor, New York, NY 10013
+        %tr
+          %td <code>website</code>
+          %td <strong><strike>http://</strike></strong> artsy.net
+        %tr
+          %td <code>email</code>
+          %td contact@artsymail.com
+        %tr
+          %td <code>tag_names</code>
+          %td <a href="/tags" target="_blank">art, photography, gallery</a>
+        %tr
+
+  %div{ class: %w[tab-pane active], id: 'new' }
+    %p See the help tab for how to format your CSV
+
+    = form_for import do |f|
+      .form-group
+        = f.label :file_identifier, "Upload a CSV"
+        = f.file_field :file_identifier, required: true
+      .form-group
+        = f.label :source_id
+        = f.collection_select(:source_id, Source.all, :id, :name, {}, { class: 'form-control' })
+      .form-group
+        = f.label :description
+        = f.text_area :description, { class: 'form-control', required: true }
+      = f.submit 'Create', { class: 'btn btn-primary' }
