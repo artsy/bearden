@@ -28,22 +28,36 @@
         %tr
           %th Field
           %th Example
+          %th Required
       %tbody
-        %tr
-          %td <code>organization_name</code>
-          %td Artsy
-        %tr
-          %td <code>location</code>
-          %td 401 Broadway, 25th Floor, New York, NY 10013
         %tr
           %td <code>website</code>
           %td <strong><strike>http://</strike></strong> artsy.net
+          %td Yes
+        %tr
+          %td <code>organization_name</code>
+          %td Artsy
+          %td No
+        %tr
+          %td <code>location</code>
+          %td 401 Broadway, 25th Floor, New York, NY 10013
+          %td No
+        %tr
+          %td <code>city</code>
+          %td New York
+          %td No
+        %tr
+          %td <code>country</code>
+          %td USA
+          %td No
         %tr
           %td <code>email</code>
           %td contact@artsymail.com
+          %td No
         %tr
           %td <code>tag_names</code>
           %td <a href="/tags" target="_blank">art, photography, gallery</a>
+          %td No
         %tr
 
   %div{ class: %w[tab-pane active], id: 'new' }
