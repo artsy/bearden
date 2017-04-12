@@ -39,13 +39,24 @@ class ImportErrors
   end
 
   def headers
-    raw_inputs_with_errors.first.data.keys + %w(exception error_details)
+    raw_inputs_with_errors.first.data.keys + %w[exception error_details]
   end
 
   def errors_from_details(details)
+    errors = rankeable_errors(details) + tag_errors(details)
+    errors.compact.join(', ')
+  end
+
+  def rankeable_errors(details)
     details.flat_map do |field, detail|
+      next if field == 'tags'
       errors = detail['content'].pluck('error')
       errors.flat_map { |error| [field, error].join(' ') }
-    end.join(', ')
+    end
+  end
+
+  def tag_errors(details)
+    return [] unless details.key?('tags')
+    [details['tags'].split(':').first]
   end
 end

@@ -1,7 +1,7 @@
 class CsvConverter
   # rubocop:disable Metrics/MethodLength
   def self.headers
-    %w(
+    %w[
       bearden_id
       email
       latitude
@@ -11,7 +11,7 @@ class CsvConverter
       phone_number
       tag_names
       website
-    )
+    ]
   end
   # rubocop:enable Metrics/MethodLength
 

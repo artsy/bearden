@@ -4,7 +4,7 @@ describe ImportMicroMachine do
   describe '.valid_states' do
     it 'returns the valid states' do
       valid_states = ImportMicroMachine.valid_states
-      expect(valid_states).to eq %w(
+      expect(valid_states).to eq %w[
         unstarted
         parsing
         transforming
@@ -12,7 +12,7 @@ describe ImportMicroMachine do
         finished
         syncing
         synced
-      )
+      ]
     end
   end
 end
