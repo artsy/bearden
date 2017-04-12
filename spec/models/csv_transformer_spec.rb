@@ -5,6 +5,8 @@ describe CsvTransformer do
     context 'with no fields' do
       it 'returns an empty hash' do
         data = {
+          city: '',
+          country: '',
           email: '',
           location: '',
           latitude: '',
@@ -63,6 +65,8 @@ describe CsvTransformer do
     context 'with sparse fields' do
       it 'returns only those fields that are not empty' do
         data = {
+          city: 'Berlin',
+          country: '',
           email: '',
           location: '123 Main Street, New York, NY 10001',
           latitude: '47.5543105',
@@ -76,6 +80,7 @@ describe CsvTransformer do
         attrs = CsvTransformer.transform raw_input
         expected = {
           location: {
+            city: data[:city],
             content: data[:location],
             latitude: data[:latitude],
             longitude: data[:longitude]
@@ -91,6 +96,8 @@ describe CsvTransformer do
     context 'with complete fields' do
       it "returns all attrs for an Organization and it's relationships" do
         data = {
+          city: 'Vaughn',
+          country: 'Key Peninsula',
           email: 'info@example.com',
           location: '123 Main Street, New York, NY 10001',
           latitude: '47.5543105',
@@ -107,6 +114,8 @@ describe CsvTransformer do
             content: data[:email]
           },
           location: {
+            city: data[:city],
+            country: data[:country],
             content: data[:location],
             latitude: data[:latitude],
             longitude: data[:longitude]
