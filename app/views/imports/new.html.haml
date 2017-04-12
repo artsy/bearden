@@ -13,14 +13,12 @@
 
 %h1 Create Import
 
-%ul{ class: %w[nav nav-tabs], role: 'tablist' }
-  %li{ class: 'nav-item'}
-    %a{ class: 'nav-link', href: '#help', data: { toggle: 'tab' }} Help
-  %li{ class: 'nav-item'}
-    %a{ class: %w[nav-link active], href: '#new', data: { toggle: 'tab' }} New
+%ul.nav.nav-tabs{ role: 'tablist' }
+  %li.nav-item= link_to 'Help', '#help', {class: 'nav-link', data: { toggle: 'tab' }}
+  %li.nav-item= link_to 'New', '#new', {class: %w[nav-link active], data: { toggle: 'tab' }}
 
 .tab-content
-  %div{ class: %w[tab-pane], id: 'help' }
+  #help.tab-pane
     %p Bearden expects a CSV with the folowing headers and types of data.
     %p It will skip columns that do not match.
     %table.table
@@ -60,7 +58,7 @@
           %td No
         %tr
 
-  %div{ class: %w[tab-pane active], id: 'new' }
+  #new.tab-pane.active
     %p See the help tab for how to format your CSV
 
     = form_for import do |f|
