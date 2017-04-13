@@ -5,6 +5,8 @@ describe CsvConverter do
     it 'returns the converted data' do
       input = {
         bearden_id: 1,
+        city: 'New York',
+        country: 'USA',
         email: 'info@example.com',
         latitude: 2.234,
         location: '123 main street',

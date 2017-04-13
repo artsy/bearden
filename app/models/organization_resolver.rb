@@ -30,6 +30,8 @@ class OrganizationResolver
   def highest_ranked_data
     {
       bearden_id: @organization.id,
+      city: @location&.city,
+      country: @location&.country,
       email: @email&.content,
       latitude: @location&.latitude,
       location: @location&.content,

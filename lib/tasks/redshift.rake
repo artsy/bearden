@@ -18,6 +18,8 @@ namespace :redshift do
       conn.exec(
         "CREATE TABLE IF NOT EXISTS #{Redshift::SCHEMA_TABLE} ( \
           bearden_id integer, \
+          city character varying, \
+          country character varying, \
           email character varying, \
           latitude double precision, \
           longitude double precision, \

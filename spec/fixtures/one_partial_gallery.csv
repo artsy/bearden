@@ -1,2 +1,2 @@
-email,location,latitude,longitude,organization_name,phone_number,tag_names,website
-info@example.com,,,,example gallery,1-800-777-1234,,example.com
+email,city,country,location,latitude,longitude,organization_name,phone_number,tag_names,website
+info@example.com,,,,,,example gallery,1-800-777-1234,,example.com
