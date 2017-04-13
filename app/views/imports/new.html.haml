@@ -6,6 +6,11 @@
       formComplete = $requiredFields.filter(-> @value == '').length == 0
       $submit.removeAttr 'disabled' if formComplete
 
+:coffee
+  $ ->
+    $('form').on 'submit', (event) ->
+      $('.loading').css('display', 'block')
+
 %h1 Create Import
 
 = form_for import do |f|

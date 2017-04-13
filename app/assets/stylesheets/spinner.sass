@@ -1,0 +1,27 @@
+@keyframes spin
+  0%
+    transform: rotate(0deg)
+    animation-timing-function: linear
+  50%
+    transform: rotate(180deg)
+    animation-timing-function: linear
+  100%
+    transform: rotate(360deg)
+    animation-timing-function: linear
+
+.loading
+  display: none
+  height: 100%
+  z-index: 1
+  background: rgba(0, 0, 0, 0.75)
+  position: absolute
+  top: 0
+  right: 0
+  left: 0
+
+.spinner
+  background: white
+  width: 25px
+  height: 6px
+  animation: spin 1s infinite
+  margin: 20% auto
