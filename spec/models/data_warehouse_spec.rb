@@ -4,13 +4,11 @@ describe DataWarehouse do
   describe '.reset' do
     context 'with a Postgres error' do
       it 'returns a result with those errors' do
-        result = DataWarehouse::Result.new
         connection = double(:connection)
         allow(connection).to receive(:exec).and_raise PG::Error
-
-        expect do
-          DataWarehouse.new(['s3://path/to.csv'], result, connection).reset
-        end.to raise_error PG::Error
+        allow(Redshift).to receive(:connect).and_yield connection
+        result = DataWarehouse.reset(nil)
+        expect(result.errors).to eq 'PG::Error: PG::Error'
       end
     end
 
