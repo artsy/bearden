@@ -27,7 +27,8 @@ namespace :redshift do
           organization_name character varying, \
           phone_number character varying, \
           tag_names character varying, \
-          website character varying \
+          website character varying, \
+          source character varying \
         )"
       )
     end
