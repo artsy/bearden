@@ -16,7 +16,8 @@ class ParseCsvImportJob < ApplicationJob
   private
 
   def data
-    raw_data = Faraday.get @import.file_identifier.url
+    response = Faraday.get @import.file_identifier.url
+    raw_data = response.body
 
     CharlockHolmes::Converter.convert(
       raw_data,

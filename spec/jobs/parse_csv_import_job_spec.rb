@@ -5,7 +5,8 @@ describe ParseCsvImportJob do
     it 'converts the encoding' do
       import = Fabricate :import
       windows_encoded_data = File.read 'spec/fixtures/windows_encoded.csv'
-      expect(Faraday).to receive(:get).and_return(windows_encoded_data)
+      res = double(:response, body: windows_encoded_data)
+      expect(Faraday).to receive(:get).and_return(res)
       ParseCsvImportJob.new.perform(import.id)
       expect(import.raw_inputs.count).to eq 1
     end
