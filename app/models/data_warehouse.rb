@@ -11,10 +11,11 @@ class DataWarehouse
     Result.new.tap do |result|
       Redshift.connect do |connection|
         begin
+          # binding.pry
           warehouse = new(sources, result, connection)
           warehouse.reset
-        rescue PG::Error
-          result.errors = warehouse.load_errors
+        rescue PG::Error => e
+          result.errors = "#{e.class}: #{e.message}"
         end
       end
     end
@@ -56,19 +57,6 @@ class DataWarehouse
         CSV IGNOREHEADER 1 EMPTYASNULL"
       )
     end
-  end
-
-  def load_errors
-    # not sure about what to do with this one yet...
-    results = @connection.exec(
-      "SELECT line_number, colname, err_reason, \
-        raw_field_value, raw_line \
-      FROM stl_load_errors errors \
-      INNER JOIN svv_table_info info \
-        ON errors.tbl = info.table_id \
-      WHERE filename = '#{@source}'"
-    )
-    results.map(&:to_a)
   end
 
   def s3_auth
