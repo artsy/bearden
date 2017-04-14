@@ -11,6 +11,8 @@ describe RawInputChanges do
                              source: source,
                              transformer: CsvTransformer)
           data = {
+            city: 'Mexico City',
+            country: 'Mexico',
             email: 'info@example.com',
             location: '123 Main Street, New York, NY 10001',
             latitude: '47.5543105',
@@ -54,6 +56,8 @@ describe RawInputChanges do
                              source: source,
                              transformer: CsvTransformer)
           data = {
+            city: 'Mexico City',
+            country: 'Mexico',
             email: 'info@example.com',
             location: '123 Main Street, New York, NY 10001',
             latitude: '47.5543105',
@@ -92,6 +96,8 @@ describe RawInputChanges do
                              source: source,
                              transformer: CsvTransformer)
           data = {
+            city: 'Mexico City',
+            country: 'Mexico',
             email: 'infoexample.com',
             location: '123 Main Street, New York, NY 10001',
             latitude: '47.5543105',
@@ -137,6 +143,8 @@ describe RawInputChanges do
             transformer: CsvTransformer
           )
           data = {
+            city: 'Mexico City',
+            country: 'Mexico',
             email: 'infoexample.com',
             latitude: '47.5543105',
             organization_name: 'Best Gallery',
@@ -189,6 +197,8 @@ describe RawInputChanges do
                              source: source,
                              transformer: CsvTransformer)
           data = {
+            city: 'Mexico City',
+            country: 'Mexico',
             email: 'info@example.com',
             location: '123 Main Street, New York, NY 10001',
             latitude: '47.5543105',
@@ -235,6 +245,8 @@ describe RawInputChanges do
                              source: source,
                              transformer: CsvTransformer)
           data = {
+            city: 'Mexico City',
+            country: 'Mexico',
             email: 'infoexample.com',
             location: '123 Main Street, New York, NY 10001',
             latitude: '47.5543105',
@@ -282,6 +294,8 @@ describe RawInputChanges do
             transformer: CsvTransformer
           )
           data = {
+            city: 'Mexico City',
+            country: 'Mexico',
             email: 'infoexample.com',
             latitude: '47.5543105',
             organization_name: 'Best Gallery',

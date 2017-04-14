@@ -22,6 +22,8 @@ describe OrganizationResolver do
         raw_input = Fabricate :raw_input, import: import
 
         organization = nil
+        city = 'Paris'
+        country = 'France'
         email = 'info@example.com'
         latitude = 90.0
         location = '123 main street'
@@ -36,6 +38,8 @@ describe OrganizationResolver do
           Fabricate :email, content: email, organization: organization
           Fabricate(:location,
                     organization: organization,
+                    city: city,
+                    country: country,
                     content: location,
                     latitude: latitude,
                     longitude: longitude)
@@ -58,6 +62,8 @@ describe OrganizationResolver do
           {
             bearden_id: organization.id,
             email: email,
+            city: city,
+            country: country,
             latitude: latitude,
             location: location,
             longitude: longitude,
@@ -91,6 +97,8 @@ describe OrganizationResolver do
           Fabricate :website, organization: organization
         end
 
+        city = 'Paris'
+        country = 'France'
         email = 'info@example.com'
         latitude = 90.0
         location = '123 main street'
@@ -107,6 +115,8 @@ describe OrganizationResolver do
           Fabricate :email, content: email, organization: organization
           Fabricate(:location,
                     organization: organization,
+                    city: city,
+                    country: country,
                     content: location,
                     latitude: latitude,
                     longitude: longitude)
@@ -126,6 +136,8 @@ describe OrganizationResolver do
         expect(resolved).to eq(
           {
             bearden_id: organization.id,
+            city: city,
+            country: country,
             email: email,
             latitude: latitude,
             location: location,
@@ -143,6 +155,8 @@ describe OrganizationResolver do
       it 'returns only the highest ranked data' do
         organization = nil
 
+        city = 'Tulum'
+        country = 'Mexico'
         email = 'info@example.com'
         latitude = 90.0
         location = '123 main street'
@@ -164,7 +178,10 @@ describe OrganizationResolver do
         PaperTrail.track_changes_with(first_raw_input) do
           organization = Fabricate :organization
           Fabricate :email, content: email, organization: organization
-          Fabricate :location, organization: organization
+          Fabricate(:location,
+                    organization: organization,
+                    city: city,
+                    country: country)
           Fabricate(:organization_name,
                     organization: organization,
                     content: organization_name)
@@ -188,6 +205,8 @@ describe OrganizationResolver do
           Fabricate :email, organization: organization
           Fabricate(:location,
                     organization: organization,
+                    city: city,
+                    country: country,
                     content: location,
                     latitude: latitude,
                     longitude: longitude)
@@ -205,6 +224,8 @@ describe OrganizationResolver do
         expect(resolved).to eq(
           {
             bearden_id: organization.id,
+            city: city,
+            country: country,
             email: email,
             latitude: latitude,
             location: location,

@@ -6,16 +6,69 @@
       formComplete = $requiredFields.filter(-> @value == '').length == 0
       $submit.removeAttr 'disabled' if formComplete
 
+:coffee
+  $ ->
+    $('form').on 'submit', (event) ->
+      $('.loading').css('display', 'block')
+
 %h1 Create Import
 
-= form_for import do |f|
-  .form-group
-    = f.label :file_identifier, "Upload a CSV"
-    = f.file_field :file_identifier, required: true
-  .form-group
-    = f.label :source_id
-    = f.collection_select(:source_id, Source.all, :id, :name, {}, { class: 'form-control' })
-  .form-group
-    = f.label :description
-    = f.text_area :description, { class: 'form-control', required: true }
-  = f.submit 'Create', { class: 'btn btn-primary' }
+%ul.nav.nav-tabs{ role: 'tablist' }
+  %li.nav-item= link_to 'Help', '#help', {class: 'nav-link', data: { toggle: 'tab' }}
+  %li.nav-item= link_to 'New', '#new', {class: %w[nav-link active], data: { toggle: 'tab' }}
+
+.tab-content
+  #help.tab-pane
+    %p Bearden expects a CSV with the folowing headers and types of data.
+    %p It will skip columns that do not match.
+    %table.table
+      %thead
+        %tr
+          %th Field
+          %th Example
+          %th Required
+      %tbody
+        %tr
+          %td <code>website</code>
+          %td <strong><strike>http://</strike></strong> artsy.net
+          %td Yes
+        %tr
+          %td <code>organization_name</code>
+          %td Artsy
+          %td No
+        %tr
+          %td <code>location</code>
+          %td 401 Broadway, 25th Floor, New York, NY 10013
+          %td No
+        %tr
+          %td <code>city</code>
+          %td New York
+          %td No
+        %tr
+          %td <code>country</code>
+          %td USA
+          %td No
+        %tr
+          %td <code>email</code>
+          %td contact@artsymail.com
+          %td No
+        %tr
+          %td <code>tag_names</code>
+          %td <a href="/tags" target="_blank">art, photography, gallery</a>
+          %td No
+        %tr
+
+  #new.tab-pane.active
+    %p See the help tab for how to format your CSV
+
+    = form_for import do |f|
+      .form-group
+        = f.label :file_identifier, "Upload a CSV"
+        = f.file_field :file_identifier, required: true
+      .form-group
+        = f.label :source_id
+        = f.collection_select(:source_id, Source.all, :id, :name, {}, { class: 'form-control' })
+      .form-group
+        = f.label :description
+        = f.text_area :description, { class: 'form-control', required: true }
+      = f.submit 'Create', { class: 'btn btn-primary' }

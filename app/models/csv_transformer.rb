@@ -1,7 +1,10 @@
+# rubocop:disable Metrics/MethodLength
 class CsvTransformer
   def self.allowed_headers
     %w[
       email
+      city
+      country
       location
       latitude
       longitude
@@ -41,7 +44,9 @@ class CsvTransformer
 
   def location_attrs
     {
+      city: @data['city'].presence,
       content: @data['location'].presence,
+      country: @data['country'].presence,
       latitude: @data['latitude'].presence,
       longitude: @data['longitude'].presence
     }.compact

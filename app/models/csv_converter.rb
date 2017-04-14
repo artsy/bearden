@@ -3,6 +3,8 @@ class CsvConverter
   def self.headers
     %w[
       bearden_id
+      city
+      country
       email
       latitude
       location
@@ -27,6 +29,8 @@ class CsvConverter
   def convert
     [
       @input[:bearden_id],
+      @input[:city],
+      @input[:country],
       @input[:email],
       @input[:latitude],
       @input[:location],
