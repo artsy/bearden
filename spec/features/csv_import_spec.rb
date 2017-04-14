@@ -9,7 +9,8 @@ feature 'CSV Import' do
       .to receive(:get_object_url).and_return(csv_file)
 
     data = File.read(csv_file)
-    expect(Faraday).to receive(:get).and_return(data)
+    res = double(:response, body: data)
+    expect(Faraday).to receive(:get).and_return(res)
 
     Fabricate :tag, name: 'design'
     Fabricate :tag, name: 'modern'
