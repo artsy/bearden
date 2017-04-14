@@ -78,6 +78,7 @@ GEM
       carrierwave
       fog
       uuidtools
+    charlock_holmes (0.7.3)
     choice (0.2.0)
     coderay (1.1.1)
     coffee-rails (4.2.1)
@@ -459,6 +460,7 @@ DEPENDENCIES
   bootstrap (~> 4.0.0.alpha6)
   capybara
   carrierwave_direct
+  charlock_holmes
   coffee-rails
   database_cleaner
   decent_exposure
