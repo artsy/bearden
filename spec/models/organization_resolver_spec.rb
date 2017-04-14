@@ -4,7 +4,15 @@ describe OrganizationResolver do
   describe '.resolve' do
     context 'with no related data' do
       it 'returns only the organization id' do
-        organization = Fabricate :organization
+        source = Fabricate :source
+        import = Fabricate :import, source: source
+        raw_input = Fabricate :raw_input, import: import
+        organization = nil
+
+        PaperTrail.track_changes_with(raw_input) do
+          organization = Fabricate :organization
+        end
+
         resolved = OrganizationResolver.resolve organization
         expect(resolved).to eq(
           {
@@ -70,7 +78,8 @@ describe OrganizationResolver do
             organization_name: organization_name,
             phone_number: phone_number,
             tag_names: tag_names,
-            website: website
+            website: website,
+            sources: [source.name]
           }
         )
       end
@@ -145,7 +154,8 @@ describe OrganizationResolver do
             organization_name: organization_name,
             phone_number: phone_number,
             tag_names: [first_tag_name, second_tag_name].join(','),
-            website: website
+            website: website,
+            sources: [source.name]
           }
         )
       end
@@ -233,7 +243,8 @@ describe OrganizationResolver do
             organization_name: organization_name,
             phone_number: phone_number,
             tag_names: [first_tag_name, second_tag_name].join(','),
-            website: website
+            website: website,
+            sources: Source.all.map(&:name)
           }
         )
       end

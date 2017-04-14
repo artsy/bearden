@@ -14,7 +14,8 @@ describe CsvConverter do
         organization_name: 'Gallery A',
         phone_number: '1-800-123-4567',
         tag_names: 'design,modern',
-        website: 'http://example.com'
+        website: 'http://example.com',
+        sources: 'ArtMagazine,SpiderMania'
       }
 
       converted = CsvConverter.convert input

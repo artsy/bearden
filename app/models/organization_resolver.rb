@@ -39,13 +39,33 @@ class OrganizationResolver
       organization_name: @organization_name&.content,
       phone_number: @phone_number&.content,
       tag_names: tag_names,
-      website: @website&.content
+      website: @website&.content,
+      sources: source_names
     }.compact
   end
   # rubocop:enable Metrics/MethodLength
 
   def organization_tag_names
     @organization&.tags || []
+  end
+
+  def entities
+    [
+      @organization,
+      @email,
+      @location,
+      @organization_name,
+      @phone_number,
+      @website
+    ]
+  end
+
+  def source_names
+    entities.reduce([]) do |memo, entity|
+      next entity if entity.nil?
+      name = entity.versions.last.actor.import.source.name
+      memo.include?(name) ? memo : memo << name
+    end
   end
 
   def tag_names
