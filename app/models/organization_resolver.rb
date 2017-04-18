@@ -49,23 +49,8 @@ class OrganizationResolver
     @organization&.tags || []
   end
 
-  def entities
-    [
-      @organization,
-      @email,
-      @location,
-      @organization_name,
-      @phone_number,
-      @website
-    ]
-  end
-
   def source_names
-    entities.reduce([]) do |memo, entity|
-      next entity if entity.nil?
-      name = entity.versions.last.actor.import.source.name
-      memo.include?(name) ? memo : memo << name
-    end
+    @organization.contributing_sources.map(&:source)
   end
 
   def tag_names
