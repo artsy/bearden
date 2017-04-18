@@ -11,7 +11,15 @@ class OrganizationBuilder
   def find_or_create
     return if organization_from(@input_website)
 
-    create_organization
+    resolve_website
+    organization_from(resolved_url)
+
+    create_organization unless @organization
+
+    @resolver.results.each do |attrs|
+      @organization.websites.create attrs
+    end
+
     raise NoWebsiteBuilt unless website_built?
   end
 
@@ -26,10 +34,16 @@ class OrganizationBuilder
     @organization = website&.organization
   end
 
+  def resolved_url
+    @resolver.resolved_url
+  end
+
+  def resolve_website
+    @resolver = WebsiteResolver.resolve(@input_website)
+  end
+
   def create_organization
     @organization = Organization.create
-    @organization.websites.create content: @input_website
-
     @created = true
   end
 

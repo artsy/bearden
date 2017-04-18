@@ -23,6 +23,12 @@ describe RawInputChanges do
             website: 'http://example.com'
           }
           raw_input = Fabricate :raw_input, import: import, data: data
+
+          website = 'http://example.com'
+          results = [{ status: 200, content: website }]
+          resolver = double(:resolver, results: results, resolved_url: website)
+          expect(WebsiteResolver).to receive(:resolve).and_return(resolver)
+
           RawInputChanges.apply raw_input
 
           [
@@ -109,6 +115,10 @@ describe RawInputChanges do
             website: 'http://example.com'
           }
           raw_input = Fabricate :raw_input, import: import, data: data
+          website = 'http://example.com'
+          results = [{ status: 200, content: website }]
+          resolver = double(:resolver, results: results, resolved_url: website)
+          expect(WebsiteResolver).to receive(:resolve).and_return(resolver)
           RawInputChanges.apply raw_input
 
           [
@@ -155,6 +165,10 @@ describe RawInputChanges do
           }
           raw_input = Fabricate :raw_input, import: import, data: data
 
+          website = 'http://example.com'
+          results = [{ status: 200, content: website }]
+          resolver = double(:resolver, results: results, resolved_url: website)
+          expect(WebsiteResolver).to receive(:resolve).and_return(resolver)
           RawInputChanges.apply raw_input
 
           [
