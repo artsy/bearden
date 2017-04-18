@@ -7,5 +7,26 @@ class Organization < ApplicationRecord
   has_many :tags, through: :organization_tags
   has_many :websites
 
-  has_paper_trail ignore: %i[created_at updated_at]
+  include Auditable
+
+  def contributing_sources
+    auditable_collections.map do |model_name|
+      sources = send(model_name).map(&:sources)
+      sources << self.sources
+    end.flatten.uniq
+  end
+
+  private
+
+  def auditable_collections
+    keys = self.class.reflections.keys
+
+    relations = keys.each_with_object({}) do |key, obj|
+      obj[key] = key.classify.safe_constantize
+    end
+
+    relations.map do |name, klass|
+      name if klass && klass.ancestors.include?(Auditable)
+    end.compact
+  end
 end
