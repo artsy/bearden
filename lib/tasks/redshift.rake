@@ -30,6 +30,13 @@ namespace :redshift do
           website character varying \
         )"
       )
+
+      conn.exec(
+        "GRANT USAGE ON SCHEMA #{Redshift::SCHEMA} TO GROUP read_only;"
+      )
+      conn.exec(
+        "GRANT SELECT ON TABLE #{Redshift::SCHEMA_TABLE} TO GROUP read_only;"
+      )
     end
   end
 end
