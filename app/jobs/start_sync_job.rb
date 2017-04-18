@@ -20,7 +20,7 @@ class StartSyncJob < ApplicationJob
   end
 
   def start_sync
-    SlackBot.post('sync starting')
+    SlackBot.post(':seedling: Sync starting')
     update_finished_imports
     enqueue_export_jobs
     sync.export

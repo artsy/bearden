@@ -13,7 +13,7 @@ describe FinishSyncJob do
         )
         expect(DataWarehouse).to receive(:reset)
           .with(sources).and_return(result)
-        success_message = 'sync complete - before: 0, after: 1'
+        success_message = ':dancers: Sync complete - before: 0, after: 1'
         expect(SlackBot).to receive(:post).with(success_message)
         sync = Fabricate :sync, total_parts: 1
         expect_any_instance_of(Sync).to receive(:export_folder)
@@ -28,7 +28,8 @@ describe FinishSyncJob do
       it 'reverts the imports and posts those errors to Slack' do
         result = double(:result, success?: false, errors: 'bogus')
         allow(DataWarehouse).to receive(:reset).and_return(result)
-        expect(SlackBot).to receive(:post).with('sync failed with: bogus')
+        message = ':face-palm: Sync failed with: bogus'
+        expect(SlackBot).to receive(:post).with(message)
         sync = Fabricate :sync, total_parts: 1
         import = Fabricate :import, state: ImportMicroMachine::SYNCING
         FinishSyncJob.new.perform(sync.id)
