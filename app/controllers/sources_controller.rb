@@ -13,9 +13,7 @@ class SourcesController < ApplicationController
   end
 
   def create
-    SourceResolver.resolve(source)
-
-    if source.persisted?
+    if SourceResolver.resolve(source)
       redirect_to sources_path
     else
       render :new
