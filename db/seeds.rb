@@ -5,8 +5,7 @@ ranks = %i[
 [
   { name: 'Factual', rank: 1 },
   { name: 'HumanOutsourcer', rank: 2 },
-  { name: 'Geocoder', rank: 3 },
-  { name: 'Burden', rank: 4 }
+  { name: 'Burden', rank: 3 }
 ].each do |source|
   source_attrs = ranks.each_with_object({}) do |key, memo|
     memo[key] = source[:rank]
