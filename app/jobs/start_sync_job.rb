@@ -4,7 +4,7 @@ class StartSyncJob < ApplicationJob
   PART_SIZE = OrganizationExportJob::PART_SIZE
 
   def self.force_sync
-    sync = Sync.create state: SyncMicroMachine::UNSTARTED
+    sync = Sync.create state: SyncMicroMachine::STARTING
     perform_later sync.id, force: true
   end
 
