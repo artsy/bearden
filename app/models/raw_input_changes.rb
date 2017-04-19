@@ -1,6 +1,7 @@
 class RawInputChanges
   class InvalidData < StandardError; end
-  class NoWebsiteBuilt < StandardError; end
+
+  VALID_RELATIONS = %i[email location organization_name phone_number].freeze
 
   def self.apply(raw_input)
     new(raw_input).apply
@@ -9,9 +10,7 @@ class RawInputChanges
   def initialize(raw_input)
     @raw_input = raw_input
     @attrs = raw_input.transform
-    @organization = nil
     @relations = {}
-    @relations_to_build = %i[email location organization_name phone_number]
     @error_details = {}
   end
 
@@ -32,41 +31,23 @@ class RawInputChanges
   private
 
   def find_or_create_organization
-    @state = matching_organization ? RawInput::UPDATED : RawInput::CREATED
-    @organization = matching_organization || create_organization
+    url = @attrs.fetch(:website, {})[:content]
+    builder = OrganizationBuilder.new url
+    builder.find_or_create
+    @state = builder.created? ? RawInput::CREATED : RawInput::UPDATED
+    @organization = builder.organization
   end
 
-  def matching_organization
-    matching_website&.organization
-  end
-
-  def matching_website
-    @matching_website ||= Website.find_by(content: url)
-  end
-
-  def url
-    @attrs.fetch(:website, {})[:content]
-  end
-
-  def create_organization
-    @relations_to_build << :website
-    @organization = Organization.create!
+  def relations_to_build
+    VALID_RELATIONS & @attrs.keys
   end
 
   def build_relations
-    @relations_to_build.each do |relation|
-      next unless @attrs[relation]
+    relations_to_build.each do |relation|
       method = relation.to_s.pluralize
       object = @organization.public_send(method).build @attrs[relation]
       @relations[relation] = object
     end
-
-    ensure_website
-  end
-
-  def ensure_website
-    missing_website = @relations_to_build.include?(:website) && @organization.websites.none? # rubocop:disable Metrics/LineLength
-    raise NoWebsiteBuilt if missing_website
   end
 
   def apply_tags
