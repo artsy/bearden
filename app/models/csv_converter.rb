@@ -13,6 +13,7 @@ class CsvConverter
       phone_number
       tag_names
       website
+      sources
     ]
   end
   # rubocop:enable Metrics/MethodLength
@@ -38,7 +39,8 @@ class CsvConverter
       @input[:organization_name],
       @input[:phone_number],
       @input[:tag_names],
-      @input[:website]
+      @input[:website],
+      @input[:sources]
     ]
   end
   # rubocop:enable Metrics/MethodLength

@@ -39,13 +39,18 @@ class OrganizationResolver
       organization_name: @organization_name&.content,
       phone_number: @phone_number&.content,
       tag_names: tag_names,
-      website: @website&.content
+      website: @website&.content,
+      sources: source_names
     }.compact
   end
   # rubocop:enable Metrics/MethodLength
 
   def organization_tag_names
     @organization&.tags || []
+  end
+
+  def source_names
+    @organization.contributing_sources.map(&:name)
   end
 
   def tag_names
