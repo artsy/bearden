@@ -15,6 +15,15 @@ class RawInputChanges
   end
 
   def apply
+    apply_raw_input
+    @raw_input.record_result @state, @organization
+  rescue => e
+    @raw_input.record_error e, @error_details
+  end
+
+  private
+
+  def apply_raw_input
     PaperTrail.track_changes_with_transaction(@raw_input) do
       find_or_create_organization
       build_relations
@@ -22,13 +31,7 @@ class RawInputChanges
       save_relations
       check_errors
     end
-
-    @raw_input.record_result @state, @organization
-  rescue => e
-    @raw_input.record_error e, @error_details
   end
-
-  private
 
   def find_or_create_organization
     url = @attrs.fetch(:website, {})[:content]
