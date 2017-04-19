@@ -17,6 +17,7 @@ describe OrganizationResolver do
         expect(resolved).to eq(
           {
             bearden_id: organization.id,
+            sources: [source.name],
             tag_names: ''
           }
         )

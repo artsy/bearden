@@ -50,7 +50,7 @@ class OrganizationResolver
   end
 
   def source_names
-    @organization.contributing_sources.map(&:source)
+    @organization.contributing_sources.map(&:name)
   end
 
   def tag_names

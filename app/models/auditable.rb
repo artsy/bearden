@@ -6,6 +6,6 @@ module Auditable
   end
 
   def sources
-    versions.map { |version| version.actor.source }
+    versions.map { |version| version.actor.import.source }
   end
 end

@@ -10,15 +10,16 @@ class Organization < ApplicationRecord
   include Auditable
 
   def contributing_sources
-    auditable_collections.map do |model_name|
-      sources = send(model_name).map(&:sources)
-      sources << self.sources
-    end.flatten.uniq
+    sources = self.sources
+    sources << auditable_relations.map do |model_name|
+      send(model_name).map(&:sources)
+    end
+    sources.flatten.uniq
   end
 
   private
 
-  def auditable_collections
+  def auditable_relations
     keys = self.class.reflections.keys
 
     relations = keys.each_with_object({}) do |key, obj|

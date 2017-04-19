@@ -22,13 +22,13 @@ describe Organization do
         source = Fabricate :source
         import = Fabricate(
           :import,
-          source: source,
-          transformer: CsvTransformer
+          source: source
         )
+        raw_input = Fabricate :raw_input, import: import
 
         org = nil
 
-        PaperTrail.track_changes_with(import) do
+        PaperTrail.track_changes_with(raw_input) do
           org = Fabricate :organization
           org.emails.create! content: 'foo@mail'
           org.locations.create! content: 'Testing Way, Specvill'
@@ -48,31 +48,28 @@ describe Organization do
         source2 = Fabricate :source
         source3 = Fabricate :source
 
-        import1 = Fabricate(
-          :import,
-          source: source1,
-          transformer: CsvTransformer
+        raw_input1 = Fabricate(
+          :raw_input,
+          import: Fabricate(:import, source: source1)
         )
 
-        import2 = Fabricate(
-          :import,
-          source: source2,
-          transformer: CsvTransformer
+        raw_input2 = Fabricate(
+          :raw_input,
+          import: Fabricate(:import, source: source2)
         )
 
-        import3 = Fabricate(
-          :import,
-          source: source3,
-          transformer: CsvTransformer
+        raw_input3 = Fabricate(
+          :raw_input,
+          import: Fabricate(:import, source: source3)
         )
 
         org = nil
 
-        PaperTrail.track_changes_with(import1) do
+        PaperTrail.track_changes_with(raw_input1) do
           org = Fabricate :organization
         end
 
-        PaperTrail.track_changes_with(import2) do
+        PaperTrail.track_changes_with(raw_input2) do
           org.emails.create! content: 'foo@mail'
           org.locations.create! content: 'Testing Way, Specvill'
           org.organization_names.create! content: 'Foo 2'
@@ -80,7 +77,7 @@ describe Organization do
           org.phone_numbers.create! content: '555-884-2001'
         end
 
-        PaperTrail.track_changes_with(import3) do
+        PaperTrail.track_changes_with(raw_input3) do
           org.emails.create! content: 'bar@mail'
           org.locations.create! content: 'Testing Way, Specvill'
           org.organization_names.create! content: 'Foo 3'
