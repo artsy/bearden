@@ -4,6 +4,11 @@ namespace :redshift do
     SyncManagementJob.perform_later
   end
 
+  desc 'Force sync data. Useful when revising schema'
+  task force_sync: :environment do
+    StartSyncJob.force_sync
+  end
+
   desc 'Drop the Redshift table'
   task drop: :environment do
     Redshift.connect do |conn|
