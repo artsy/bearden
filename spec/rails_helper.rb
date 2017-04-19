@@ -36,6 +36,8 @@ RSpec.configure do |config|
     ActiveJob::Base.queue_adapter = :inline
     example.run
     ActiveJob::Base.queue_adapter = original_adapter
+    carrier_wave_dir = File.join S3Uploader.root.call, S3Uploader.store_dir
+    FileUtils.rm_rf(carrier_wave_dir)
   end
 
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
