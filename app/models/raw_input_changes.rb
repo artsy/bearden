@@ -26,6 +26,7 @@ class RawInputChanges
   def apply_raw_input
     PaperTrail.track_changes_with_transaction(@raw_input) do
       find_or_create_organization
+      update_organization
       build_relations
       apply_tags
       save_relations
@@ -39,6 +40,11 @@ class RawInputChanges
     builder.find_or_create
     @state = builder.created? ? RawInput::CREATED : RawInput::UPDATED
     @organization = builder.organization
+  end
+
+  def update_organization
+    organization_attrs = @attrs[:organization]
+    @organization.update_attributes organization_attrs if organization_attrs
   end
 
   def relations_to_build
