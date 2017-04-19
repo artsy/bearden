@@ -31,7 +31,7 @@ class WebsiteResolver
   end
 
   def protocol?
-    %r{http(s?)://}.match @url
+    @url.start_with? 'http://', 'https://'
   end
 
   def add_protocol
@@ -39,10 +39,10 @@ class WebsiteResolver
   end
 
   def connection
-    options = { callback: method(:callback) }
+    redirect_options = { callback: method(:callback) }
 
     @connection ||= Faraday.new do |faraday|
-      faraday.use FaradayMiddleware::FollowRedirects, options
+      faraday.use FaradayMiddleware::FollowRedirects, redirect_options
       faraday.adapter Faraday.default_adapter
     end
   end
@@ -51,8 +51,8 @@ class WebsiteResolver
     add_result(old)
   end
 
-  def add_result(env)
-    result = { status: env[:status], content: env[:url].to_s }
+  def add_result(faraday_env)
+    result = { status: faraday_env[:status], content: faraday_env[:url].to_s }
     @results << result
   end
 end
