@@ -14,9 +14,11 @@ module ApplicationHelper
 
   def source_rank_options(type)
     options = Source.all.map do |source|
-      "#{source.rank_for(type)} - insert above #{source.name}"
+      rank = source.rank_for(type)
+      ["#{rank} - insert above #{source.name}", rank]
     end.sort
-    final_option = "#{options.count + 1} - add to end"
+    final_rank = options.count + 1
+    final_option = ["#{final_rank} - add to end", final_rank]
     options + [final_option]
   end
 end
