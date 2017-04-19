@@ -1,12 +1,20 @@
 class StartSyncJob < ApplicationJob
   attr_accessor :sync, :part_size
 
-  def perform(sync_id, part_size = OrganizationExportJob::PART_SIZE)
+  PART_SIZE = OrganizationExportJob::PART_SIZE
+
+  def self.force_sync
+    sync = Sync.create state: SyncMicroMachine::UNSTARTED
+    perform_later sync.id, force: true
+  end
+
+  def perform(sync_id, part_size = PART_SIZE, force: false)
     @sync = Sync.find_by id: sync_id
     @part_size = part_size
+
     return unless sync
 
-    if imports_to_sync?
+    if force || imports_to_sync?
       start_sync
     else
       sync.skip
