@@ -48,9 +48,11 @@ describe SourceResolver do
           website_rank: first_source.website_rank
         )
 
-        SourceResolver.resolve new_source
+        result = SourceResolver.resolve new_source
 
-        expect(new_source.email_rank).to eq 1
+        expect(result).to eq true
+
+        expect(new_source.reload.email_rank).to eq 1
         expect(first_source.reload.email_rank).to eq 2
         expect(second_source.reload.email_rank).to eq 3
 
@@ -69,6 +71,38 @@ describe SourceResolver do
         expect(new_source.website_rank).to eq 1
         expect(first_source.website_rank).to eq 2
         expect(second_source.website_rank).to eq 3
+      end
+    end
+
+    context 'demoting top source' do
+      it 'pulls up other sources' do
+        first_source = Fabricate :source, email_rank: 1
+        second_source = Fabricate :source, email_rank: 2
+        third_source = Fabricate :source, email_rank: 3
+
+        first_source.email_rank = 2
+
+        SourceResolver.resolve first_source
+
+        expect(first_source.reload.email_rank).to eq 2
+        expect(second_source.reload.email_rank).to eq 1
+        expect(third_source.reload.email_rank).to eq 3
+      end
+    end
+
+    context 'promoting source' do
+      it 'drops sources down' do
+        first_source = Fabricate :source, email_rank: 1
+        second_source = Fabricate :source, email_rank: 2
+        third_source = Fabricate :source, email_rank: 3
+
+        second_source.email_rank = 1
+
+        SourceResolver.resolve second_source
+
+        expect(first_source.reload.email_rank).to eq 2
+        expect(second_source.reload.email_rank).to eq 1
+        expect(third_source.reload.email_rank).to eq 3
       end
     end
   end

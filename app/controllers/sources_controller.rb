@@ -20,6 +20,16 @@ class SourcesController < ApplicationController
     end
   end
 
+  def update
+    source.update(source_params)
+
+    if SourceResolver.resolve(source)
+      redirect_to sources_path
+    else
+      redirect_to edit_source_path(source)
+    end
+  end
+
   private
 
   def source_params
