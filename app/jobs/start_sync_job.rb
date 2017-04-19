@@ -1,16 +1,14 @@
 class StartSyncJob < ApplicationJob
   attr_accessor :sync, :part_size
 
-  PART_SIZE = OrganizationExportJob::PART_SIZE
-
   def self.force_sync
     sync = Sync.create state: SyncMicroMachine::STARTING
     perform_later sync.id, force: true
   end
 
-  def perform(sync_id, part_size = PART_SIZE, force: false)
+  def perform(sync_id, force: false)
     @sync = Sync.find_by id: sync_id
-    @part_size = part_size
+    @part_size = ENV['BATCH_EXPORT_SIZE']
 
     return unless sync
 
