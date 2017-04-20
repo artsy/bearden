@@ -21,7 +21,7 @@ describe SourceResolver do
 
     context 'with a mixture of lower and higher ranks' do
       it 'creates the new source and adjusts the ranks of the existing ones' do
-        first_source = Fabricate(
+        source_a = Fabricate(
           :source,
           email_rank: 1,
           location_rank: 1,
@@ -30,7 +30,7 @@ describe SourceResolver do
           website_rank: 1
         )
 
-        second_source = Fabricate(
+        source_b = Fabricate(
           :source,
           email_rank: 2,
           location_rank: 2,
@@ -39,70 +39,70 @@ describe SourceResolver do
           website_rank: 2
         )
 
-        new_source = Source.new(
+        source_c = Source.new(
           name: 'new',
-          email_rank: first_source.email_rank,
-          location_rank: second_source.location_rank,
+          email_rank: source_a.email_rank,
+          location_rank: source_b.location_rank,
           organization_name_rank: 3,
-          phone_number_rank: second_source.phone_number_rank,
-          website_rank: first_source.website_rank
+          phone_number_rank: source_b.phone_number_rank,
+          website_rank: source_a.website_rank
         )
 
-        result = SourceResolver.resolve new_source
+        result = SourceResolver.resolve source_c
 
         expect(result).to eq true
 
-        expect(new_source.reload.email_rank).to eq 1
-        expect(first_source.reload.email_rank).to eq 2
-        expect(second_source.reload.email_rank).to eq 3
+        expect(source_c.reload.email_rank).to eq 1
+        expect(source_a.reload.email_rank).to eq 2
+        expect(source_b.reload.email_rank).to eq 3
 
-        expect(first_source.location_rank).to eq 1
-        expect(new_source.location_rank).to eq 2
-        expect(second_source.location_rank).to eq 3
+        expect(source_a.location_rank).to eq 1
+        expect(source_c.location_rank).to eq 2
+        expect(source_b.location_rank).to eq 3
 
-        expect(first_source.organization_name_rank).to eq 1
-        expect(second_source.organization_name_rank).to eq 2
-        expect(new_source.organization_name_rank).to eq 3
+        expect(source_a.organization_name_rank).to eq 1
+        expect(source_b.organization_name_rank).to eq 2
+        expect(source_c.organization_name_rank).to eq 3
 
-        expect(first_source.phone_number_rank).to eq 1
-        expect(new_source.phone_number_rank).to eq 2
-        expect(second_source.phone_number_rank).to eq 3
+        expect(source_a.phone_number_rank).to eq 1
+        expect(source_c.phone_number_rank).to eq 2
+        expect(source_b.phone_number_rank).to eq 3
 
-        expect(new_source.website_rank).to eq 1
-        expect(first_source.website_rank).to eq 2
-        expect(second_source.website_rank).to eq 3
+        expect(source_c.website_rank).to eq 1
+        expect(source_a.website_rank).to eq 2
+        expect(source_b.website_rank).to eq 3
       end
     end
 
     context 'demoting top source' do
       it 'pulls up other sources' do
-        first_source = Fabricate :source, email_rank: 1
-        second_source = Fabricate :source, email_rank: 2
-        third_source = Fabricate :source, email_rank: 3
+        source_a = Fabricate :source, email_rank: 1
+        source_b = Fabricate :source, email_rank: 2
+        source_c = Fabricate :source, email_rank: 3
 
-        first_source.email_rank = 2
+        source_a.email_rank = 2
 
-        SourceResolver.resolve first_source
+        SourceResolver.resolve source_a
 
-        expect(first_source.reload.email_rank).to eq 2
-        expect(second_source.reload.email_rank).to eq 1
-        expect(third_source.reload.email_rank).to eq 3
+        expect(source_b.reload.email_rank).to eq 1
+        expect(source_a.reload.email_rank).to eq 2
+        expect(source_c.reload.email_rank).to eq 3
       end
     end
 
     context 'promoting source' do
       it 'drops sources down' do
-        first_source = Fabricate :source, email_rank: 1
-        second_source = Fabricate :source, email_rank: 2
-        third_source = Fabricate :source, email_rank: 3
+        source_a = Fabricate :source, email_rank: 1
+        source_b = Fabricate :source, email_rank: 2
+        source_c = Fabricate :source, email_rank: 3
 
-        second_source.email_rank = 1
+        source_b.email_rank = 1
 
-        SourceResolver.resolve second_source
+        SourceResolver.resolve source_b
 
-        expect(first_source.reload.email_rank).to eq 2
-        expect(second_source.reload.email_rank).to eq 1
-        expect(third_source.reload.email_rank).to eq 3
+        expect(source_b.reload.email_rank).to eq 1
+        expect(source_a.reload.email_rank).to eq 2
+        expect(source_c.reload.email_rank).to eq 3
       end
     end
   end

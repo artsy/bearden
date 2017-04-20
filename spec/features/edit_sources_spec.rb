@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature 'Edit Source' do
   scenario 'Importer edits source' do
-    better_source = Fabricate(
+    source_a = Fabricate(
       :source,
       email_rank: 1,
       location_rank: 1,
@@ -11,7 +11,7 @@ feature 'Edit Source' do
       website_rank: 1
     )
 
-    source = Fabricate(
+    source_b = Fabricate(
       :source,
       email_rank: 2,
       location_rank: 2,
@@ -20,11 +20,11 @@ feature 'Edit Source' do
       website_rank: 2
     )
 
-    visit "/sources/#{source.id}/edit"
+    visit "/sources/#{source_b.id}/edit"
 
     fill_in 'Name', with: 'New Name'
 
-    first_option = "1 - insert above #{better_source.name}"
+    first_option = "1 - insert above #{source_a.name}"
 
     select first_option, from: 'Email rank'
     select first_option, from: 'Location rank'
@@ -34,11 +34,11 @@ feature 'Edit Source' do
 
     click_button 'Update'
 
-    expect(source.reload.name).to eq 'New Name'
-    expect(source.email_rank).to eq 1
-    expect(source.location_rank).to eq 1
-    expect(source.organization_name_rank).to eq 1
-    expect(source.phone_number_rank).to eq 1
-    expect(source.website_rank).to eq 1
+    expect(source_b.reload.name).to eq 'New Name'
+    expect(source_b.email_rank).to eq 1
+    expect(source_b.location_rank).to eq 1
+    expect(source_b.organization_name_rank).to eq 1
+    expect(source_b.phone_number_rank).to eq 1
+    expect(source_b.website_rank).to eq 1
   end
 end
