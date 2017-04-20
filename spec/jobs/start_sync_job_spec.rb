@@ -19,10 +19,8 @@ describe StartSyncJob do
         Fabricate.times 3, :organization
         expect(SlackBot).to receive(:post)
         expect(OrganizationExportJob).to receive(:perform_later).with(sync.id, 1) # rubocop:disable Metrics/LineLength
-        expect(OrganizationExportJob).to receive(:perform_later).with(sync.id, 2) # rubocop:disable Metrics/LineLength
-        StartSyncJob.new.perform sync.id, 2
+        StartSyncJob.new.perform sync.id
         expect(sync.reload.state).to eq SyncMicroMachine::EXPORTING
-        expect(sync.total_parts).to eq 2
       end
     end
   end

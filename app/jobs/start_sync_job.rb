@@ -1,5 +1,6 @@
 class StartSyncJob < ApplicationJob
-  attr_accessor :sync, :part_size
+  attr_accessor :sync
+  attr_reader :part_size
 
   def self.force_sync
     sync = Sync.create state: SyncMicroMachine::STARTING
@@ -8,7 +9,7 @@ class StartSyncJob < ApplicationJob
 
   def perform(sync_id, force: false)
     @sync = Sync.find_by id: sync_id
-    @part_size = ENV['BATCH_EXPORT_SIZE']
+    @part_size = Rails.application.secrets.batch_export_size
 
     return unless sync
 

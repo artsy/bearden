@@ -1,5 +1,5 @@
 class OrganizationExportJob < ApplicationJob
-  PART_SIZE = ENV['BATCH_EXPORT_SIZE']
+  PART_SIZE = Rails.application.secrets.batch_export_size
 
   attr_accessor :sync, :part_number, :part_size
 
