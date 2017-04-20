@@ -1,6 +1,19 @@
 require 'rails_helper'
 
 feature 'List Sources' do
+  scenario 'Admins have access to create a new source' do
+    allow_any_instance_of(ApplicationController)
+      .to receive(:user_roles).and_return(['marketing_db_admin'])
+
+    visit '/sources'
+    expect(page).to have_text 'New Source'
+  end
+
+  scenario 'Non-admins do not have access to create a new source' do
+    visit '/sources'
+    expect(page).to_not have_text 'New Source'
+  end
+
   scenario 'Importer views list of sources' do
     Fabricate(
       :source,
