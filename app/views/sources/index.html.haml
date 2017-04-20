@@ -11,7 +11,7 @@
   %tbody
     - (0...Source.count).each do |position|
       %tr
-        %td #{position + 1}
+        %td= position + 1
         - for type in ordered_sources.keys
           - source = ordered_sources[type][position]
-          %td #{source.name}
+          %td= link_to source.name, edit_source_path(source.id)
