@@ -54,9 +54,11 @@ class SourceResolver
   end
 
   def sources_to_increment(rank_type)
-    cutoff = @adjusted_source.rank_for rank_type
-    old_rank = @adjusted_source.changes[rank_type].first || Source.count + 1
-    Source.where("#{rank_type} >= ? AND #{rank_type} < ?", cutoff, old_rank)
-          .order(rank_type => :desc)
+    top_cutoff = @adjusted_source.rank_for rank_type
+    old_rank = @adjusted_source.changes[rank_type].first
+    default_bottom = Source.count + 1
+    bottom_cutoff = old_rank || default_bottom
+    query = "#{rank_type} >= ? AND #{rank_type} < ?"
+    Source.where(query, top_cutoff, bottom_cutoff).order(rank_type => :desc)
   end
 end
