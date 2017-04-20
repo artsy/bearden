@@ -8,6 +8,7 @@ describe CsvConverter do
         city: 'New York',
         country: 'USA',
         email: 'info@example.com',
+        in_business: true,
         latitude: 2.234,
         location: '123 main street',
         longitude: 3.45,

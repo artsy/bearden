@@ -3,7 +3,7 @@ require 'rails_helper'
 describe OrganizationResolver do
   describe '.resolve' do
     context 'with no related data' do
-      it 'returns only the organization id' do
+      it 'returns only organization details' do
         source = Fabricate :source
         import = Fabricate :import, source: source
         raw_input = Fabricate :raw_input, import: import
@@ -17,6 +17,7 @@ describe OrganizationResolver do
         expect(resolved).to eq(
           {
             bearden_id: organization.id,
+            in_business: organization.in_business,
             sources: [source.name],
             tag_names: ''
           }
@@ -70,9 +71,10 @@ describe OrganizationResolver do
         expect(resolved).to eq(
           {
             bearden_id: organization.id,
-            email: email,
             city: city,
             country: country,
+            email: email,
+            in_business: organization.in_business,
             latitude: latitude,
             location: location,
             longitude: longitude,
@@ -149,6 +151,7 @@ describe OrganizationResolver do
             city: city,
             country: country,
             email: email,
+            in_business: organization.in_business,
             latitude: latitude,
             location: location,
             longitude: longitude,
@@ -238,6 +241,7 @@ describe OrganizationResolver do
             city: city,
             country: country,
             email: email,
+            in_business: organization.in_business,
             latitude: latitude,
             location: location,
             longitude: longitude,
