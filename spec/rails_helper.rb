@@ -22,9 +22,10 @@ RSpec.configure do |config|
   end
 
   config.before(:each, type: :feature) do
-    # disable authentication for feature tests
+    # Grant feature specs the lowest level of permission
+    page.set_rack_session(access_token: 'foo')
     allow_any_instance_of(ApplicationController).to(
-      receive(:require_artsy_authentication)
+      receive(:user_roles).and_return(['admin'])
     )
 
     allow(SlackBot).to receive(:post)

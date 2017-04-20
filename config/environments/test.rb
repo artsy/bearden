@@ -17,4 +17,6 @@ Rails.application.configure do
 
   # there's gotta be a cuter way to do this...
   Rails.application.routes.default_url_options[:host] = 'localhost:5000'
+
+  config.middleware.use RackSessionAccess::Middleware
 end
