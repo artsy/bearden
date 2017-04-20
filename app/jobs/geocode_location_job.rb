@@ -3,8 +3,7 @@ class GeocodeLocationJob < ApplicationJob
   FALLBACK_COORDINATES = [0.0, 0.0].freeze
   FALLBACK_COUNTRY, FALLBACK_CITY = nil
 
-  def perform(import_id)
-    @import_id = import_id
+  def perform
     location = next_location
     return unless location
     geocode(location) if location&.geocodable?
@@ -15,9 +14,8 @@ class GeocodeLocationJob < ApplicationJob
 
   def geocode(location)
     results = Geocoder.search(location.content)
-    import = Import.find @import_id
 
-    PaperTrail.track_changes_with(import) do
+    PaperTrail.track_changes_with('Geocoder') do
       attrs = location_attrs(results&.first)
       location.update_attributes(attrs)
     end
@@ -25,6 +23,7 @@ class GeocodeLocationJob < ApplicationJob
 
   def location_attrs(result)
     return fallback_attrs unless result
+
     {
       latitude: result.coordinates[0],
       longitude: result.coordinates[1],
@@ -43,7 +42,7 @@ class GeocodeLocationJob < ApplicationJob
   end
 
   def enqueue_next_job
-    GeocodeLocationJob.set(wait: JOB_DELAY).perform_later(@import_id)
+    GeocodeLocationJob.set(wait: JOB_DELAY).perform_later
   end
 
   def next_location
