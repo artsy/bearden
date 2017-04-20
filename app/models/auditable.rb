@@ -6,6 +6,10 @@ module Auditable
   end
 
   def sources
-    versions.map { |version| version.actor.import.source }
+    actors.select { |actor| actor.respond_to?(:source) }.map(&:source)
+  end
+
+  def actors
+    versions.map(&:actor)
   end
 end

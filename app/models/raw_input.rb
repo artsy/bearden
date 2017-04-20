@@ -5,6 +5,8 @@ class RawInput < ApplicationRecord
   UPDATED = 'updated'.freeze
   ERROR = 'error'.freeze
 
+  delegate :source, to: :import
+
   def transform
     import.transformer.constantize.transform self
   end
