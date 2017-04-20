@@ -344,5 +344,21 @@ describe RawInputChanges do
         end
       end
     end
+
+    context 'with an import that closes a business' do
+      it 'marks that organization as closed' do
+        organization = Fabricate :organization
+        website = Fabricate :website, organization: organization
+        source = Fabricate :source
+        import = Fabricate :import, source: source, transformer: CsvTransformer
+        data = {
+          in_business: false,
+          website: website.content
+        }
+        raw_input = Fabricate :raw_input, import: import, data: data
+        RawInputChanges.apply raw_input
+        expect(organization.reload).to_not be_in_business
+      end
+    end
   end
 end

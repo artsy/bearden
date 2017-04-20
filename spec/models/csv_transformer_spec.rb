@@ -8,6 +8,7 @@ describe CsvTransformer do
           city: '',
           country: '',
           email: '',
+          in_business: nil,
           location: '',
           latitude: '',
           longitude: '',
@@ -99,6 +100,7 @@ describe CsvTransformer do
           city: 'Vaughn',
           country: 'Key Peninsula',
           email: 'info@example.com',
+          in_business: false,
           location: '123 Main Street, New York, NY 10001',
           latitude: '47.5543105',
           longitude: '7.598538899999999',
@@ -119,6 +121,9 @@ describe CsvTransformer do
             content: data[:location],
             latitude: data[:latitude],
             longitude: data[:longitude]
+          },
+          organization: {
+            in_business: false
           },
           organization_name: {
             content: data[:organization_name]

@@ -5,6 +5,7 @@ class CsvTransformer
       email
       city
       country
+      in_business
       location
       latitude
       longitude
@@ -26,6 +27,7 @@ class CsvTransformer
   def transform
     {
       email: email_attrs,
+      organization: organization_attrs,
       location: location_attrs,
       organization_name: organization_name_attrs,
       phone_number: phone_number_attrs,
@@ -49,6 +51,12 @@ class CsvTransformer
       country: @data['country'].presence,
       latitude: @data['latitude'].presence,
       longitude: @data['longitude'].presence
+    }.compact
+  end
+
+  def organization_attrs
+    {
+      in_business: @data['in_business']
     }.compact
   end
 

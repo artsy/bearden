@@ -33,6 +33,7 @@ class OrganizationResolver
       city: @location&.city,
       country: @location&.country,
       email: @email&.content,
+      in_business: @organization.in_business,
       latitude: @location&.latitude,
       location: @location&.content,
       longitude: @location&.longitude,

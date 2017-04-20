@@ -6,6 +6,7 @@ class CsvConverter
       city
       country
       email
+      in_business
       latitude
       location
       longitude
@@ -33,6 +34,7 @@ class CsvConverter
       @input[:city],
       @input[:country],
       @input[:email],
+      @input[:in_business],
       @input[:latitude],
       @input[:location],
       @input[:longitude],
