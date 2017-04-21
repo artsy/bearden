@@ -1,44 +1,90 @@
 require 'rails_helper'
 
 feature 'Edit Source' do
-  scenario 'Importer edits source' do
-    source_a = Fabricate(
-      :source,
-      email_rank: 1,
-      location_rank: 1,
-      organization_name_rank: 1,
-      phone_number_rank: 1,
-      website_rank: 1
-    )
+  before do
+    allow_any_instance_of(SourcesController)
+      .to receive(:admin?).and_return(is_admin)
+  end
 
-    source_b = Fabricate(
-      :source,
-      email_rank: 2,
-      location_rank: 2,
-      organization_name_rank: 2,
-      phone_number_rank: 2,
-      website_rank: 2
-    )
+  context 'with an admin' do
+    let(:is_admin) { true }
 
-    visit "/sources/#{source_b.id}/edit"
+    scenario 'Admins have access to edit a source' do
+      Fabricate(
+        :source,
+        email_rank: 1,
+        location_rank: 1,
+        organization_name_rank: 1,
+        phone_number_rank: 1,
+        website_rank: 1
+      )
 
-    fill_in 'Name', with: 'New Name'
+      allow_any_instance_of(ApplicationController)
+        .to receive(:user_roles).and_return(['marketing_db_admin'])
 
-    first_option = "1 - insert above #{source_a.name}"
+      visit '/sources'
+      expect(page).to have_css 'a.edit'
+    end
+  end
 
-    select first_option, from: 'Email rank'
-    select first_option, from: 'Location rank'
-    select first_option, from: 'Organization name rank'
-    select first_option, from: 'Phone number rank'
-    select first_option, from: 'Website rank'
+  context 'with a non-admin' do
+    let(:is_admin) { false }
 
-    click_button 'Update'
+    scenario 'Non-admins do not have access to create a new source' do
+      Fabricate(
+        :source,
+        email_rank: 1,
+        location_rank: 1,
+        organization_name_rank: 1,
+        phone_number_rank: 1,
+        website_rank: 1
+      )
+      visit '/sources'
+      expect(page).to_not have_css 'a.edit'
+    end
 
-    expect(source_b.reload.name).to eq 'New Name'
-    expect(source_b.email_rank).to eq 1
-    expect(source_b.location_rank).to eq 1
-    expect(source_b.organization_name_rank).to eq 1
-    expect(source_b.phone_number_rank).to eq 1
-    expect(source_b.website_rank).to eq 1
+    scenario 'Importer edits source' do
+      allow_any_instance_of(ApplicationController)
+        .to receive(:user_roles).and_return(['marketing_db_admin'])
+
+      source_a = Fabricate(
+        :source,
+        email_rank: 1,
+        location_rank: 1,
+        organization_name_rank: 1,
+        phone_number_rank: 1,
+        website_rank: 1
+      )
+
+      source_b = Fabricate(
+        :source,
+        email_rank: 2,
+        location_rank: 2,
+        organization_name_rank: 2,
+        phone_number_rank: 2,
+        website_rank: 2
+      )
+
+      visit "/sources/#{source_b.id}/edit"
+
+      fill_in 'Name', with: 'New Name'
+
+      first_option = "1 - insert above #{source_a.name}"
+
+      select first_option, from: 'Email rank'
+      select first_option, from: 'Location rank'
+      select first_option, from: 'Organization name rank'
+      select first_option, from: 'Phone number rank'
+      select first_option, from: 'Website rank'
+
+      click_button 'Update'
+
+      expect(source_b.reload.name).to eq 'New Name'
+      expect(source_b.email_rank).to eq 1
+      expect(source_b.location_rank).to eq 1
+      expect(source_b.organization_name_rank).to eq 1
+      expect(source_b.phone_number_rank).to eq 1
+      expect(source_b.website_rank).to eq 1
+    end
   end
 end

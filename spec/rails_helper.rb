@@ -22,11 +22,9 @@ RSpec.configure do |config|
   end
 
   config.before(:each, type: :feature) do
-    # disable authentication for feature tests
     allow_any_instance_of(ApplicationController).to(
       receive(:require_artsy_authentication)
     )
-
     allow(SlackBot).to receive(:post)
     allow(S3CsvExport).to receive(:create)
   end

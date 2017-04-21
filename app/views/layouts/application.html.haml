@@ -7,16 +7,19 @@
     = javascript_include_tag 'application'
   %body
     .container
-      %nav{ class: %w(navbar navbar-toggleable-md navbar-light bg-faded) }
+      %nav{ class: %w[navbar navbar-toggleable-md navbar-light bg-faded] }
         %a{ class: 'navbar-brand' }
           Bearden
-        %div{ class: %w(collapse navbar-collapse) }
-          %ul{ class: %w(navbar-nav mr-auto) }
+        %div{ class: %w[collapse navbar-collapse] }
+          %ul{ class: %w[navbar-nav mr-auto] }
             %li.nav-item= link_to 'Imports', imports_path, { class: nav_class(:imports) }
             %li.nav-item= link_to 'Syncs', syncs_path, { class: nav_class(:syncs) }
             %li.nav-item= link_to 'Sources', sources_path, { class: nav_class(:sources) }
             %li.nav-item= link_to 'Tags', tags_path, { class: nav_class(:tags) }
             %li.nav-item= link_to 'Sign Out', '/sign_out', { class: %w(nav-link) }
+
+      - flash.each do |name, msg|
+        = content_tag :div, msg, class: %w[name alert alert-danger]
 
       %section= yield
   .loading
