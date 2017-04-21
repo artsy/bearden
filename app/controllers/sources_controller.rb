@@ -23,6 +23,8 @@ class SourcesController < ApplicationController
   end
 
   def update
+    return redirect_alert unless @is_admin
+
     source.update(source_params)
 
     if SourceResolver.resolve(source)

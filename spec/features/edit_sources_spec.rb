@@ -1,7 +1,40 @@
 require 'rails_helper'
 
 feature 'Edit Source' do
+  scenario 'Admins have access to edit a source' do
+    Fabricate(
+      :source,
+      email_rank: 1,
+      location_rank: 1,
+      organization_name_rank: 1,
+      phone_number_rank: 1,
+      website_rank: 1
+    )
+
+    allow_any_instance_of(ApplicationController)
+      .to receive(:user_roles).and_return(['marketing_db_admin'])
+
+    visit '/sources'
+    expect(page).to have_css 'a.edit'
+  end
+
+  scenario 'Non-admins do not have access to create a new source' do
+    Fabricate(
+      :source,
+      email_rank: 1,
+      location_rank: 1,
+      organization_name_rank: 1,
+      phone_number_rank: 1,
+      website_rank: 1
+    )
+    visit '/sources'
+    expect(page).to_not have_css 'a.edit'
+  end
+
   scenario 'Importer edits source' do
+    allow_any_instance_of(ApplicationController)
+      .to receive(:user_roles).and_return(['marketing_db_admin'])
+
     source_a = Fabricate(
       :source,
       email_rank: 1,

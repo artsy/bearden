@@ -15,4 +15,8 @@
         %td= position + 1
         - for type in ordered_sources.keys
           - source = ordered_sources[type][position]
-          %td= link_to source.name, edit_source_path(source.id)
+          %td
+            - if @is_admin
+              = link_to source.name, edit_source_path(source.id), class: 'edit'
+            - else
+              = source.name
