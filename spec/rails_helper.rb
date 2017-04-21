@@ -22,12 +22,9 @@ RSpec.configure do |config|
   end
 
   config.before(:each, type: :feature) do
-    # Grant feature specs the lowest level of permission
-    page.set_rack_session(access_token: 'foo')
     allow_any_instance_of(ApplicationController).to(
-      receive(:user_roles).and_return(['admin'])
+      receive(:require_artsy_authentication)
     )
-
     allow(SlackBot).to receive(:post)
     allow(S3CsvExport).to receive(:create)
   end

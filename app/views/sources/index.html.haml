@@ -1,4 +1,4 @@
-- if @is_admin
+- if admin?
   %p.float-right= link_to 'New Source', new_source_path, { class: 'btn btn-primary' }
 
 %h1 Sources
@@ -16,7 +16,7 @@
         - for type in ordered_sources.keys
           - source = ordered_sources[type][position]
           %td
-            - if @is_admin
+            - if admin?
               = link_to source.name, edit_source_path(source.id), class: 'edit'
             - else
               = source.name

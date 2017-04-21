@@ -13,8 +13,6 @@ class SourcesController < ApplicationController
   end
 
   def create
-    return redirect_alert unless @is_admin
-
     if SourceResolver.resolve(source)
       redirect_to sources_path
     else
@@ -23,8 +21,6 @@ class SourcesController < ApplicationController
   end
 
   def update
-    return redirect_alert unless @is_admin
-
     source.update(source_params)
 
     if SourceResolver.resolve(source)
@@ -35,10 +31,6 @@ class SourcesController < ApplicationController
   end
 
   private
-
-  def redirect_alert
-    redirect_to(sources_url, alert: 'Wrong permissions')
-  end
 
   def source_params
     params.require(:source).permit(

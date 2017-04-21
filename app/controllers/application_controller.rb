@@ -1,13 +1,13 @@
 class ApplicationController < ArtsyAuth::ApplicationController
   protect_from_forgery with: :exception
   force_ssl if: :ssl_configured?
+  helper_method :admin?
 
   ADMIN_ROLE = 'marketing_db_admin'.freeze
   ALLOWED_GRAVITY_ROLES = ['admin', ADMIN_ROLE].freeze
 
   def authorized_artsy_token?(token)
     @roles = user_roles(token)
-    @is_admin = admin?
     success_or_die
   end
 
@@ -17,11 +17,11 @@ class ApplicationController < ArtsyAuth::ApplicationController
     decoded_token['roles'].split(',')
   end
 
-  private
-
   def admin?
     @roles.include? ADMIN_ROLE
   end
+
+  private
 
   def ssl_configured?
     !Rails.env.development?
