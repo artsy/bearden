@@ -23,6 +23,12 @@ describe RawInputChanges do
             website: 'http://example.com'
           }
           raw_input = Fabricate :raw_input, import: import, data: data
+
+          website = 'http://example.com'
+          results = [{ status: 200, content: website }]
+          resolver = double(:resolver, results: results, resolved_url: website)
+          expect(WebsiteResolver).to receive(:resolve).and_return(resolver)
+
           RawInputChanges.apply raw_input
 
           [
@@ -81,7 +87,8 @@ describe RawInputChanges do
           ].each do |klass|
             expect(klass.count).to eq 0
           end
-          expect(raw_input.exception).to eq 'RawInputChanges::NoWebsiteBuilt'
+          exception = 'OrganizationBuilder::NoWebsiteBuilt'
+          expect(raw_input.exception).to eq exception
           expect(raw_input.state).to eq RawInput::ERROR
 
           expect(PaperTrail.whodunnit).to eq 'Test User'
@@ -108,6 +115,10 @@ describe RawInputChanges do
             website: 'http://example.com'
           }
           raw_input = Fabricate :raw_input, import: import, data: data
+          website = 'http://example.com'
+          results = [{ status: 200, content: website }]
+          resolver = double(:resolver, results: results, resolved_url: website)
+          expect(WebsiteResolver).to receive(:resolve).and_return(resolver)
           RawInputChanges.apply raw_input
 
           [
@@ -150,10 +161,14 @@ describe RawInputChanges do
             organization_name: 'Best Gallery',
             phone_number: '1-800-123-4567',
             tag_names: 'invalid',
-            website: 'examplecom'
+            website: 'example.com'
           }
           raw_input = Fabricate :raw_input, import: import, data: data
 
+          website = 'http://example.com'
+          results = [{ status: 200, content: website }]
+          resolver = double(:resolver, results: results, resolved_url: website)
+          expect(WebsiteResolver).to receive(:resolve).and_return(resolver)
           RawInputChanges.apply raw_input
 
           [
@@ -172,8 +187,7 @@ describe RawInputChanges do
             {
               'email' => { 'content' => [{ 'error' => 'invalid', 'value' => 'infoexample.com' }] }, # rubocop:disable Metrics/LineLength
               'location' => { 'content' => [{ 'error' => 'blank' }] },
-              'tags' => 'all tags could not be applied: invalid',
-              'website' => { 'content' => [{ 'error' => 'invalid', 'value' => 'examplecom' }] } # rubocop:disable Metrics/LineLength
+              'tags' => 'all tags could not be applied: invalid'
             }
           )
           expect(raw_input.state).to eq RawInput::ERROR
@@ -328,6 +342,22 @@ describe RawInputChanges do
 
           expect(PaperTrail.whodunnit).to eq 'Test User'
         end
+      end
+    end
+
+    context 'with an import that closes a business' do
+      it 'marks that organization as closed' do
+        organization = Fabricate :organization
+        website = Fabricate :website, organization: organization
+        source = Fabricate :source
+        import = Fabricate :import, source: source, transformer: CsvTransformer
+        data = {
+          in_business: false,
+          website: website.content
+        }
+        raw_input = Fabricate :raw_input, import: import, data: data
+        RawInputChanges.apply raw_input
+        expect(organization.reload).to_not be_in_business
       end
     end
   end

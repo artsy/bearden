@@ -1,12 +1,19 @@
 class StartSyncJob < ApplicationJob
-  attr_accessor :sync, :part_size
+  attr_accessor :sync
+  attr_reader :part_size
 
-  def perform(sync_id, part_size = OrganizationExportJob::PART_SIZE)
+  def self.force_sync
+    sync = Sync.create state: SyncMicroMachine::STARTING
+    perform_later sync.id, force: true
+  end
+
+  def perform(sync_id, force: false)
     @sync = Sync.find_by id: sync_id
-    @part_size = part_size
+    @part_size = Rails.application.secrets.batch_export_size
+
     return unless sync
 
-    if imports_to_sync?
+    if force || imports_to_sync?
       start_sync
     else
       sync.skip
@@ -20,7 +27,7 @@ class StartSyncJob < ApplicationJob
   end
 
   def start_sync
-    SlackBot.post('sync starting')
+    SlackBot.post(':seedling: Sync starting')
     update_finished_imports
     enqueue_export_jobs
     sync.export

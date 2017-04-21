@@ -6,6 +6,7 @@ class CsvConverter
       city
       country
       email
+      in_business
       latitude
       location
       longitude
@@ -13,6 +14,7 @@ class CsvConverter
       phone_number
       tag_names
       website
+      sources
     ]
   end
   # rubocop:enable Metrics/MethodLength
@@ -32,13 +34,15 @@ class CsvConverter
       @input[:city],
       @input[:country],
       @input[:email],
+      @input[:in_business],
       @input[:latitude],
       @input[:location],
       @input[:longitude],
       @input[:organization_name],
       @input[:phone_number],
       @input[:tag_names],
-      @input[:website]
+      @input[:website],
+      @input[:sources]
     ]
   end
   # rubocop:enable Metrics/MethodLength

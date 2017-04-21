@@ -1,4 +1,5 @@
-%p.float-right= link_to 'New Source', new_source_path, { class: 'btn btn-primary' }
+- if admin?
+  %p.float-right= link_to 'New Source', new_source_path, { class: 'btn btn-primary' }
 
 %h1 Sources
 
@@ -11,7 +12,11 @@
   %tbody
     - (0...Source.count).each do |position|
       %tr
-        %td #{position + 1}
+        %td= position + 1
         - for type in ordered_sources.keys
           - source = ordered_sources[type][position]
-          %td #{source.name}
+          %td
+            - if admin?
+              = link_to source.name, edit_source_path(source.id), class: 'edit'
+            - else
+              = source.name

@@ -22,11 +22,9 @@ RSpec.configure do |config|
   end
 
   config.before(:each, type: :feature) do
-    # disable authentication for feature tests
     allow_any_instance_of(ApplicationController).to(
       receive(:require_artsy_authentication)
     )
-
     allow(SlackBot).to receive(:post)
     allow(S3CsvExport).to receive(:create)
   end
@@ -36,6 +34,8 @@ RSpec.configure do |config|
     ActiveJob::Base.queue_adapter = :inline
     example.run
     ActiveJob::Base.queue_adapter = original_adapter
+    carrier_wave_dir = File.join S3Uploader.root.call, S3Uploader.store_dir
+    FileUtils.rm_rf(carrier_wave_dir)
   end
 
   config.fixture_path = "#{::Rails.root}/spec/fixtures"

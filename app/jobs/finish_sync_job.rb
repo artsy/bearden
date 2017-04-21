@@ -36,9 +36,9 @@ class FinishSyncJob < ApplicationJob
       before = result.before_count
       after = result.after_count
 
-      "sync complete - before: #{before}, after: #{after}"
+      ":dancers: Sync complete - before: #{before}, after: #{after}"
     else
-      "sync failed with: #{result.errors}"
+      ":face-palm: Sync failed with: #{result.errors}"
     end
   end
 end

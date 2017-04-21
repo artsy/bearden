@@ -4,6 +4,11 @@ feature 'CSV Import' do
   scenario 'Import one complete gallery' do
     csv_file = 'spec/fixtures/one_complete_gallery.csv'
 
+    website = 'http://example.com'
+    results = [{ status: 200, content: website }]
+    resolver = double(:resolver, results: results, resolved_url: website)
+    expect(WebsiteResolver).to receive(:resolve).and_return(resolver)
+
     allow_any_instance_of(S3Uploader).to receive(:store!)
     allow_any_instance_of(Fog::Storage::AWS::GetObjectUrl)
       .to receive(:get_object_url).and_return(csv_file)
