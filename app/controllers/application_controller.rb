@@ -3,22 +3,24 @@ class ApplicationController < ArtsyAuth::ApplicationController
   force_ssl if: :ssl_configured?
   helper_method :admin?
 
-  ADMIN_ROLE = 'marketing_db_admin'.freeze
-  ALLOWED_GRAVITY_ROLES = ['admin', ADMIN_ROLE].freeze
+  ADMIN_USERS = Rails.application.secrets.admin_users
+  ALLOWED_GRAVITY_ROLES = ['admin'].freeze
 
   def authorized_artsy_token?(token)
-    @roles = user_roles(token)
+    @user = user(token)
     success_or_die
   end
 
-  def user_roles(token)
+  def user(token)
     secret = Rails.application.secrets.artsy_internal_secret
     decoded_token, _headers = JWT.decode(token, secret)
-    decoded_token['roles'].split(',')
+
+    { uid: decoded_token['sub'],
+      roles: decoded_token['roles'].split(',') }
   end
 
   def admin?
-    @roles.include? ADMIN_ROLE
+    ADMIN_USERS.member? @user[:uid]
   end
 
   private
@@ -28,7 +30,7 @@ class ApplicationController < ArtsyAuth::ApplicationController
   end
 
   def role_permitted?
-    @roles.any? { |role| ALLOWED_GRAVITY_ROLES.member? role }
+    @user[:roles].any? { |role| ALLOWED_GRAVITY_ROLES.member? role }
   end
 
   def success_or_die

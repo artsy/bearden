@@ -20,7 +20,12 @@ feature 'Edit Source' do
       )
 
       allow_any_instance_of(ApplicationController)
-        .to receive(:user_roles).and_return(['marketing_db_admin'])
+        .to receive(:user).and_return(
+          {
+            uid: 'foo',
+            roles: %w[admin foo]
+          }
+        )
 
       visit '/sources'
       expect(page).to have_css 'a.edit'
@@ -45,7 +50,12 @@ feature 'Edit Source' do
 
     scenario 'Importer edits source' do
       allow_any_instance_of(ApplicationController)
-        .to receive(:user_roles).and_return(['marketing_db_admin'])
+        .to receive(:user).and_return(
+          {
+            uid: 'foo',
+            roles: %w[admin foo]
+          }
+        )
 
       source_a = Fabricate(
         :source,
