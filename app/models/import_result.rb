@@ -2,11 +2,11 @@ class ImportResult
   attr_reader :import
 
   delegate(
+    :completed?,
     :created_at,
     :description,
-    :finished?,
-    :id,
     :file_identifier,
+    :id,
     :raw_inputs,
     :source,
     :state,
@@ -38,7 +38,7 @@ class ImportResult
   end
 
   def exported_errors_url
-    return nil unless import.finished? && error_count.positive?
+    return nil unless import.completed? && error_count.positive?
     bucket = Rails.application.secrets.aws_bucket
     "https://#{bucket}.s3.amazonaws.com/errors/#{id}.csv"
   end

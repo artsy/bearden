@@ -1,7 +1,8 @@
 class GeocodeLocationJob < ApplicationJob
   JOB_DELAY = 0.2.seconds
   FALLBACK_COORDINATES = [0.0, 0.0].freeze
-  FALLBACK_COUNTRY, FALLBACK_CITY = nil
+  FALLBACK_COUNTRY = nil
+  FALLBACK_CITY = nil
 
   def perform
     location = next_location

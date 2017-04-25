@@ -25,3 +25,6 @@ Style/FrozenStringLiteralComment:
 Style/BracesAroundHashParameters:
   Exclude:
     - 'spec/**/*'
+
+Rails/ReversibleMigration:
+  Enabled: false
