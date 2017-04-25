@@ -27,7 +27,7 @@ class Import < ApplicationRecord
   end
 
   def completed?
-    state == ImportMicroMachine::FINISHED
+    ImportMicroMachine.completed_states.include? state
   end
 
   def sync

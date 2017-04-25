@@ -36,5 +36,19 @@ describe Import do
         expect(import).to be_completed
       end
     end
+
+    context 'with an import that is syncing' do
+      it 'returns true' do
+        import = Fabricate :import, state: ImportMicroMachine::SYNCING
+        expect(import).to be_completed
+      end
+    end
+
+    context 'with an import that has synced' do
+      it 'returns true' do
+        import = Fabricate :import, state: ImportMicroMachine::SYNCED
+        expect(import).to be_completed
+      end
+    end
   end
 end
