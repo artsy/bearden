@@ -1,7 +1,7 @@
 class Email < ApplicationRecord
   belongs_to :organization
   validates :content, presence: true
-  validates_format_of :content, with: /@/
+  validates :content, format: /@/
   include Auditable
   include Rankable
 end
