@@ -21,4 +21,20 @@ describe Import do
       end
     end
   end
+
+  describe '#completed?' do
+    context 'with an incomplete import' do
+      it 'returns false' do
+        import = Fabricate :import, state: ImportMicroMachine::UNSTARTED
+        expect(import).to_not be_completed
+      end
+    end
+
+    context 'with a completed import' do
+      it 'returns true' do
+        import = Fabricate :import, state: ImportMicroMachine::FINISHED
+        expect(import).to be_completed
+      end
+    end
+  end
 end
