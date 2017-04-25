@@ -14,6 +14,10 @@ class ImportMicroMachine < MicroMachine
   SYNCED = 'synced'.freeze
   REVERT = 'revert'.freeze
 
+  def self.completed_states
+    [FINISHED, SYNCING, SYNCED]
+  end
+
   def self.valid_states
     machine = new(UNSTARTED)
     machine.configure

@@ -26,8 +26,8 @@ class Import < ApplicationRecord
     machine.trigger ImportMicroMachine::FINISH
   end
 
-  def finished?
-    state == ImportMicroMachine::FINISHED
+  def completed?
+    ImportMicroMachine.completed_states.include? state
   end
 
   def sync
