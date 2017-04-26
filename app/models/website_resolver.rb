@@ -43,6 +43,7 @@ class WebsiteResolver
 
     @connection ||= Faraday.new do |faraday|
       faraday.use FaradayMiddleware::FollowRedirects, redirect_options
+      faraday.headers['Accept-Encoding'] = 'none'
       faraday.adapter Faraday.default_adapter
     end
   end
