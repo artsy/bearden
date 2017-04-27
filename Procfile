@@ -1,2 +1,3 @@
 web: bundle exec puma
-worker: bundle exec sidekiq -c ${SIDEKIQ_CONCURRENCY}
+worker_default: bundle exec sidekiq -c ${SIDEKIQ_CONCURRENCY} -q default
+worker_debug: bundle exec sidekiq -c ${SIDEKIQ_CONCURRENCY} -q debug

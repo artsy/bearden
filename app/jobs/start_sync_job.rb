@@ -2,6 +2,8 @@ class StartSyncJob < ApplicationJob
   attr_accessor :sync
   attr_reader :part_size
 
+  queue_as :default
+
   def self.force_sync
     sync = Sync.create state: SyncMicroMachine::STARTING
     perform_later sync.id, force: true

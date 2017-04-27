@@ -1,6 +1,8 @@
 class OrganizationExportJob < ApplicationJob
   PART_SIZE = Rails.application.secrets.batch_export_size
 
+  queue_as :default
+
   attr_accessor :sync, :part_number, :part_size
 
   def perform(sync_id, part_number)

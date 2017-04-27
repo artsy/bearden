@@ -1,4 +1,6 @@
 class SyncManagementJob < ApplicationJob
+  queue_as :default
+
   def perform
     sync = Sync.where(state: SyncMicroMachine.in_progress_states).first
 
