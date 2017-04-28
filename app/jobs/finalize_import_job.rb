@@ -1,6 +1,8 @@
 class FinalizeImportJob < ApplicationJob
   attr_reader :import
 
+  queue_as :default
+
   def perform(import_id)
     @import = Import.find_by id: import_id
     return unless import

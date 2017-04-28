@@ -1,6 +1,8 @@
 class FinishSyncJob < ApplicationJob
   attr_accessor :sync
 
+  queue_as :default
+
   def perform(sync_id)
     @sync = Sync.find_by id: sync_id
     return unless sync
