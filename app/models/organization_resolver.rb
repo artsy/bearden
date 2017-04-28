@@ -1,4 +1,6 @@
 class OrganizationResolver
+  STRING_LIMIT = 256
+
   def self.resolve(organization)
     new(organization).resolve
   end
@@ -26,7 +28,7 @@ class OrganizationResolver
     rankables.order(created_at: :desc).sort_by(&:rank).first
   end
 
-  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
   def highest_ranked_data
     {
       bearden_id: @organization.id,
@@ -39,12 +41,12 @@ class OrganizationResolver
       longitude: @location&.longitude,
       organization_name: @organization_name&.content,
       phone_number: @phone_number&.content,
-      tag_names: tag_names,
+      tag_names: truncated(tag_names),
       website: @website&.content,
-      sources: source_names
+      sources: truncated(source_names)
     }.compact
   end
-  # rubocop:enable Metrics/MethodLength
+  # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
   def organization_tag_names
     @organization&.tags || []
@@ -56,5 +58,9 @@ class OrganizationResolver
 
   def tag_names
     organization_tag_names.pluck(:name).join(',')
+  end
+
+  def truncated(string)
+    string[0...STRING_LIMIT]
   end
 end
