@@ -23,7 +23,7 @@ class FinishSyncJob < ApplicationJob
   def sources
     (1..sync.total_parts).map do |part|
       bucket_name = Rails.application.secrets.aws_bucket
-      key = "#{sync.export_folder}/#{part}"
+      key = "#{sync.export_folder}/#{part}.csv"
       "s3://#{bucket_name}/#{key}"
     end
   end
