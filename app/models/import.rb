@@ -38,8 +38,8 @@ class Import < ApplicationRecord
     machine.trigger ImportMicroMachine::INSYNC
   end
 
-  def revert
-    machine.trigger ImportMicroMachine::REVERT
+  def failed
+    machine.trigger ImportMicroMachine::FAILED
   end
 
   private
