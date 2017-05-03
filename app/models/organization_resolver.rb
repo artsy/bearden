@@ -20,6 +20,7 @@ class OrganizationResolver
     @email = find_highest_rankable(@organization.emails)
     @location = find_highest_rankable(@organization.locations)
     @organization_name = find_highest_rankable(@organization.organization_names)
+    @organization_type = find_highest_rankable(@organization.organization_types)
     @phone_number = find_highest_rankable(@organization.phone_numbers)
     @website = find_highest_rankable(@organization.websites)
   end
@@ -40,6 +41,7 @@ class OrganizationResolver
       location: @location&.content,
       longitude: @location&.longitude,
       organization_name: @organization_name&.content,
+      organization_type: @organization_type&.name,
       phone_number: @phone_number&.content,
       tag_names: truncated(tag_names),
       website: @website&.content,

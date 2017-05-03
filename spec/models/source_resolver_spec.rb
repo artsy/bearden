@@ -9,6 +9,7 @@ describe SourceResolver do
           email_rank: 1,
           location_rank: 1,
           organization_name_rank: 1,
+          organization_type_rank: 1,
           phone_number_rank: 1,
           website_rank: 1
         )
@@ -26,6 +27,7 @@ describe SourceResolver do
           email_rank: 1,
           location_rank: 1,
           organization_name_rank: 1,
+          organization_type_rank: 1,
           phone_number_rank: 1,
           website_rank: 1
         )
@@ -35,6 +37,7 @@ describe SourceResolver do
           email_rank: 2,
           location_rank: 2,
           organization_name_rank: 2,
+          organization_type_rank: 2,
           phone_number_rank: 2,
           website_rank: 2
         )
@@ -44,6 +47,7 @@ describe SourceResolver do
           email_rank: source_a.email_rank,
           location_rank: source_b.location_rank,
           organization_name_rank: 3,
+          organization_type_rank: 3,
           phone_number_rank: source_b.phone_number_rank,
           website_rank: source_a.website_rank
         )
@@ -63,6 +67,10 @@ describe SourceResolver do
         expect(source_a.organization_name_rank).to eq 1
         expect(source_b.organization_name_rank).to eq 2
         expect(source_c.organization_name_rank).to eq 3
+
+        expect(source_a.organization_type_rank).to eq 1
+        expect(source_b.organization_type_rank).to eq 2
+        expect(source_c.organization_type_rank).to eq 3
 
         expect(source_a.phone_number_rank).to eq 1
         expect(source_c.phone_number_rank).to eq 2

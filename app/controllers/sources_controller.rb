@@ -7,6 +7,7 @@ class SourcesController < ApplicationController
       email_rank: Source.order(:email_rank),
       location_rank: Source.order(:location_rank),
       organization_name_rank: Source.order(:organization_name_rank),
+      organization_type_rank: Source.order(:organization_type_rank),
       phone_number_rank: Source.order(:phone_number_rank),
       website_rank: Source.order(:website_rank)
     }
@@ -38,6 +39,7 @@ class SourcesController < ApplicationController
       :email_rank,
       :location_rank,
       :organization_name_rank,
+      :organization_type_rank,
       :phone_number_rank,
       :website_rank
     )

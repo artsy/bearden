@@ -1,2 +1,2 @@
-email,city,country,location,latitude,longitude,organization_name,phone_number,tag_names,website
-info@example.com,new york,USA,123 main street,70.0,30.0,example gallery,1-800-777-1234,"design,modern",example.com
+email,city,country,location,latitude,longitude,organization_name,phone_number,tag_names,organization_type,website
+info@example.com,new york,USA,123 main street,70.0,30.0,example gallery,1-800-777-1234,"design,modern",gallery,example.com

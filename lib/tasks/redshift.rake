@@ -31,6 +31,7 @@ namespace :redshift do
           longitude double precision, \
           location character varying, \
           organization_name character varying, \
+          organization_type character varying, \
           phone_number character varying, \
           tag_names character varying, \
           website character varying, \

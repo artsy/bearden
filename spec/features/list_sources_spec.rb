@@ -29,6 +29,7 @@ feature 'List Sources' do
         email_rank: 1,
         location_rank: 2,
         organization_name_rank: 1,
+        organization_type_rank: 3,
         phone_number_rank: 1,
         website_rank: 3
       )
@@ -39,6 +40,7 @@ feature 'List Sources' do
         email_rank: 3,
         location_rank: 1,
         organization_name_rank: 2,
+        organization_type_rank: 2,
         phone_number_rank: 2,
         website_rank: 1
       )
@@ -49,6 +51,7 @@ feature 'List Sources' do
         email_rank: 2,
         location_rank: 3,
         organization_name_rank: 3,
+        organization_type_rank: 1,
         phone_number_rank: 3,
         website_rank: 2
       )
@@ -65,6 +68,7 @@ feature 'List Sources' do
           'Source 1',
           'Source 2',
           'Source 1',
+          'Source 3',
           'Source 1',
           'Source 2'
         ]
@@ -77,6 +81,7 @@ feature 'List Sources' do
           'Source 1',
           'Source 2',
           'Source 2',
+          'Source 2',
           'Source 3'
         ]
       )
@@ -87,6 +92,7 @@ feature 'List Sources' do
           'Source 2',
           'Source 3',
           'Source 3',
+          'Source 1',
           'Source 3',
           'Source 1'
         ]
