@@ -6,6 +6,7 @@ class Source < ApplicationRecord
   validates :email_rank, presence: true, uniqueness: true
   validates :location_rank, presence: true, uniqueness: true
   validates :organization_name_rank, presence: true, uniqueness: true
+  validates :organization_type_rank, presence: true, uniqueness: true
   validates :phone_number_rank, presence: true, uniqueness: true
   validates :website_rank, presence: true, uniqueness: true
 
@@ -14,6 +15,7 @@ class Source < ApplicationRecord
       email_rank: email_rank,
       location_rank: location_rank,
       organization_name_rank: organization_name_rank,
+      organization_type_rank: organization_type_rank,
       phone_number_rank: phone_number_rank,
       website_rank: website_rank
     }

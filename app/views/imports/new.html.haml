@@ -54,7 +54,11 @@
           %td No
         %tr
           %td <code>tag_names</code>
-          %td <a href="/tags" target="_blank">art, photography, gallery</a>
+          %td= link_to 'art, photography, contemporary', '/tags', target: :_blank
+          %td No
+        %tr
+          %td <code>organization_type</code>
+          %td= link_to 'gallery', '/types', target: :_blank
           %td No
         %tr
           %td <code>in_business</code>

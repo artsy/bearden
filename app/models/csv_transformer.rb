@@ -10,6 +10,7 @@ class CsvTransformer
       latitude
       longitude
       organization_name
+      organization_type
       phone_number
       tag_names
       website
@@ -30,6 +31,7 @@ class CsvTransformer
       organization: organization_attrs,
       location: location_attrs,
       organization_name: organization_name_attrs,
+      organization_type: organization_type_attrs,
       phone_number: phone_number_attrs,
       tag_names: tag_names,
       website: website_attrs
@@ -63,6 +65,12 @@ class CsvTransformer
   def organization_name_attrs
     {
       content: @data['organization_name'].presence
+    }.compact
+  end
+
+  def organization_type_attrs
+    {
+      content: @data['organization_type'].presence
     }.compact
   end
 

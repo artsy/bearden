@@ -27,6 +27,7 @@ describe OrganizationResolver do
 
     context 'with one set of data' do
       it 'returns all resolved data' do
+        type = Fabricate :type, name: 'gallery'
         source = Fabricate :source
         import = Fabricate :import, source: source
         raw_input = Fabricate :raw_input, import: import
@@ -39,6 +40,7 @@ describe OrganizationResolver do
         location = '123 main street'
         longitude = 70.0
         organization_name = 'The Best Gallery'
+        organization_type = 'gallery'
         phone_number = '1-800-123-4567'
         tag_names = 'design,modern'
         website = 'http://www.example.com'
@@ -56,6 +58,9 @@ describe OrganizationResolver do
           Fabricate(:organization_name,
                     organization: organization,
                     content: organization_name)
+          Fabricate(:organization_type,
+                    organization: organization,
+                    type: type)
           Fabricate(:phone_number,
                     content: phone_number,
                     organization: organization)
@@ -79,6 +84,7 @@ describe OrganizationResolver do
             location: location,
             longitude: longitude,
             organization_name: organization_name,
+            organization_type: organization_type,
             phone_number: phone_number,
             tag_names: tag_names,
             website: website,
@@ -92,6 +98,7 @@ describe OrganizationResolver do
       it 'breaks ties with created_at - newest wins' do
         organization = nil
 
+        type = Fabricate :type, name: 'gallery'
         source = Fabricate :source
 
         first_import = Fabricate :import, source: source
@@ -116,6 +123,7 @@ describe OrganizationResolver do
         location = '123 main street'
         longitude = 70.0
         organization_name = 'The Best Gallery'
+        organization_type = 'gallery'
         phone_number = '1-800-123-4567'
         website = 'http://www.example.com'
 
@@ -135,6 +143,9 @@ describe OrganizationResolver do
           Fabricate(:organization_name,
                     organization: organization,
                     content: organization_name)
+          Fabricate(:organization_type,
+                    organization: organization,
+                    type: type)
           Fabricate(:phone_number,
                     content: phone_number,
                     organization: organization)
@@ -156,6 +167,7 @@ describe OrganizationResolver do
             location: location,
             longitude: longitude,
             organization_name: organization_name,
+            organization_type: organization_type,
             phone_number: phone_number,
             tag_names: [first_tag_name, second_tag_name].join(','),
             website: website,
@@ -167,6 +179,7 @@ describe OrganizationResolver do
 
     context 'with two sets of data' do
       it 'returns only the highest ranked data' do
+        type = Fabricate :type, name: 'gallery'
         organization = nil
 
         city = 'Tulum'
@@ -176,6 +189,7 @@ describe OrganizationResolver do
         location = '123 main street'
         longitude = 70.0
         organization_name = 'The Best Gallery'
+        organization_type = 'gallery'
         phone_number = '1-800-123-4567'
         website = 'http://www.example.com'
 
@@ -183,6 +197,7 @@ describe OrganizationResolver do
                                  email_rank: 1,
                                  location_rank: 2,
                                  organization_name_rank: 1,
+                                 organization_type_rank: 2,
                                  phone_number_rank: 2,
                                  website_rank: 1)
         first_import = Fabricate :import, source: first_source
@@ -199,6 +214,9 @@ describe OrganizationResolver do
           Fabricate(:organization_name,
                     organization: organization,
                     content: organization_name)
+          Fabricate(:organization_type,
+                    organization: organization,
+                    type: Fabricate(:type))
           Fabricate :phone_number, organization: organization
           tag = Fabricate :tag, name: first_tag_name
           Fabricate :organization_tag, organization: organization, tag: tag
@@ -209,6 +227,7 @@ describe OrganizationResolver do
                                   email_rank: 2,
                                   location_rank: 1,
                                   organization_name_rank: 2,
+                                  organization_type_rank: 1,
                                   phone_number_rank: 1,
                                   website_rank: 2)
         second_import = Fabricate :import, source: second_source
@@ -225,6 +244,9 @@ describe OrganizationResolver do
                     latitude: latitude,
                     longitude: longitude)
           Fabricate :organization_name, organization: organization
+          Fabricate(:organization_type,
+                    organization: organization,
+                    type: type)
           Fabricate(:phone_number,
                     content: phone_number,
                     organization: organization)
@@ -246,6 +268,7 @@ describe OrganizationResolver do
             location: location,
             longitude: longitude,
             organization_name: organization_name,
+            organization_type: organization_type,
             phone_number: phone_number,
             tag_names: [first_tag_name, second_tag_name].join(','),
             website: website,
