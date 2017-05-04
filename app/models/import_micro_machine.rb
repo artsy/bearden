@@ -12,10 +12,11 @@ class ImportMicroMachine < MicroMachine
   SYNCING = 'syncing'.freeze
   INSYNC = 'insync'.freeze
   SYNCED = 'synced'.freeze
-  REVERT = 'revert'.freeze
+  FAIL = 'fail'.freeze
+  FAILED = 'failed'.freeze
 
   def self.completed_states
-    [FINISHED, SYNCING, SYNCED]
+    [FINISHED, SYNCING, SYNCED, FAILED]
   end
 
   def self.valid_states
@@ -37,6 +38,6 @@ class ImportMicroMachine < MicroMachine
     self.when(FINISH, FINALIZING => FINISHED)
     self.when(SYNC, FINISHED => SYNCING)
     self.when(INSYNC, SYNCING => SYNCED)
-    self.when(REVERT, SYNCING => FINISHED)
+    self.when(FAIL, SYNCING => FAILED)
   end
 end
