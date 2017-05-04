@@ -29,7 +29,7 @@ class FinishSyncJob < ApplicationJob
   end
 
   def update_syncing_imports(success)
-    outcome = success ? :insync : :failed
+    outcome = success ? :insync : :fail
     Import.where(state: ImportMicroMachine::SYNCING).each(&outcome)
   end
 

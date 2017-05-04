@@ -33,7 +33,7 @@ describe FinishSyncJob do
         sync = Fabricate :sync, total_parts: 1
         import = Fabricate :import, state: ImportMicroMachine::SYNCING
         FinishSyncJob.new.perform(sync.id)
-        expect(import.reload.state).to eq ImportMicroMachine::ERRORS
+        expect(import.reload.state).to eq ImportMicroMachine::FAILED
       end
     end
   end

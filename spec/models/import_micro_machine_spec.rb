@@ -12,7 +12,7 @@ describe ImportMicroMachine do
         finished
         syncing
         synced
-        errors
+        failed
       ]
     end
   end
