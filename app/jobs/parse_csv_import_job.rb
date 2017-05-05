@@ -1,23 +1,20 @@
 require 'csv'
-require 'open-uri'
 require 'charlock_holmes/string'
 
 class ParseCsvImportJob < ApplicationJob
-  attr_accessor :import
-
   queue_as :default
 
   def perform(import_id)
-    @import = Import.find_by id: import_id
-    return unless @import
-
+    @import_id = import_id
+    @import = Import.find_by id: @import_id
+    @data = fetch_data
     create_raw_inputs
     @import.transform
   end
 
   private
 
-  def data
+  def fetch_data
     response = Faraday.get @import.file_identifier.url
     raw_data = response.body
 
@@ -29,7 +26,8 @@ class ParseCsvImportJob < ApplicationJob
   end
 
   def create_raw_inputs
-    csv = CSV.parse(data, headers: true)
-    csv.each { |row| @import.raw_inputs.create data: row.to_h }
+    CSV.parse(@data, headers: true) do |row|
+      RawInput.create data: row.to_h, import_id: @import_id
+    end
   end
 end
