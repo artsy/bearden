@@ -13,4 +13,5 @@ Rails.application.routes.draw do
   resources :sources, only: %i[create edit index new update]
   resources :syncs, only: :index
   resources :tags, only: :index
+  resources :types, only: :index
 end

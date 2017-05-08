@@ -19,6 +19,7 @@ feature 'CSV Import' do
 
     Fabricate :tag, name: 'design'
     Fabricate :tag, name: 'modern'
+    Fabricate :type, name: 'gallery'
     source = Fabricate :source, name: 'Factual'
 
     visit '/imports/new'

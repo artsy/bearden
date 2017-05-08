@@ -6,6 +6,7 @@ describe RawInputChanges do
       context 'with valid data' do
         it 'creates that organization and records the state' do
           Fabricate :tag, name: 'design'
+          Fabricate :type, name: 'gallery'
           source = Fabricate :source
           import = Fabricate(:import,
                              source: source,
@@ -18,6 +19,7 @@ describe RawInputChanges do
             latitude: '47.5543105',
             longitude: '7.598538899999999',
             organization_name: 'Best Gallery',
+            organization_type: 'gallery',
             phone_number: '1-800-123-4567',
             tag_names: 'design',
             website: 'http://example.com'
@@ -37,6 +39,7 @@ describe RawInputChanges do
             Organization,
             OrganizationName,
             OrganizationTag,
+            OrganizationType,
             PhoneNumber,
             Website
           ].each do |klass|
@@ -57,6 +60,7 @@ describe RawInputChanges do
       context 'with a nil website' do
         it 'rolls back all records, saves exception and notes the result' do
           Fabricate :tag, name: 'design'
+          Fabricate :type, name: 'gallery'
           source = Fabricate :source
           import = Fabricate(:import,
                              source: source,
@@ -69,6 +73,7 @@ describe RawInputChanges do
             latitude: '47.5543105',
             longitude: '7.598538899999999',
             organization_name: 'Best Gallery',
+            organization_type: 'gallery',
             phone_number: '1-800-123-4567',
             tag_names: 'design',
             website: nil
@@ -98,6 +103,7 @@ describe RawInputChanges do
       context 'with some invalid data' do
         it 'rolls back all records, saves errors and notes the result' do
           Fabricate :tag, name: 'design'
+          Fabricate :type, name: 'gallery'
           source = Fabricate :source
           import = Fabricate(:import,
                              source: source,
@@ -110,6 +116,7 @@ describe RawInputChanges do
             latitude: '47.5543105',
             longitude: '7.598538899999999',
             organization_name: 'Best Gallery',
+            organization_type: 'invalid',
             phone_number: '1-800-123-4567',
             tag_names: 'invalid',
             website: 'http://example.com'
@@ -127,6 +134,7 @@ describe RawInputChanges do
             Organization,
             OrganizationName,
             OrganizationTag,
+            OrganizationType,
             PhoneNumber,
             Website
           ].each do |klass|
@@ -136,6 +144,7 @@ describe RawInputChanges do
           expect(raw_input.error_details).to eq(
             {
               'email' => { 'content' => [{ 'error' => 'invalid', 'value' => 'infoexample.com' }] }, # rubocop:disable Metrics/LineLength
+              'organization_type' => { 'type' => [{ 'error' => 'blank' }] },
               'tags' => 'all tags could not be applied: invalid'
             }
           )

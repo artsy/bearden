@@ -3,7 +3,7 @@
     = f.label :name
     = f.text_field :name, { class: 'form-control', required: true }
 
-  - for type in [:email_rank, :location_rank, :organization_name_rank, :phone_number_rank, :website_rank]
+  - for type in [:email_rank, :location_rank, :organization_name_rank, :organization_type_rank, :phone_number_rank, :website_rank]
     .form-group
       = f.label type
       = f.select(type, source_rank_options(type), {}, { class: 'form-control' })

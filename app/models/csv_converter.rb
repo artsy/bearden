@@ -11,6 +11,7 @@ class CsvConverter
       location
       longitude
       organization_name
+      organization_type
       phone_number
       tag_names
       website
@@ -39,6 +40,7 @@ class CsvConverter
       @input[:location],
       @input[:longitude],
       @input[:organization_name],
+      @input[:organization_type],
       @input[:phone_number],
       @input[:tag_names],
       @input[:website],

@@ -1,7 +1,13 @@
 class RawInputChanges
   class InvalidData < StandardError; end
 
-  VALID_RELATIONS = %i[email location organization_name phone_number].freeze
+  VALID_RELATIONS = %i[
+    email
+    location
+    organization_name
+    organization_type
+    phone_number
+  ].freeze
 
   def self.apply(raw_input)
     new(raw_input).apply

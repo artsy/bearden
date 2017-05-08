@@ -11,7 +11,6 @@ class DataWarehouse
     Result.new.tap do |result|
       Redshift.connect do |connection|
         begin
-          # binding.pry
           warehouse = new(sources, result, connection)
           warehouse.reset
         rescue PG::Error => e

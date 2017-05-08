@@ -13,6 +13,7 @@ describe CsvTransformer do
           latitude: '',
           longitude: '',
           organization_name: '',
+          organization_type: '',
           phone_number: '',
           tag_names: '',
           website: ''
@@ -105,6 +106,7 @@ describe CsvTransformer do
           latitude: '47.5543105',
           longitude: '7.598538899999999',
           organization_name: 'Best Gallery',
+          organization_type: 'gallery',
           phone_number: '1-800-123-4567',
           tag_names: 'design,modern',
           website: 'http://example.com'
@@ -127,6 +129,9 @@ describe CsvTransformer do
           },
           organization_name: {
             content: data[:organization_name]
+          },
+          organization_type: {
+            content: data[:organization_type]
           },
           phone_number: {
             content: data[:phone_number]

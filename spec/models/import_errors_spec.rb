@@ -100,5 +100,44 @@ describe ImportErrors do
         ImportErrors.export(import)
       end
     end
+
+    context 'with a type error' do
+      it 'exports that error to S3 in CSV format' do
+        import = Fabricate :import
+        exception = 'RawInputChanges::InvalidData'
+
+        type = 'invalid'
+
+        data = { organization_type: type }
+
+        error_details = {
+          'organization_type' => { 'type' => [{ 'error' => 'blank' }] }
+        }
+
+        Fabricate(
+          :raw_input,
+          data: data,
+          error_details: error_details,
+          exception: exception,
+          import: import,
+          state: RawInput::ERROR
+        )
+
+        error_message = 'organization type not found'
+        rows = [[type, exception, error_message]]
+        filename = "errors/#{import.id}.csv"
+        headers = %w[organization_type exception error_details]
+
+        options = {
+          rows: rows,
+          filename: filename,
+          headers: headers,
+          acl: S3CsvExport::PUBLIC
+        }
+
+        expect(S3CsvExport).to receive(:create).with(options)
+        ImportErrors.export(import)
+      end
+    end
   end
 end

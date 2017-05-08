@@ -10,14 +10,7 @@ feature 'Edit Source' do
     let(:is_admin) { true }
 
     scenario 'Admins have access to edit a source' do
-      Fabricate(
-        :source,
-        email_rank: 1,
-        location_rank: 1,
-        organization_name_rank: 1,
-        phone_number_rank: 1,
-        website_rank: 1
-      )
+      Fabricate(:source)
 
       allow_any_instance_of(ApplicationController)
         .to receive(:user).and_return(
@@ -36,14 +29,7 @@ feature 'Edit Source' do
     let(:is_admin) { false }
 
     scenario 'Non-admins do not have access to create a new source' do
-      Fabricate(
-        :source,
-        email_rank: 1,
-        location_rank: 1,
-        organization_name_rank: 1,
-        phone_number_rank: 1,
-        website_rank: 1
-      )
+      Fabricate(:source)
       visit '/sources'
       expect(page).to_not have_css 'a.edit'
     end
@@ -62,6 +48,7 @@ feature 'Edit Source' do
         email_rank: 1,
         location_rank: 1,
         organization_name_rank: 1,
+        organization_type_rank: 1,
         phone_number_rank: 1,
         website_rank: 1
       )
@@ -71,6 +58,7 @@ feature 'Edit Source' do
         email_rank: 2,
         location_rank: 2,
         organization_name_rank: 2,
+        organization_type_rank: 2,
         phone_number_rank: 2,
         website_rank: 2
       )
@@ -84,6 +72,7 @@ feature 'Edit Source' do
       select first_option, from: 'Email rank'
       select first_option, from: 'Location rank'
       select first_option, from: 'Organization name rank'
+      select first_option, from: 'Organization type rank'
       select first_option, from: 'Phone number rank'
       select first_option, from: 'Website rank'
 
@@ -93,6 +82,7 @@ feature 'Edit Source' do
       expect(source_b.email_rank).to eq 1
       expect(source_b.location_rank).to eq 1
       expect(source_b.organization_name_rank).to eq 1
+      expect(source_b.organization_type_rank).to eq 1
       expect(source_b.phone_number_rank).to eq 1
       expect(source_b.website_rank).to eq 1
     end
