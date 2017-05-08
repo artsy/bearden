@@ -10,8 +10,6 @@ feature 'CSV Import' do
     expect(WebsiteResolver).to receive(:resolve).and_return(resolver)
 
     allow_any_instance_of(S3Uploader).to receive(:store!)
-    allow_any_instance_of(Fog::Storage::AWS::GetObjectUrl)
-      .to receive(:get_object_url).and_return(csv_file)
 
     data = File.read(csv_file)
     res = double(:response, body: data)

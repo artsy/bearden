@@ -19,6 +19,11 @@ RSpec.configure do |config|
 
   config.before do
     PaperTrail.whodunnit = 'Test User'
+
+    CarrierWave.configure do |c|
+      c.storage = :file
+      c.enable_processing = false
+    end
   end
 
   config.before(:each, type: :feature) do
