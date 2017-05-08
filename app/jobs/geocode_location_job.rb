@@ -1,6 +1,4 @@
 class GeocodeLocationJob < ApplicationJob
-  queue_as :default
-
   JOB_DELAY = 0.2.seconds
   FALLBACK_COORDINATES = [0.0, 0.0].freeze
   FALLBACK_COUNTRY = nil
