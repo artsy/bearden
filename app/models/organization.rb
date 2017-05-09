@@ -1,4 +1,8 @@
 class Organization < ApplicationRecord
+  CLOSED = 'closed'.freeze
+  OPEN = 'open'.freeze
+  UNKNOWN = 'unknown'.freeze
+
   has_many :emails
   has_many :locations
   has_many :organization_names
@@ -7,6 +11,9 @@ class Organization < ApplicationRecord
   has_many :phone_numbers
   has_many :tags, through: :organization_tags
   has_many :websites
+
+  before_validation :ensure_in_business_value
+  validates :in_business, inclusion: { in: [CLOSED, OPEN, UNKNOWN] }
 
   include Auditable
 
@@ -30,5 +37,10 @@ class Organization < ApplicationRecord
     relations.map do |name, klass|
       name if klass && klass.ancestors.include?(Auditable)
     end.compact
+  end
+
+  def ensure_in_business_value
+    return if in_business
+    self.in_business = UNKNOWN
   end
 end
