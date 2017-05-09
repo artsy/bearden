@@ -1,2 +1,2 @@
 web: bundle exec rails server
-worker: bundle exec sidekiq -c ${SIDEKIQ_CONCURRENCY}
+worker: bundle exec sidekiq -c ${SIDEKIQ_CONCURRENCY} -q default -q export
