@@ -1,6 +1,11 @@
 require 'rails_helper'
 
 describe Organization do
+  it 'defaults to being unknown for in_business' do
+    organization = Organization.create
+    expect(organization.in_business).to eq Organization::UNKNOWN
+  end
+
   it 'has multiple locations' do
     organization = Fabricate :organization
     Fabricate.times 2, :location, organization: organization

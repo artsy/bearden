@@ -361,12 +361,12 @@ describe RawInputChanges do
         source = Fabricate :source
         import = Fabricate :import, source: source, transformer: CsvTransformer
         data = {
-          in_business: false,
+          in_business: Organization::CLOSED,
           website: website.content
         }
         raw_input = Fabricate :raw_input, import: import, data: data
         RawInputChanges.apply raw_input
-        expect(organization.reload).to_not be_in_business
+        expect(organization.reload.in_business).to eq Organization::CLOSED
       end
     end
   end
