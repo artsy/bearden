@@ -6,6 +6,6 @@
   - for type in [:email_rank, :location_rank, :organization_name_rank, :organization_type_rank, :phone_number_rank, :website_rank]
     .form-group
       = f.label type
-      = f.select(type, source_rank_options(type), {}, { class: 'form-control' })
+      = f.select(type, source_rank_options(type, action), {}, { class: 'form-control' })
 
   = f.submit button_label, { class: 'btn btn-primary' }

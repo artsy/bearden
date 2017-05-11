@@ -12,10 +12,26 @@ module ApplicationHelper
     class_string
   end
 
-  def source_rank_options(type)
-    options = Source.all.map do |source|
+  def source_rank_options(type, action)
+    case action
+    when 'update'
+      edit_source_rank_options(type)
+    when 'create'
+      create_source_rank_options(type)
+    end
+  end
+
+  def edit_source_rank_options(type)
+    Source.all.map do |source|
       rank = source.rank_for(type)
       ["#{rank} - insert below #{source.name}", rank]
+    end.sort
+  end
+
+  def create_source_rank_options(type)
+    options = Source.all.map do |source|
+      rank = source.rank_for(type)
+      ["#{rank} - insert above #{source.name}", rank]
     end.sort
     final_rank = options.count + 1
     final_option = ["#{final_rank} - add to end", final_rank]
