@@ -10,14 +10,14 @@ feature 'Create Source' do
     scenario 'Importer creates source' do
       visit '/sources/new'
 
-      fill_in 'Name', with: 'Clearbit'
+      fill_in 'source_name', with: 'Clearbit'
 
-      select '1 - add to end', from: 'Email rank'
-      select '1 - add to end', from: 'Location rank'
-      select '1 - add to end', from: 'Organization name rank'
-      select '1 - add to end', from: 'Organization type rank'
-      select '1 - add to end', from: 'Phone number rank'
-      select '1 - add to end', from: 'Website rank'
+      select '1: add to end', from: 'Email rank'
+      select '1: add to end', from: 'Location rank'
+      select '1: add to end', from: 'Organization name rank'
+      select '1: add to end', from: 'Organization type rank'
+      select '1: add to end', from: 'Phone number rank'
+      select '1: add to end', from: 'Website rank'
 
       click_button 'Create'
 
@@ -43,14 +43,14 @@ feature 'Create Source' do
 
       visit '/sources/new'
 
-      fill_in 'Name', with: 'Clearbit'
+      fill_in 'source_name', with: 'Clearbit'
 
-      select "1 - insert above #{source.name}", from: 'Email rank'
-      select "1 - insert above #{source.name}", from: 'Location rank'
-      select "1 - insert above #{source.name}", from: 'Organization name rank'
-      select "1 - insert above #{source.name}", from: 'Organization type rank'
-      select "1 - insert above #{source.name}", from: 'Phone number rank'
-      select "1 - insert above #{source.name}", from: 'Website rank'
+      select "1: insert above #{source.name}", from: 'Email rank'
+      select "1: insert above #{source.name}", from: 'Location rank'
+      select "1: insert above #{source.name}", from: 'Organization name rank'
+      select "1: insert above #{source.name}", from: 'Organization type rank'
+      select "1: insert above #{source.name}", from: 'Phone number rank'
+      select "1: insert above #{source.name}", from: 'Website rank'
 
       click_button 'Create'
 

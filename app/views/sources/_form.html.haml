@@ -1,11 +1,14 @@
 = form_for source do |f|
   .form-group
-    = f.label :name
     = f.text_field :name, { class: 'form-control', required: true }
+
+  <hr />
+
+  %h3 Hierarchy
 
   - for type in [:email_rank, :location_rank, :organization_name_rank, :organization_type_rank, :phone_number_rank, :website_rank]
     .form-group
       = f.label type
-      = f.select(type, source_rank_options(type), {}, { class: 'form-control' })
+      = f.select(type, source_rank_options(source, type, action), {}, { class: 'form-control' })
 
   = f.submit button_label, { class: 'btn btn-primary' }

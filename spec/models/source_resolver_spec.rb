@@ -113,5 +113,29 @@ describe SourceResolver do
         expect(source_c.reload.email_rank).to eq 3
       end
     end
+
+    context 'demoting a top source and then promoting it back' do
+      it 'orders and reorders the sources correctly' do
+        source_a = Fabricate :source, email_rank: 1
+        source_b = Fabricate :source, email_rank: 2
+        source_c = Fabricate :source, email_rank: 3
+
+        source_a.email_rank = 3
+
+        SourceResolver.resolve source_a
+
+        expect(source_b.reload.email_rank).to eq 1
+        expect(source_c.reload.email_rank).to eq 2
+        expect(source_a.reload.email_rank).to eq 3
+
+        source_a.email_rank = 1
+
+        SourceResolver.resolve source_a
+
+        expect(source_a.reload.email_rank).to eq 1
+        expect(source_b.reload.email_rank).to eq 2
+        expect(source_c.reload.email_rank).to eq 3
+      end
+    end
   end
 end
