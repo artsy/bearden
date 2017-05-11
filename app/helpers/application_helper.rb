@@ -25,9 +25,9 @@ module ApplicationHelper
     Source.all.map do |source|
       rank = source.rank_for(type)
       if source.name == selected_source.name
-        ["#{rank} - current value", rank]
+        ["#{rank}: current - #{source.name}", rank]
       else
-        ["#{rank} - insert below #{source.name}", rank]
+        ["#{rank}: move here - #{source.name}", rank]
       end
     end.sort
   end
@@ -35,10 +35,10 @@ module ApplicationHelper
   def create_source_rank_options(type)
     options = Source.all.map do |source|
       rank = source.rank_for(type)
-      ["#{rank} - insert above #{source.name}", rank]
+      ["#{rank}: insert above #{source.name}", rank]
     end.sort
     final_rank = options.count + 1
-    final_option = ["#{final_rank} - add to end", final_rank]
+    final_option = ["#{final_rank}: add to end", final_rank]
     options + [final_option]
   end
 end

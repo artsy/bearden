@@ -45,7 +45,7 @@ feature 'Edit Source' do
 
       visit "/sources/#{source_a.id}/edit"
 
-      expect(page).to_not have_content '2 - add to end'
+      expect(page).to_not have_content 'add to end'
     end
 
     scenario 'Admins can rank a source to last' do
@@ -91,7 +91,7 @@ feature 'Edit Source' do
 
       fill_in 'source_name', with: 'New Name'
 
-      last_option = "3 - insert below #{source_c.name}"
+      last_option = "3: move here - #{source_c.name}"
 
       select last_option, from: 'Email rank'
       select last_option, from: 'Location rank'
