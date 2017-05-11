@@ -24,6 +24,30 @@ feature 'Edit Source' do
       expect(page).to have_css 'a.edit'
     end
 
+    scenario 'the options do not include "Add to end"' do
+      allow_any_instance_of(ApplicationController)
+        .to receive(:user).and_return(
+          {
+            uid: 'foo',
+            roles: %w[admin foo]
+          }
+        )
+
+      source_a = Fabricate(
+        :source,
+        email_rank: 1,
+        location_rank: 1,
+        organization_name_rank: 1,
+        organization_type_rank: 1,
+        phone_number_rank: 1,
+        website_rank: 1
+      )
+
+      visit "/sources/#{source_a.id}/edit"
+
+      expect(page).to_not have_content '2 - add to end'
+    end
+
     scenario 'Admins can rank a source to last' do
       allow_any_instance_of(ApplicationController)
         .to receive(:user).and_return(
