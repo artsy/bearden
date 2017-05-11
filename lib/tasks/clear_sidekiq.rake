@@ -1,14 +1,15 @@
 desc 'Clear all Sidekiq queues'
 task clear_sidekiq: :environment do
-  sets = [
-    Sidekiq::Queue,
-    Sidekiq::ScheduledSet,
-    Sidekiq::RetrySet,
-    Sidekiq::DeadSet
+  queues = Sidekiq::Queue.all
+
+  named_queues = [
+    Sidekiq::ScheduledSet.new,
+    Sidekiq::RetrySet.new,
+    Sidekiq::DeadSet.new
   ]
 
-  sets.each do |set|
-    puts set
-    puts set.new.clear
+  [queues + named_queues].each do |queue|
+    puts queue
+    puts queue.clear
   end
 end
