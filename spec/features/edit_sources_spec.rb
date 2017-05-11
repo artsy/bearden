@@ -23,18 +23,8 @@ feature 'Edit Source' do
       visit '/sources'
       expect(page).to have_css 'a.edit'
     end
-  end
 
-  context 'with a non-admin' do
-    let(:is_admin) { false }
-
-    scenario 'Non-admins do not have access to create a new source' do
-      Fabricate(:source)
-      visit '/sources'
-      expect(page).to_not have_css 'a.edit'
-    end
-
-    scenario 'Importer edits source' do
+    scenario 'Admins can rank a source to last' do
       allow_any_instance_of(ApplicationController)
         .to receive(:user).and_return(
           {
@@ -53,7 +43,7 @@ feature 'Edit Source' do
         website_rank: 1
       )
 
-      source_b = Fabricate(
+      Fabricate(
         :source,
         email_rank: 2,
         location_rank: 2,
@@ -63,28 +53,48 @@ feature 'Edit Source' do
         website_rank: 2
       )
 
-      visit "/sources/#{source_b.id}/edit"
+      source_c = Fabricate(
+        :source,
+        email_rank: 3,
+        location_rank: 3,
+        organization_name_rank: 3,
+        organization_type_rank: 3,
+        phone_number_rank: 3,
+        website_rank: 3
+      )
+
+      visit "/sources/#{source_a.id}/edit"
 
       fill_in 'Name', with: 'New Name'
 
-      first_option = "1 - insert above #{source_a.name}"
+      last_option = "3 - insert below #{source_c.name}"
 
-      select first_option, from: 'Email rank'
-      select first_option, from: 'Location rank'
-      select first_option, from: 'Organization name rank'
-      select first_option, from: 'Organization type rank'
-      select first_option, from: 'Phone number rank'
-      select first_option, from: 'Website rank'
+      select last_option, from: 'Email rank'
+      select last_option, from: 'Location rank'
+      select last_option, from: 'Organization name rank'
+      select last_option, from: 'Organization type rank'
+      select last_option, from: 'Phone number rank'
+      select last_option, from: 'Website rank'
 
       click_button 'Update'
 
-      expect(source_b.reload.name).to eq 'New Name'
-      expect(source_b.email_rank).to eq 1
-      expect(source_b.location_rank).to eq 1
-      expect(source_b.organization_name_rank).to eq 1
-      expect(source_b.organization_type_rank).to eq 1
-      expect(source_b.phone_number_rank).to eq 1
-      expect(source_b.website_rank).to eq 1
+      expect(source_a.reload.name).to eq 'New Name'
+      expect(source_a.email_rank).to eq 3
+      expect(source_a.location_rank).to eq 3
+      expect(source_a.organization_name_rank).to eq 3
+      expect(source_a.organization_type_rank).to eq 3
+      expect(source_a.phone_number_rank).to eq 3
+      expect(source_a.website_rank).to eq 3
+    end
+  end
+
+  context 'with a non-admin' do
+    let(:is_admin) { false }
+
+    scenario 'Non-admins do not have access to create a new source' do
+      Fabricate(:source)
+      visit '/sources'
+      expect(page).to_not have_css 'a.edit'
     end
   end
 end
