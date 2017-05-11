@@ -89,7 +89,7 @@ feature 'Edit Source' do
 
       visit "/sources/#{source_a.id}/edit"
 
-      fill_in 'Name', with: 'New Name'
+      fill_in 'source_name', with: 'New Name'
 
       last_option = "3 - insert below #{source_c.name}"
 

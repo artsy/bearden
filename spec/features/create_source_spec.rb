@@ -10,7 +10,7 @@ feature 'Create Source' do
     scenario 'Importer creates source' do
       visit '/sources/new'
 
-      fill_in 'Name', with: 'Clearbit'
+      fill_in 'source_name', with: 'Clearbit'
 
       select '1 - add to end', from: 'Email rank'
       select '1 - add to end', from: 'Location rank'
@@ -43,7 +43,7 @@ feature 'Create Source' do
 
       visit '/sources/new'
 
-      fill_in 'Name', with: 'Clearbit'
+      fill_in 'source_name', with: 'Clearbit'
 
       select "1 - insert above #{source.name}", from: 'Email rank'
       select "1 - insert above #{source.name}", from: 'Location rank'
