@@ -16,7 +16,7 @@ module ApplicationHelper
     case action
     when 'create'
       create_source_rank_options(type)
-    when 'update'
+    when 'edit'
       edit_source_rank_options(source, type)
     end
   end
