@@ -12,19 +12,23 @@ module ApplicationHelper
     class_string
   end
 
-  def source_rank_options(type, action)
+  def source_rank_options(source, type, action)
     case action
-    when 'update'
-      edit_source_rank_options(type)
     when 'create'
       create_source_rank_options(type)
+    when 'update'
+      edit_source_rank_options(source, type)
     end
   end
 
-  def edit_source_rank_options(type)
+  def edit_source_rank_options(selected_source, type)
     Source.all.map do |source|
       rank = source.rank_for(type)
-      ["#{rank} - insert below #{source.name}", rank]
+      if source.name == selected_source.name
+        ["#{rank} - current value", rank]
+      else
+        ["#{rank} - insert below #{source.name}", rank]
+      end
     end.sort
   end
 
