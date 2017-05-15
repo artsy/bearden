@@ -23,6 +23,7 @@ task tag_type_data_migration: :environment do
   }
 
   for type_name, tag_name in mapping
+    next if Type.find_by name: type_name
     puts ''
     puts type_name
     Type.transaction do

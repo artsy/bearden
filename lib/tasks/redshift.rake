@@ -26,7 +26,7 @@ namespace :redshift do
           city character varying, \
           country character varying, \
           email character varying, \
-          in_business boolean, \
+          in_business character varying, \
           latitude double precision, \
           longitude double precision, \
           location character varying, \
