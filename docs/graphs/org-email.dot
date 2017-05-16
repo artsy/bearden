@@ -1,0 +1,9 @@
+digraph g {
+  organization -> email_1;
+  organization -> email_2;
+  organization -> email_3;
+
+  email_1 -> "source_a\n(low_rank)";
+  email_2 -> "source_b\n(high_rank)";
+  email_3 -> "source_a\n(low_rank)";
+}

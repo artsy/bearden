@@ -5,7 +5,7 @@ flattened version of this data to Redshift for analysis.
 
 ## Importing
 
-Data makes it's way into Bearden when an Importer creates an [`Import`
+Data makes its way into Bearden when an Importer creates an [`Import`
 record][import_model] on the [new import page][new_import]. The Importer chooses
 a CSV file from their hard drive, picks a `Source` and enters a brief
 description of the import.
@@ -89,7 +89,7 @@ manageable chucks and enqueue [`OrganizationExportJobs`][org_export_job] for
 each part.
 
 The jobs to export a batch of `Organization` records are processed
-asynchronously and that happens on it's own queue because it's very memory
+asynchronously and that happens on its own queue because it's very memory
 intensive. This is where we resolve and flatten our relational data using the
 aptly named [`OrganizationResolver`][org_resolver].
 
@@ -109,20 +109,32 @@ Redshift.
 [sync_finish_job]: /app/jobs/finish_sync_job.rb
 [data_warehouse]: /app/models/data_warehouse.rb
 
-## Resolving Organizations
+## Resolving Organizations with Sources and Ranking
 
-Yes Bearden imports and exports, but the thing that makes it special is the way
-that it models data and resolves `Organization` records. Rather than simply
-having an email column on the organizations table, for example, we have a table
-of email addresses that point to their organization. This means the actual
-`Organization` has very little on it and serves mostly as a way to relate all
-the details of an entity. Each of these details points back to the `Source` that
-created it, which means that we always know which details are most accurate.
+Yes, Bearden imports and exports, but the thing that makes it special is the way
+it models data and resolves `Organization` records.
 
-Evaluating this accuracy happens at export time, during the process of syncing
-with Redshift. Waiting until this point in the process means means that we
-delay the flattening to as late as possible and reflect the most up-to-date
-information as possible.
+Rather than simply having, for example, an email column on the organizations
+table, we have a table of email addresses that point to their organization. This
+means the actual `Organization` has very little data. It serves mostly as a way
+to connect all the details of an entity.
+
+Each of these details, such as an email, location, phone number and so on,
+points back to the `Source` that created it. Consider the following graph.
+
+![Organization and email graph][org_email_graph]
+
+Given multiple fields, an organization resolves to the highest ranked source for
+that field. Since `email_2` originates from the higher-ranked `source_b`, the
+output to Redshift will only contain that `email_2`. The lesser-ranked values
+are ignored.
+
+Source ranking resolution happens at export time — during the process of syncing
+with Redshift. Waiting until this point in the process means that we delay the
+flattening as long as possible and reflect the most up-to-date information
+possible.
+
+[org_email_graph]: /app/docs/graphs/org-email.dot.png
 
 ### Rankables
 
