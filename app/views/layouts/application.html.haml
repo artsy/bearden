@@ -16,6 +16,7 @@
             %li.nav-item= link_to 'Syncs', syncs_path, { class: nav_class(:syncs) }
             %li.nav-item= link_to 'Sources', sources_path, { class: nav_class(:sources) }
             %li.nav-item= link_to 'Tags', tags_path, { class: nav_class(:tags) }
+            %li.nav-item= link_to 'Types', types_path, { class: nav_class(:types) }
             %li.nav-item= link_to 'Sign Out', '/sign_out', { class: %w(nav-link) }
 
       - flash.each do |name, msg|
