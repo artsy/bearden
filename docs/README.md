@@ -37,7 +37,7 @@ starts in the [ImportsController][imports_controller], when it [calls
 `ParseCsvImportJob`. That job creates `RawInput` records for each row in the CSV
 file and then when it's done doing that kicks off a recursive job to apply each
 in turn using the `RawInputTransformJob`. The last of these recursive jobs will
-fall `finalize` on the `Import` which enqueues the `FinalizeImportJob`. That job
+call `finalize` on the `Import` which enqueues the `FinalizeImportJob`. That job
 exports any errors and broadcasts the result.
 
 [imports_controller]: /app/controllers/imports_controller.rb
@@ -78,8 +78,8 @@ Exporting data to Redshift is accomplished by workers. Every 10 minutes when the
 sync task is run it enqueues a [`SyncManagementJob`][sync_mgmt] which does one
 of these things:
 
-* create a new `Sync`
-* kick off copying when a `Sync` is ready for it
+* creates a new `Sync`
+* kicks off copying when a `Sync` is ready for it
 * nothing
 
 When there are no in-progress `Sync` records, then [a new one is
@@ -113,11 +113,11 @@ Redshift.
 
 Yes Bearden imports and exports, but the thing that makes it special is the way
 that it models data and resolves `Organization` records. Rather than simply
-having an email column on the organizations table, for example, we have table of
-email addresses that point to their organization. This means the actual
-`Organizaiton` has very little on it and serves mostly as a way to relate all
+having an email column on the organizations table, for example, we have a table
+of email addresses that point to their organization. This means the actual
+`Organization` has very little on it and serves mostly as a way to relate all
 the details of an entity. Each of these details points back to the `Source` that
-created it, which means that we can always know which details are most accurate.
+created it, which means that we always know which details are most accurate.
 
 Evaluating this accuracy happens at export time, during the process of syncing
 with Redshift. Waiting until this point in the process means means that we
