@@ -5,7 +5,8 @@ module ApplicationHelper
     navigation_elements = {
       imports: imports_path,
       sources: sources_path,
-      tags: tags_path
+      tags: tags_path,
+      types: types_path
     }
 
     class_string << ' active' if navigation_elements[element] == request.path
