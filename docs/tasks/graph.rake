@@ -6,6 +6,7 @@ namespace :graph do
       machine = klass.start(nil, nil)
 
       graph = GraphViz.new(:G, type: :digraph)
+      graph[:rankdir] = 'LR'
       nodes = machine.states.map { |state| graph.add_nodes(state) }
 
       transitions = machine.transitions_for.values.flat_map(&:to_a)
