@@ -135,7 +135,7 @@ with Redshift. Waiting until this point in the process means that we delay the
 flattening as long as possible and reflect information from the highest-ranked
 source.
 
-[org_email_graph]: /app/docs/graphs/org-email.dot.png
+[org_email_graph]: /docs/graphs/org-email.dot.png
 
 ### Rankables
 
