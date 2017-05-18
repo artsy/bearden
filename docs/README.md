@@ -1,7 +1,8 @@
 # How Bearden Works
 
 Bearden takes CSV files, creates relational data out of them and then exports a
-flattened version of this data to Redshift for analysis.
+flattened version of this data to Redshift for analysis. Be sure to check the
+ERD for a high-level overview of the data model.
 
 ## Importing
 
@@ -131,8 +132,8 @@ are ignored.
 
 Source ranking resolution happens at export time — during the process of syncing
 with Redshift. Waiting until this point in the process means that we delay the
-flattening as long as possible and reflect the most up-to-date information
-possible.
+flattening as long as possible and reflect information from the highest-ranked
+source.
 
 [org_email_graph]: /app/docs/graphs/org-email.dot.png
 
@@ -144,11 +145,44 @@ thing it provides is a common way to get the rank of a particular record. It
 uses the `versions` table to reach back to the actor that created the record and
 then from there walk back up to the `Source` that has a rank.
 
-[rankable]: app/models/rankable.rb
+[rankable]: /app/models/rankable.rb
 
 ### The Rules
 
 The resolution rules are:
 
 * use the `Rankable` with the lowest rank (1 is better than 2)
-* break rank ties with `created_at` - newer is better
+* break rank ties with `created_at` (newer is better)
+
+### Ranking by Field
+
+We started with a `rank` column on `sources`, but then realized that we wanted
+more control. Some sources are good at emails, but bad at locations and
+vice-versa. In order to accomplish this, we have a rank column for each
+`Rankable`:
+
+```
+bearden_development=# \d sources
+                                           Table "public.sources"
+         Column         |            Type             |                      Modifiers
+------------------------+-----------------------------+------------------------------------------------------
+ id                     | integer                     | not null default nextval('sources_id_seq'::regclass)
+ name                   | character varying           |
+ created_at             | timestamp without time zone | not null
+ updated_at             | timestamp without time zone | not null
+ email_rank             | integer                     |
+ location_rank          | integer                     |
+ organization_name_rank | integer                     |
+ phone_number_rank      | integer                     |
+ website_rank           | integer                     |
+ organization_type_rank | integer                     |
+```
+
+These ranks are set when creating a [new Source][new_source] or when [editing an
+existing source][edit_source] and when this happens, the shifting ranks can
+cause all of our Source records to be mutated. Managing this is done by the
+[`SourceResolver`][source_resolver].
+
+[new_source]: /app/views/sources/new.html.haml
+[edit_source]: /app/views/sources/edit.html.haml
+[source_resolver]: /app/models/source_resolver.rb
