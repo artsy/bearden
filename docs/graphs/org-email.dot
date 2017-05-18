@@ -3,7 +3,7 @@ digraph g {
   organization -> email_2;
   organization -> email_3;
 
-  email_1 -> "source_a\n(low_rank)";
-  email_2 -> "source_b\n(high_rank)";
-  email_3 -> "source_a\n(low_rank)";
+  email_1 -> "source_a\n(rank: 2)";
+  email_2 -> "source_b\n(rank: 1)";
+  email_3 -> "source_a\n(rank: 2)";
 }

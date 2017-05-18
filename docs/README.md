@@ -125,14 +125,14 @@ points back to the `Source` that created it. Consider the following graph.
 
 ![Organization and email graph][org_email_graph]
 
-Given multiple fields, an organization resolves to the highest ranked source for
-that field. Since `email_2` originates from the higher-ranked `source_b`, the
-output to Redshift will only contain that `email_2`. The lesser-ranked values
-are ignored.
+Given multiple fields, an organization resolves to the lowest ranked source for
+that field. Since `email_2` originates from the lower-ranked `source_b`, the
+output to Redshift will only contain `email_2`. The higher-ranked values are
+ignored. (See also "the Rules" section.)
 
 Source ranking resolution happens at export time — during the process of syncing
 with Redshift. Waiting until this point in the process means that we delay the
-flattening as long as possible and reflect information from the highest-ranked
+flattening as long as possible and reflect information from the best-ranked
 source.
 
 [org_email_graph]: /docs/graphs/org-email.dot.png
