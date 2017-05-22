@@ -12,6 +12,7 @@ Metrics/BlockLength:
   Exclude:
     - 'spec/**/*'
     - 'lib/tasks/*.rake'
+    - 'docs/tasks/*.rake'
 
 Metrics/MethodLength:
   Exclude:
