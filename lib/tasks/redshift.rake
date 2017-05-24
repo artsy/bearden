@@ -29,7 +29,7 @@ namespace :redshift do
           in_business character varying, \
           latitude double precision, \
           longitude double precision, \
-          location character varying, \
+          location varchar(1024), \
           organization_name character varying, \
           organization_type character varying, \
           phone_number character varying, \
