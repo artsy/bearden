@@ -13,7 +13,7 @@ class StartSyncJob < ApplicationJob
 
     return unless sync
 
-    if force || imports_to_sync?
+    if force || should_sync?
       start_sync
     else
       sync.skip
@@ -22,8 +22,20 @@ class StartSyncJob < ApplicationJob
 
   private
 
-  def imports_to_sync?
-    Import.where(state: ImportMicroMachine::FINISHED).any?
+  def should_sync?
+    finished_imports = Import.where(state: ImportMicroMachine::FINISHED)
+
+    return false unless finished_imports
+
+    imports_to_sync = finished_imports.count
+
+    finished_imports.each do |import|
+      errors_count = import.raw_inputs.where('exception is not null').count
+      next unless import.raw_inputs.count == errors_count
+      imports_to_sync -= 1
+    end
+
+    return imports_to_sync > 0
   end
 
   def start_sync
