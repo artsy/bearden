@@ -24,12 +24,12 @@ describe OrganizationBuilder do
         website = Fabricate(
           :website,
           organization: organization,
-          content: 'https://www.artsy.net/'
+          content: 'https://www.artsy.net'
         )
 
         results = [
           { status: 301, content: 'http://artsy.net' },
-          { status: 200, content: website.content }
+          { status: 200, content: "#{website.content}/" }
         ]
 
         resolver = double(
