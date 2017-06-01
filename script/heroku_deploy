@@ -6,5 +6,5 @@ git remote add heroku git@heroku.com:$APP_NAME.git
 git fetch heroku
 heroku pg:backups:capture
 git push --force heroku $CIRCLE_SHA1:master
-heroku run rake db:migrate
+heroku run --exit-code rake db:migrate
 heroku restart
