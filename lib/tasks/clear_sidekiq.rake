@@ -8,7 +8,7 @@ task clear_sidekiq: :environment do
     Sidekiq::DeadSet.new
   ]
 
-  [queues + named_queues].each do |queue|
+  (queues + named_queues).each do |queue|
     puts queue
     puts queue.clear
   end
