@@ -35,7 +35,7 @@ class StartSyncJob < ApplicationJob
       imports_to_sync -= 1
     end
 
-    return imports_to_sync > 0
+    imports_to_sync.positive?
   end
 
   def start_sync

@@ -1,5 +1,5 @@
 namespace :report do
-  desc 'Prints a count and list of websites with possible duplicate organizations'
+  desc 'Print a count and list of domains with possible duplicate organizations'
   task duplicate_organizations: :environment do
     domains = Website.pluck(:content, :organization_id).group_by do |item|
       content, _id = item
