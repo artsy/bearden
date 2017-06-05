@@ -13,7 +13,7 @@ class StartSyncJob < ApplicationJob
 
     return unless sync
 
-    if force || imports_to_sync?
+    if force || some_imports_should_sync?
       start_sync
     else
       sync.skip
@@ -22,8 +22,9 @@ class StartSyncJob < ApplicationJob
 
   private
 
-  def imports_to_sync?
-    Import.where(state: ImportMicroMachine::FINISHED).any?
+  def some_imports_should_sync?
+    finished_imports = Import.where(state: ImportMicroMachine::FINISHED)
+    finished_imports.any?(&:should_sync?)
   end
 
   def start_sync

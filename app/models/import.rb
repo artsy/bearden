@@ -38,6 +38,10 @@ class Import < ApplicationRecord
     machine.trigger ImportMicroMachine::INSYNC
   end
 
+  def should_sync?
+    raw_inputs.where.not(exception: nil).count != raw_inputs.count
+  end
+
   def fail
     machine.trigger ImportMicroMachine::FAIL
   end
