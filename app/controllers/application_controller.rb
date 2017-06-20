@@ -1,7 +1,9 @@
-class ApplicationController < ArtsyAuth::ApplicationController
+class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   force_ssl if: :ssl_configured?
   helper_method :admin?
+
+  include ArtsyAuth::Authenticated
 
   ADMIN_USERS = Rails.application.secrets.admin_users
   ALLOWED_GRAVITY_ROLES = ['admin'].freeze
