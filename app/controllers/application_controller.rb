@@ -1,7 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   force_ssl if: :ssl_configured?
-  helper_method :admin?
 
   include ArtsyAuth::Authenticated
 
@@ -24,6 +23,7 @@ class ApplicationController < ActionController::Base
   def admin?
     ADMIN_USERS.member? @user[:uid]
   end
+  helper_method :admin?
 
   private
 
