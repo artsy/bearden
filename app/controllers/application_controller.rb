@@ -8,16 +8,8 @@ class ApplicationController < ActionController::Base
   ALLOWED_GRAVITY_ROLES = ['admin'].freeze
 
   def authorized_artsy_token?(token)
-    @user = user(token)
+    @user = decode_user(token)
     success_or_die
-  end
-
-  def user(token)
-    secret = Rails.application.secrets.artsy_internal_secret
-    decoded_token, _headers = JWT.decode(token, secret)
-
-    { uid: decoded_token['sub'],
-      roles: decoded_token['roles'].split(',') }
   end
 
   def admin?
@@ -29,6 +21,16 @@ class ApplicationController < ActionController::Base
 
   def ssl_configured?
     !Rails.env.development?
+  end
+
+  def decode_user(token)
+    secret = Rails.application.secrets.artsy_internal_secret
+    decoded_token, _headers = JWT.decode(token, secret)
+
+    {
+      uid: decoded_token['sub'],
+      roles: decoded_token['roles'].split(',')
+    }
   end
 
   def role_permitted?
