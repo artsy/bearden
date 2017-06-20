@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
 
   def authorized_artsy_token?(token)
     @user = decode_user(token)
-    success_or_die
+    role_permitted?
   end
 
   def admin?
@@ -35,9 +35,5 @@ class ApplicationController < ActionController::Base
 
   def role_permitted?
     @user[:roles].any? { |role| ALLOWED_GRAVITY_ROLES.member? role }
-  end
-
-  def success_or_die
-    role_permitted? || render(plain: '404 Not Found', status: 404)
   end
 end
