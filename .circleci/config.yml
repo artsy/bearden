@@ -1,0 +1,34 @@
+version: 2
+
+jobs:
+  build:
+    working_directory: ~/bearden
+    docker:
+      - image: circleci/ruby:2.4.1-node
+        environment:
+          RAILS_ENV: test
+      - image: circleci/postgres:9.6.2-alpine
+    steps:
+      - run: sudo apt-get install libicu-dev
+      - checkout
+      - type: cache-restore
+        key: bearden-{{ checksum "Gemfile.lock" }}
+      - run: bundle install --path vendor/bundle
+      - type: cache-save
+        key: bearden-{{ checksum "Gemfile.lock" }}
+        paths:
+          - vendor/bundle
+
+      - run: mv config/database{.circle,}.yml
+      - run: bundle exec rake db:create db:migrate
+
+      - run: bundle exec rake
+
+      - deploy:
+          name: Deploy
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              ./script/heroku_deploy bearden-staging
+            elif [ "${CIRCLE_BRANCH}" == "release" ]; then
+              ./script/heroku_deploy bearden-production
+            fi
