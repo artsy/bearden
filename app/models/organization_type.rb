@@ -8,7 +8,7 @@ class OrganizationType < ApplicationRecord
   delegate :name, to: :type
 
   def content=(value)
-    type = Type.find_by name: value
+    type = Type.find_by name: value.downcase
     self.type = type
   end
 end
