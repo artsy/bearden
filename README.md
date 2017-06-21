@@ -2,7 +2,7 @@
 
 ## Meta
 
-* State: development
+* State: production
 * Production: [https://bearden.artsy.net][production] | [Heroku][production_heroku]
 * Staging: [https://bearden-staging.artsy.net][staging] | [Heroku][staging_heroku]
 * GitHub: [https://github.com/artsy/bearden/][bearden]
