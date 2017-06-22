@@ -24,11 +24,15 @@ jobs:
 
       - run: bundle exec rake
 
+      - run: bash .circleci/heroku_setup
+      - add_ssh_keys:
+          fingerprints:
+            - "85:44:31:07:7a:a0:4e:bb:50:91:f0:d8:23:8f:69:03"
       - deploy:
           name: Deploy
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              ./script/heroku_deploy bearden-staging
+              .circleci/heroku_deploy bearden-staging
             elif [ "${CIRCLE_BRANCH}" == "release" ]; then
-              ./script/heroku_deploy bearden-production
+              .circleci/heroku_deploy bearden-production
             fi
