@@ -16,8 +16,10 @@ namespace :temporary do
             .where(city: nil)
 
           locations.each do |location|
-            location.update_attribute(:city, data['locality'])
-            puts "Updated Location(#{location.id}): City: #{data['locality']} from RawInput(#{raw_input.id})"
+            PaperTrail.track_changes_with('PR#274') do
+              location.update_attribute(:city, data['locality'])
+              puts "Updated Location(#{location.id}): City: #{data['locality']} from RawInput(#{raw_input.id})"
+            end
           end
         end
       end
