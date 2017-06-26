@@ -9,12 +9,13 @@ namespace :temporary do
       raw_inputs.each do |raw_input|
         data = raw_input.data
 
-        locations = Location
-          .where(latitude: data['latitude'])
-          .where(longitude: data['longitude'])
-          
-        locations.each do |location|
-          if data['locality'].present? && location.city.nil?
+        if data['locality'].present?
+          locations = Location
+            .where(latitude: data['latitude'])
+            .where(longitude: data['longitude'])
+            .where(city: nil)
+
+          locations.each do |location|
             location.update_attribute(:city, data['locality'])
             puts "Updated Location(#{location.id}): City: #{data['locality']} from RawInput(#{raw_input.id})"
           end
