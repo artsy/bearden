@@ -1,0 +1,17 @@
+machine:
+  ruby:
+    version: 2.4.1
+
+test:
+  override:
+    - bundle exec rake
+
+deployment:
+  staging:
+    branch: master
+    commands:
+      - './script/heroku_deploy bearden-staging'
+  production:
+    branch: release
+    commands:
+      - './script/heroku_deploy bearden-production'
