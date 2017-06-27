@@ -2,7 +2,7 @@
 
 ## Meta
 
-* State: development
+* State: production
 * Production: [https://bearden.artsy.net][production] | [Heroku][production_heroku]
 * Staging: [https://bearden-staging.artsy.net][staging] | [Heroku][staging_heroku]
 * GitHub: [https://github.com/artsy/bearden/][bearden]
@@ -49,7 +49,7 @@ See the Procfiles for more.
 
 PRs merged to the `master` branch are automatically deployed to staging.
 Production is automatically deployed upon merges to `release`. Create such a PR
-with [this handy link][deploy].
+with [deploy_pr][deploy_pr] or [this handy link][deploy].
 
 ## About the name Bearden
 
@@ -83,6 +83,7 @@ MIT License. See [LICENSE](LICENSE).
 [bearden]: https://github.com/artsy/bearden
 [jonallured]: https://github.com/jonallured
 [gnilekaw]: https://github.com/gnilekaw
+[deploy_pr]: https://github.com/jonallured/deploy_pr
 [deploy]: https://github.com/artsy/bearden/compare/release...master?expand=1
 [romare]: https://www.artsy.net/artist/romare-bearden
 [spiral]: https://www.artsy.net/gene/spiral-group
