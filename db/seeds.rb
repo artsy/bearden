@@ -1,5 +1,10 @@
 ranks = %i[
-  email_rank location_rank organization_name_rank phone_number_rank website_rank
+  email_rank
+  location_rank
+  organization_name_rank
+  organization_type_rank
+  phone_number_rank
+  website_rank
 ]
 
 [
