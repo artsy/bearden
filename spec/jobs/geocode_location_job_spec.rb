@@ -87,7 +87,7 @@ describe GeocodeLocationJob do
       expect(org.locations.first.country).to eq nil
       expect(org.locations.first.city).to eq nil
 
-      error = 'GeocodeLocationJob::NoResultsFound'
+      error = GeocodeLocationJob::NO_RESULTS_FOUND
       expect(org.locations.first.geocode_response).to eq error
     end
 

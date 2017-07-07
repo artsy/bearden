@@ -1,10 +1,9 @@
 class GeocodeLocationJob < ApplicationJob
-  class NoResultsFound < StandardError; end
-
-  JOB_DELAY = 0.2.seconds
   FALLBACK_COORDINATES = [0.0, 0.0].freeze
   FALLBACK_COUNTRY = nil
   FALLBACK_CITY = nil
+  JOB_DELAY = 0.2.seconds
+  NO_RESULTS_FOUND = 'NO_RESULTS_FOUND'.freeze
 
   def perform
     location = next_location
@@ -42,7 +41,7 @@ class GeocodeLocationJob < ApplicationJob
       longitude: FALLBACK_COORDINATES[1],
       country: FALLBACK_COUNTRY,
       city: FALLBACK_CITY,
-      geocode_response: NoResultsFound.to_s
+      geocode_response: NO_RESULTS_FOUND
     }
   end
 
