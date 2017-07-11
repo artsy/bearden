@@ -7,12 +7,4 @@ class Location < ApplicationRecord
 
   include Rankable
   include Auditable
-
-  def geocoded?
-    latitude.present? && longitude.present?
-  end
-
-  def geocodable?
-    content? && !geocoded?
-  end
 end

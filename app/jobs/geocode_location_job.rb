@@ -1,13 +1,14 @@
 class GeocodeLocationJob < ApplicationJob
-  JOB_DELAY = 0.2.seconds
   FALLBACK_COORDINATES = [0.0, 0.0].freeze
   FALLBACK_COUNTRY = nil
   FALLBACK_CITY = nil
+  JOB_DELAY = 0.2.seconds
+  NO_RESULTS_FOUND = 'NO_RESULTS_FOUND'.freeze
 
   def perform
     location = next_location
     return unless location
-    geocode(location) if location&.geocodable?
+    geocode(location)
     enqueue_next_job
   end
 
@@ -29,7 +30,8 @@ class GeocodeLocationJob < ApplicationJob
       latitude: result.coordinates[0],
       longitude: result.coordinates[1],
       country: result.country,
-      city: result.city
+      city: result.city,
+      geocode_response: result
     }
   end
 
@@ -38,7 +40,8 @@ class GeocodeLocationJob < ApplicationJob
       latitude: FALLBACK_COORDINATES[0],
       longitude: FALLBACK_COORDINATES[1],
       country: FALLBACK_COUNTRY,
-      city: FALLBACK_CITY
+      city: FALLBACK_CITY,
+      geocode_response: NO_RESULTS_FOUND
     }
   end
 
@@ -47,6 +50,6 @@ class GeocodeLocationJob < ApplicationJob
   end
 
   def next_location
-    Location.where('latitude IS NULL OR longitude IS NULL').first
+    Location.where(geocode_response: nil).first
   end
 end
