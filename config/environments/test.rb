@@ -6,6 +6,7 @@ Rails.application.configure do
   config.action_mailer.perform_caching = false
   # allow env to override adapter - makes testing rake tasks easier
   config.active_job.queue_adapter = ENV['TEST_JOB_ADAPTER']&.to_sym || :test
+  config.active_record.dump_schema_after_migration = false
   config.active_support.deprecation = :stderr
   config.cache_classes = true
   config.consider_all_requests_local = true
