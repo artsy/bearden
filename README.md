@@ -6,7 +6,7 @@
 * Production: [https://bearden.artsy.net][production] | [Heroku][production_heroku]
 * Staging: [https://bearden-staging.artsy.net][staging] | [Heroku][staging_heroku]
 * GitHub: [https://github.com/artsy/bearden/][bearden]
-* Point People: [@jonallured][jonallured], [@gnilekaw][gnilekaw]
+* Point People: [@jonallured][jonallured]
 
 ## Setup
 
@@ -82,7 +82,6 @@ MIT License. See [LICENSE](LICENSE).
 [staging_heroku]: https://dashboard.heroku.com/apps/bearden-staging
 [bearden]: https://github.com/artsy/bearden
 [jonallured]: https://github.com/jonallured
-[gnilekaw]: https://github.com/gnilekaw
 [deploy_pr]: https://github.com/jonallured/deploy_pr
 [deploy]: https://github.com/artsy/bearden/compare/release...master?expand=1
 [romare]: https://www.artsy.net/artist/romare-bearden
