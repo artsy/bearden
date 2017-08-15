@@ -30,6 +30,8 @@ gem 'sequel'
 gem 'sidekiq'
 gem 'slack-ruby-client'
 gem 'uglifier'
+gem 'typhoeus', '~> 0.6.8'
+gem 'estella', '~> 0.3.0'
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-tether', '>= 1.3.3'

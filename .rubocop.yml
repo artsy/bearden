@@ -30,3 +30,6 @@ Style/BracesAroundHashParameters:
 
 Rails/ReversibleMigration:
   Enabled: false
+
+Metrics/LineLength:
+  Max: 100
