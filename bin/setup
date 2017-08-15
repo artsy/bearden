@@ -44,7 +44,9 @@ if ! command -v copy_env > /dev/null; then
 fi
 
 # STEP 2
-printf "${CLEAR_LINE}[2/${STEPS}]  installing gems"
+printf "${CLEAR_LINE}[2/${STEPS}]  installing gems and their dependencies"
+brew install icu4c
+bundle config build.charlock_holmes --with-icu-dir=/usr/local/opt/icu4c
 bundle install > /dev/null
 
 # STEP 3

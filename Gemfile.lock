@@ -78,7 +78,7 @@ GEM
       carrierwave
       fog
       uuidtools
-    charlock_holmes (0.7.3)
+    charlock_holmes (0.7.5)
     choice (0.2.0)
     coderay (1.1.1)
     coffee-rails (4.2.2)
