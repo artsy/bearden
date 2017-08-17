@@ -16,7 +16,7 @@ class Organization < ApplicationRecord
   validates :in_business, inclusion: { in: [CLOSED, OPEN, UNKNOWN] }
 
   include Auditable
-  include Estella::Searchable
+  include Searchable
 
   searchable do
     field :id, type: 'integer'
