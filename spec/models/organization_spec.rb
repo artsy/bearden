@@ -118,9 +118,6 @@ describe Organization do
       it 'includes organization names and makes them searchable' do
         expect(Organization.estella_search(term: 'quux')).to eq([@org])
       end
-      it 'includes organization names and makes them searchable' do
-        expect(Organization.estella_search(term: 'quux')).to eq([@org])
-      end
       it 'includes website urls and makes them searchable' do
         expect(Organization.estella_search(term: 'www.example')).to eq([@org])
       end

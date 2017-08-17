@@ -25,37 +25,33 @@ class Organization < ApplicationRecord
     field :website, using: :website_urls, type: 'string', analysis: FULLTEXT_ANALYSIS, factor: 0.5
     field :city, using: :cities, type: 'string', analysis: FULLTEXT_ANALYSIS, factor: 0.5
     field :country, using: :countries, type: 'string', analysis: FULLTEXT_ANALYSIS, factor: 0.5
-    field :visible_to_public, type: 'boolean'
+    field :visible_to_public, type: 'boolean', using: -> { true }
     field :search_boost, type: 'integer'
     boost :search_boost, modifier: 'log2p', factor: 5E-4, max: 0.5
   end
 
   def names
-    organization_names.map(&:content)
+    organization_names.pluck(:content)
   end
 
   def tags
     organization_tags.map { |t| t.tag.name }
   end
 
-  def search_boost
-    locations.size
-  end
-
-  def visible_to_public
-    true
-  end
-
   def website_urls
-    websites.map(&:content)
+    websites.pluck(:content)
   end
 
   def cities
-    locations.map(&:city)
+    locations.pluck(:city)
   end
 
   def countries
-    locations.map(&:country)
+    locations.pluck(:country)
+  end
+
+  def search_boost
+    locations.size
   end
 
   def contributing_sources
