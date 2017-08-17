@@ -37,6 +37,7 @@ class RawInputChanges
       apply_tags
       save_relations
       check_errors
+      search_reindex
     end
   end
 
@@ -83,5 +84,9 @@ class RawInputChanges
     end
 
     raise InvalidData if @error_details.any?
+  end
+
+  def search_reindex
+    @organization.delay_es_index
   end
 end
