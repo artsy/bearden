@@ -3,7 +3,7 @@
 # Exit if any subcommand fails
 set -e
 
-STEPS=7
+STEPS=8
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -25,6 +25,13 @@ if ! command -v psql > /dev/null; then
   printf "${CLEAR_LINE}${RED}  You must install postgres before setup can continue${NO_COLOR}\n"
   printf "    You should:\n"
   printf "      $ brew install postgresql\n"
+  exit -1
+fi
+
+if ! command -v elasticsearch > /dev/null; then
+  printf "${CLEAR_LINE}${RED}  You must install elasticsearch before setup can continue${NO_COLOR}\n"
+  printf "    You should:\n"
+  printf "      $ brew install elasticsearch\n"
   exit -1
 fi
 
@@ -71,6 +78,10 @@ bundle exec rake db:create db:migrate db:seed > /dev/null
 printf "${CLEAR_LINE}[7/${STEPS}]  Rubocop pre-commit hook"
 cp lib/assets/pre-commit .git/hooks/pre-commit
 chmod 755 .git/hooks/pre-commit
+
+# STEP 8
+printf "${CLEAR_LINE}[8/${STEPS}]  Starting Elasticsearch server"
+brew services start elasticsearch
 
 # FINISH
 printf "${CLEAR_LINE}[${STEPS}/${STEPS}]${GREEN}  finished!${NO_COLOR}\n"
