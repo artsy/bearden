@@ -21,7 +21,7 @@ class Organization < ApplicationRecord
   searchable do
     field :id, type: 'integer'
     field :name, using: :names, type: 'string', analysis: FULLTEXT_ANALYSIS, factor: 1.0
-    field :tag, using: :tags, type: 'string', analysis: FULLTEXT_ANALYSIS, factor: 0.5
+    field :tag, using: :tag_names, type: 'string', analysis: FULLTEXT_ANALYSIS, factor: 0.5
     field :website, using: :website_urls, type: 'string', analysis: FULLTEXT_ANALYSIS, factor: 0.5
     field :city, using: :cities, type: 'string', analysis: FULLTEXT_ANALYSIS, factor: 0.5
     field :country, using: :countries, type: 'string', analysis: FULLTEXT_ANALYSIS, factor: 0.5
@@ -34,7 +34,7 @@ class Organization < ApplicationRecord
     organization_names.pluck(:content)
   end
 
-  def tags
+  def tag_names
     organization_tags.map { |t| t.tag.name }
   end
 
