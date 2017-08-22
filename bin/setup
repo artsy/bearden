@@ -31,7 +31,7 @@ fi
 if ! command -v elasticsearch > /dev/null; then
   printf "${CLEAR_LINE}${RED}  You must install elasticsearch before setup can continue${NO_COLOR}\n"
   printf "    You should:\n"
-  printf "      $ brew install elasticsearch\n"
+  printf "      $ brew install elasticsearch@2.4\n"
   exit -1
 fi
 
