@@ -95,5 +95,32 @@ describe Organization do
         expect(sources).to match_array([source1, source2, source3])
       end
     end
+    context 'search indexing' do
+      let(:org) { Fabricate :organization }
+      before do
+        Organization.recreate_index!
+        org.locations.create! content: 'Berlin, Germany', city: 'Berlin', country: 'Germany'
+        tag = Fabricate :tag, name: 'fooy'
+        ot = Fabricate :organization_tag, organization: org, tag: tag
+        org.organization_tags << ot
+        org.websites.create! content: 'http://www.example.com'
+        org.organization_names.create! content: 'Quux Gallery'
+        org.save!
+        Organization.refresh_index!
+      end
+      it 'includes organization locations and makes them searchable' do
+        expect(Organization.estella_search(term: 'berlin')).to eq([org])
+        expect(Organization.estella_search(term: 'germany')).to eq([org])
+      end
+      it 'includes tags and makes them searchable' do
+        expect(Organization.estella_search(term: 'foo')).to eq([org])
+      end
+      it 'includes organization names and makes them searchable' do
+        expect(Organization.estella_search(term: 'quux')).to eq([org])
+      end
+      it 'includes website urls and makes them searchable' do
+        expect(Organization.estella_search(term: 'www.example')).to eq([org])
+      end
+    end
   end
 end
