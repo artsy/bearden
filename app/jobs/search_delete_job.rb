@@ -1,4 +1,6 @@
-class SearchDeleteJob < ApplicationJob
+class SearchDeleteJob
+  include Sidekiq::Worker
+
   def perform(klass, id)
     obj = klass.constantize.find(id)
     return unless obj
