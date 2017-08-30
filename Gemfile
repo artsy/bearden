@@ -9,7 +9,7 @@ gem 'puma'
 # rubocop:enable Bundler/OrderedGems
 
 gem 'artsy-auth'
-gem 'aws-sdk'
+gem 'aws-sdk-s3'
 gem 'bootstrap', '~> 4.0.0.alpha6'
 gem 'carrierwave_direct'
 gem 'charlock_holmes'
