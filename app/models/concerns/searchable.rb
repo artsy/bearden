@@ -17,10 +17,10 @@ module Searchable
   end
 
   def delay_es_index
-    SearchIndexJob.new.perform(self.class.name, id)
+    SearchIndexJob.perform_async(self.class.name, id)
   end
 
   def delay_es_delete
-    SearchDeleteJob.new.perform(self.class.name, id)
+    SearchDeleteJob.perform_async(self.class.name, id)
   end
 end
