@@ -40,27 +40,33 @@ GEM
       i18n (~> 0.7)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
-    addressable (2.5.1)
-      public_suffix (~> 2.0, >= 2.0.2)
+    addressable (2.5.2)
+      public_suffix (>= 2.0.2, < 4.0)
     arel (8.0.0)
     artsy-auth (0.1.8)
       omniauth-artsy (>= 0.2.2)
       omniauth-oauth2
       rails (>= 4.2.0)
     ast (2.3.0)
-    autoprefixer-rails (7.1.2.4)
+    autoprefixer-rails (7.1.3)
       execjs
-    aws-sdk (2.10.22)
-      aws-sdk-resources (= 2.10.22)
-    aws-sdk-core (2.10.22)
+    aws-partitions (1.16.0)
+    aws-sdk-core (3.0.0)
+      aws-partitions (~> 1.0)
       aws-sigv4 (~> 1.0)
       jmespath (~> 1.0)
-    aws-sdk-resources (2.10.22)
-      aws-sdk-core (= 2.10.22)
+    aws-sdk-kms (1.0.0)
+      aws-sdk-core (~> 3)
+      aws-sigv4 (~> 1.0)
+    aws-sdk-s3 (1.0.0)
+      aws-sdk-core (~> 3)
+      aws-sdk-kms (~> 1)
+      aws-sigv4 (~> 1.0)
     aws-sigv4 (1.0.1)
     bindex (0.5.0)
-    bootstrap (4.0.0.alpha6)
+    bootstrap (4.0.0.beta)
       autoprefixer-rails (>= 6.0.3)
+      popper_js (~> 1.11.1)
       sass (>= 3.4.19)
     builder (3.2.3)
     capybara (2.15.1)
@@ -78,7 +84,7 @@ GEM
       carrierwave
       fog
       uuidtools
-    charlock_holmes (0.7.3)
+    charlock_holmes (0.7.5)
     choice (0.2.0)
     coderay (1.1.1)
     coffee-rails (4.2.2)
@@ -100,10 +106,28 @@ GEM
     dotenv-rails (2.2.1)
       dotenv (= 2.2.1)
       railties (>= 3.2, < 5.2)
+    elasticsearch (5.0.4)
+      elasticsearch-api (= 5.0.4)
+      elasticsearch-transport (= 5.0.4)
+    elasticsearch-api (5.0.4)
+      multi_json
+    elasticsearch-model (5.0.1)
+      activesupport (> 3)
+      elasticsearch (~> 5)
+      hashie
+    elasticsearch-transport (5.0.4)
+      faraday
+      multi_json
     erubi (1.6.1)
+    estella (0.3.0)
+      activemodel
+      activesupport
+      elasticsearch-model
+    ethon (0.10.1)
+      ffi (>= 1.3.0)
     excon (0.58.0)
     execjs (2.7.0)
-    fabrication (2.16.2)
+    fabrication (2.16.3)
     faraday (0.12.2)
       multipart-post (>= 1.2, < 3)
     faraday_middleware (0.12.2)
@@ -153,7 +177,7 @@ GEM
     fog-atmos (0.1.0)
       fog-core
       fog-xml
-    fog-aws (1.4.0)
+    fog-aws (1.4.1)
       fog-core (~> 1.38)
       fog-json (~> 1.0)
       fog-xml (~> 0.1)
@@ -210,7 +234,7 @@ GEM
       fog-core (~> 1.27)
       fog-json (~> 1.0)
       fog-xml (~> 0.1)
-    fog-profitbricks (3.0.0)
+    fog-profitbricks (4.0.0)
       fog-core (~> 1.42)
       fog-json (~> 1.0)
     fog-rackspace (0.1.5)
@@ -247,7 +271,7 @@ GEM
     fog-voxel (0.1.0)
       fog-core
       fog-xml
-    fog-vsphere (1.11.3)
+    fog-vsphere (1.12.0)
       fog-core
       rbvmomi (~> 1.9)
     fog-xenserver (0.3.0)
@@ -266,7 +290,7 @@ GEM
     haml (5.0.2)
       temple (>= 0.8.0)
       tilt
-    hashdiff (0.3.5)
+    hashdiff (0.3.6)
     hashie (3.5.6)
     i18n (0.8.6)
     inflecto (0.0.2)
@@ -290,11 +314,11 @@ GEM
     mail (2.6.6)
       mime-types (>= 1.16, < 4)
     method_source (0.8.2)
-    micromachine (2.1.0)
+    micromachine (3.0.0)
     mime-types (3.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
-    mini_mime (0.1.3)
+    mini_mime (0.1.4)
     mini_portile2 (2.2.0)
     minitest (5.10.3)
     multi_json (1.12.1)
@@ -317,7 +341,7 @@ GEM
     omniauth-oauth2 (1.4.0)
       oauth2 (~> 1.0)
       omniauth (~> 1.2)
-    paper_trail (7.1.0)
+    paper_trail (7.1.1)
       activerecord (>= 4.0, < 5.2)
       request_store (~> 1.1)
     paper_trail-globalid (0.2.0)
@@ -327,6 +351,7 @@ GEM
     parser (2.4.0.0)
       ast (~> 2.2)
     pg (0.21.0)
+    popper_js (1.11.1)
     powerpack (0.1.1)
     pry (0.10.4)
       coderay (~> 1.1.0)
@@ -334,8 +359,8 @@ GEM
       slop (~> 3.4)
     pry-rails (0.3.6)
       pry (>= 0.10.4)
-    public_suffix (2.0.5)
-    puma (3.9.1)
+    public_suffix (3.0.0)
+    puma (3.10.0)
     rack (2.0.3)
     rack-protection (2.0.0)
       rack
@@ -391,7 +416,7 @@ GEM
     rspec-mocks (3.6.0)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.6.0)
-    rspec-rails (3.6.0)
+    rspec-rails (3.6.1)
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       railties (>= 3.0)
@@ -430,7 +455,7 @@ GEM
       connection_pool (~> 2.2, >= 2.2.0)
       rack-protection (>= 1.5.0)
       redis (~> 3.3, >= 3.3.3)
-    slack-ruby-client (0.9.0)
+    slack-ruby-client (0.9.1)
       activesupport
       faraday (>= 0.9)
       faraday_middleware
@@ -456,6 +481,8 @@ GEM
     thread_safe (0.3.6)
     tilt (2.0.8)
     trollop (2.1.2)
+    typhoeus (0.6.9)
+      ethon (>= 0.7.1)
     tzinfo (1.2.3)
       thread_safe (~> 0.1)
     uglifier (3.2.0)
@@ -483,7 +510,7 @@ PLATFORMS
 
 DEPENDENCIES
   artsy-auth
-  aws-sdk
+  aws-sdk-s3
   bootstrap (~> 4.0.0.alpha6)
   capybara
   carrierwave_direct
@@ -492,6 +519,7 @@ DEPENDENCIES
   database_cleaner
   decent_exposure
   dotenv-rails
+  estella (~> 0.3.0)
   fabrication
   faraday
   foreman
@@ -518,6 +546,7 @@ DEPENDENCIES
   slack-ruby-client
   spring
   spring-watcher-listen
+  typhoeus (~> 0.6.8)
   uglifier
   web-console
   webmock
@@ -526,4 +555,4 @@ RUBY VERSION
    ruby 2.4.1p111
 
 BUNDLED WITH
-   1.15.3
+   1.15.4

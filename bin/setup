@@ -3,7 +3,7 @@
 # Exit if any subcommand fails
 set -e
 
-STEPS=7
+STEPS=8
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -28,6 +28,13 @@ if ! command -v psql > /dev/null; then
   exit -1
 fi
 
+if ! command -v elasticsearch > /dev/null; then
+  printf "${CLEAR_LINE}${RED}  You must install elasticsearch before setup can continue${NO_COLOR}\n"
+  printf "    You should:\n"
+  printf "      $ brew install elasticsearch@2.4\n"
+  exit -1
+fi
+
 if ! command -v bundler > /dev/null; then
   printf "${CLEAR_LINE}${RED}  You must install bundler before setup can continue${NO_COLOR}\n"
   printf "    You should:\n"
@@ -44,7 +51,9 @@ if ! command -v copy_env > /dev/null; then
 fi
 
 # STEP 2
-printf "${CLEAR_LINE}[2/${STEPS}]  installing gems"
+printf "${CLEAR_LINE}[2/${STEPS}]  installing gems and their dependencies"
+brew install icu4c
+bundle config build.charlock_holmes --with-icu-dir=/usr/local/opt/icu4c
 bundle install > /dev/null
 
 # STEP 3
@@ -69,6 +78,10 @@ bundle exec rake db:create db:migrate db:seed > /dev/null
 printf "${CLEAR_LINE}[7/${STEPS}]  Rubocop pre-commit hook"
 cp lib/assets/pre-commit .git/hooks/pre-commit
 chmod 755 .git/hooks/pre-commit
+
+# STEP 8
+printf "${CLEAR_LINE}[8/${STEPS}]  Starting Elasticsearch server"
+brew services start elasticsearch
 
 # FINISH
 printf "${CLEAR_LINE}[${STEPS}/${STEPS}]${GREEN}  finished!${NO_COLOR}\n"

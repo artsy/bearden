@@ -16,6 +16,43 @@ class Organization < ApplicationRecord
   validates :in_business, inclusion: { in: [CLOSED, OPEN, UNKNOWN] }
 
   include Auditable
+  include Searchable
+
+  searchable do
+    field :id, type: 'integer'
+    field :name, using: :names, type: 'string', analysis: FULLTEXT_ANALYSIS, factor: 1.0
+    field :tag, using: :tag_names, type: 'string', analysis: FULLTEXT_ANALYSIS, factor: 0.5
+    field :website, using: :website_urls, type: 'string', analysis: FULLTEXT_ANALYSIS, factor: 0.5
+    field :city, using: :cities, type: 'string', analysis: FULLTEXT_ANALYSIS, factor: 0.5
+    field :country, using: :countries, type: 'string', analysis: FULLTEXT_ANALYSIS, factor: 0.5
+    field :visible_to_public, type: 'boolean', using: -> { true }
+    field :search_boost, type: 'integer'
+    boost :search_boost, modifier: 'log2p', factor: 5E-4, max: 0.5
+  end
+
+  def names
+    organization_names.pluck(:content)
+  end
+
+  def tag_names
+    organization_tags.map { |t| t.tag.name }
+  end
+
+  def website_urls
+    websites.pluck(:content)
+  end
+
+  def cities
+    locations.pluck(:city)
+  end
+
+  def countries
+    locations.pluck(:country)
+  end
+
+  def search_boost
+    locations.size
+  end
 
   def contributing_sources
     sources = self.sources

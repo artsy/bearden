@@ -9,12 +9,13 @@ gem 'puma'
 # rubocop:enable Bundler/OrderedGems
 
 gem 'artsy-auth'
-gem 'aws-sdk'
+gem 'aws-sdk-s3'
 gem 'bootstrap', '~> 4.0.0.alpha6'
 gem 'carrierwave_direct'
 gem 'charlock_holmes'
 gem 'coffee-rails'
 gem 'decent_exposure'
+gem 'estella', '~> 0.3.0'
 gem 'faraday'
 gem 'foreman'
 gem 'geocoder'
@@ -29,6 +30,7 @@ gem 'sentry-raven'
 gem 'sequel'
 gem 'sidekiq'
 gem 'slack-ruby-client'
+gem 'typhoeus', '~> 0.6.8'
 gem 'uglifier'
 
 source 'https://rails-assets.org' do

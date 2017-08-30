@@ -52,7 +52,7 @@ class Import < ApplicationRecord
     @machine ||= ImportMicroMachine.start(state, method(:update_state))
   end
 
-  def update_state(_)
+  def update_state(_, _)
     update_attributes state: machine.state
   end
 end
