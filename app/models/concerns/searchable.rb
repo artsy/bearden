@@ -5,7 +5,7 @@ module Searchable
   include Estella::Searchable
 
   included do
-    index_name [name.downcase.pluralize, Rails.env].join('_')
+    index_name [name.downcase.pluralize, Rails.application.secrets.elasticsearch_env].join('_')
 
     # disable estella inline indexing
     skip_callback(:save, :after, :es_index)
