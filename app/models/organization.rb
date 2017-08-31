@@ -62,6 +62,20 @@ class Organization < ApplicationRecord
     sources.flatten.uniq
   end
 
+  def as_json(params)
+    {
+      names: names,
+      tags: tag_names,
+      websites: website_urls,
+      cities: cities,
+      countries: countries,
+      id: id,
+      created_at: created_at,
+      updated_at: updated_at,
+      in_business: in_business
+    }
+  end
+
   private
 
   def auditable_relations
