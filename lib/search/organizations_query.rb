@@ -1,11 +1,7 @@
 module Search
   class OrganizationsQuery < Estella::Query
-    def initialize(params)
-      super
-      add_term_query
-      add_field_boost
-    end
-
+    # restrict query to names with an emphasis on auto-complete.
+    # rubocop:disable Metrics/MethodLength
     def query_definition
       {
         bool: {

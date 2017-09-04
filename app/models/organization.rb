@@ -30,6 +30,10 @@ class Organization < ApplicationRecord
     boost :search_boost, modifier: 'log2p', factor: 5E-4, max: 0.5
   end
 
+  def self.estella_search_query
+    Search::OrganizationsQuery
+  end
+
   def names
     organization_names.pluck(:content)
   end
@@ -62,7 +66,8 @@ class Organization < ApplicationRecord
     sources.flatten.uniq
   end
 
-  def as_json(params)
+  # rubocop:disable Metrics/MethodLength
+  def as_json(_)
     {
       names: names,
       tags: tag_names,
