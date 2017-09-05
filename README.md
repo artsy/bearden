@@ -53,15 +53,21 @@ with [deploy_pr][deploy_pr] or [this handy link][deploy].
 
 ## API
 
-Trusted apps may use the Bearden API using [JWT](https://jwt.io/) authentication. You will need to obtain the JWT secret for Bearden, please ask a Bearden developer for this. Once in possession of the secret, you need to encode a JWT token using the [JWT gem](https://github.com/jwt/ruby-jwt):
+Trusted apps may use the Bearden API using [JWT](https://jwt.io/) authentication. You will need to obtain a JWT for Bearden from a Gravity console:
 
 ```ruby
-payload =  { aud: '<your app name>' }
-token = JWT.encode payload, Bearden.config.jwt_secret, 'HS256'
-headers = { 'Authorization' => "Bearer #{token}" }
+# in a gravity console
+app = ClientApplication.where(name: 'Bearden').first
+expires_in = 20.years.from_now
+token = ApplicationTrust.create_for_token_authentication(app, expires_in: expires_in)
+puts token
 ```
 
-And send this in the HTTP `Authorization` header. Your app name will need to be added to Bearden as a trusted app.
+Once in possession of the token, send it in your requests to Bearden:
+
+```ruby
+headers = { 'Authorization' => "Bearer #{token}" }
+```
 
 ## About the name Bearden
 

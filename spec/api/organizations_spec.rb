@@ -3,7 +3,12 @@ require 'rails_helper'
 describe Organizations::API, type: :request do
   let(:org) { Fabricate :organization }
   let(:org2) { Fabricate :organization }
-  let(:jwt_token) { JWT.encode({ aud: 'bearden' }, Rails.application.secrets.jwt_secret) }
+  let(:jwt_token) do
+    JWT.encode(
+      { aud: Rails.application.secrets.artsy_application_id },
+      Rails.application.secrets.artsy_internal_secret
+    )
+  end
   let(:headers) { { 'Authorization' => "Bearer #{jwt_token}" } }
   before do
     Organization.recreate_index!

@@ -2,8 +2,6 @@ module Authentication
   module Helpers
     extend ActiveSupport::Concern
 
-    TRUSTED_APPS = %w[volt bearden].freeze
-
     included do
       use Middleware::JwtMiddleware
       rescue_from JWT::DecodeError do |_e|
@@ -16,10 +14,10 @@ module Authentication
 
       helpers do
         # Require that signature is valid by decoding payload w/ secret.
-        # It must have an 'aud' attribute containing the name of a trusted app.
+        # It must have an 'aud' attribute containing the Bearden app id.
         # The API grants full access to these requests.
         def authenticate_app!
-          return if TRUSTED_APPS.include?(client_app)
+          return if current_app == Rails.application.secrets.artsy_application_id
           error!('Unauthorized', 401)
         end
 
@@ -27,8 +25,8 @@ module Authentication
           @jwt_payload ||= env['JWT_PAYLOAD']
         end
 
-        def client_app
-          @client_app ||= jwt_payload&.fetch('aud', nil)
+        def current_app
+          @current_app ||= jwt_payload&.fetch('aud', nil)
         end
       end
     end
