@@ -2,7 +2,6 @@ require 'typhoeus/adapters/faraday'
 
 Elasticsearch::Model.client = Elasticsearch::Client.new(
   url: Rails.application.secrets.elasticsearch_url,
-  log: 'trace',
   transport_options: {
     request: {
       timeout: ENV['ELASTICSEARCH_READ_TIMEOUT'].to_i || 30,

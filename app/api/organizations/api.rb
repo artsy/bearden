@@ -3,6 +3,8 @@ module Organizations
     version 'v1', using: :path
     format :json
 
+    include Authentication::Helpers
+
     namespace :organizations do
       desc 'auto-complete organization names'
       params do

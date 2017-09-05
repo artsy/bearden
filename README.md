@@ -51,6 +51,18 @@ PRs merged to the `master` branch are automatically deployed to staging.
 Production is automatically deployed upon merges to `release`. Create such a PR
 with [deploy_pr][deploy_pr] or [this handy link][deploy].
 
+## API
+
+Trusted apps may use the Bearden API using [JWT](https://jwt.io/) authentication. You will need to obtain the JWT secret for Bearden, please ask a Bearden developer for this. Once in possession of the secret, you need to encode a JWT token using the [JWT gem](https://github.com/jwt/ruby-jwt):
+
+```ruby
+payload =  { aud: '<your app name>' }
+token = JWT.encode payload, Bearden.config.jwt_secret, 'HS256'
+headers = { 'Authorization' => "Bearer #{token}" }
+```
+
+And send this in the HTTP `Authorization` header. Your app name will need to be added to Bearden as a trusted app.
+
 ## About the name Bearden
 
 For its ability to "collage" together different data sources, this project was

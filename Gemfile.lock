@@ -558,6 +558,7 @@ DEPENDENCIES
   haml
   jbuilder
   jquery-rails
+  jwt
   listen
   micromachine
   paper_trail
