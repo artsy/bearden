@@ -546,7 +546,7 @@ DEPENDENCIES
   database_cleaner
   decent_exposure
   dotenv-rails
-  estella (~> 0.3.0)
+  estella
   fabrication
   faraday
   foreman
@@ -575,7 +575,7 @@ DEPENDENCIES
   slack-ruby-client
   spring
   spring-watcher-listen
-  typhoeus (~> 0.6.8)
+  typhoeus
   uglifier
   web-console
   webmock
