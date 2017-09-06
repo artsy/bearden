@@ -43,13 +43,13 @@ instead:
 $ foreman start -f Procfile.dev
 ```
 
-See the Procfiles for more.
+See the Procfile examples for more.
 
 ## Deploying
 
 PRs merged to the `master` branch are automatically deployed to staging.
 Production is automatically deployed upon merges to `release`. Create such a PR
-with [deploy_pr][deploy_pr] or [this handy link][deploy].
+with [`deploy_pr`][deploy_pr] or [this handy link][deploy].
 
 ## About the name Bearden
 
