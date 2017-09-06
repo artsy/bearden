@@ -31,7 +31,7 @@ Once setup, you can run the tests like this:
 $ bundle exec rake spec
 ```
 
-Note: the default rake task is setup to run tests and Rubocop.
+Note: the default rake task is setup to run tests and RuboCop.
 
 ## Starting Server
 
@@ -76,9 +76,9 @@ MIT License. See [LICENSE](LICENSE).
 
 [badge]: https://circleci.com/gh/artsy/bearden.svg?style=svg&circle-token=d5dcd30a0660190450379057eead64bbb53e00b8
 [circleci]: https://circleci.com/gh/artsy/bearden/
-[production]: https://bearden.artsy.com
+[production]: https://bearden.artsy.net
 [production_heroku]: https://dashboard.heroku.com/apps/bearden-production
-[staging]: https://bearden-staging.artsy.com
+[staging]: https://bearden-staging.artsy.net
 [staging_heroku]: https://dashboard.heroku.com/apps/bearden-staging
 [bearden]: https://github.com/artsy/bearden
 [jonallured]: https://github.com/jonallured
