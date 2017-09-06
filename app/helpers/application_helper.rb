@@ -4,6 +4,7 @@ module ApplicationHelper
 
     navigation_elements = {
       imports: imports_path,
+      syncs: syncs_path,
       sources: sources_path,
       tags: tags_path,
       types: types_path
