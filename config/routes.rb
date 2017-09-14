@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   scope :v1, module: 'api/v1' do
     get :ping, to: 'ping#show'
+    get :search, to: 'search#index'
   end
 
   require 'sidekiq/web'

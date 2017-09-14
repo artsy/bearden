@@ -66,6 +66,7 @@ class Organization < ApplicationRecord
     sources.flatten.uniq
   end
 
+  # i think this should be removed
   # rubocop:disable Metrics/MethodLength
   def as_json(_)
     {

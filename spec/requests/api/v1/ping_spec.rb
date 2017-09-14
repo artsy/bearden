@@ -5,6 +5,6 @@ describe 'GET /v1/ping' do
     get '/v1/ping'
 
     expect(response.code).to eq '200'
-    expect(JSON.parse(response.body)).to eq({"timestamp" => Time.now.to_i})
+    expect(JSON.parse(response.body)).to eq({ 'timestamp' => Time.now.to_i })
   end
 end

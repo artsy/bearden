@@ -4,6 +4,10 @@ AllCops:
     - 'vendor/**/*'
     - 'lib/tasks/temporary/*.rake'
 
+Style/ClassAndModuleChildren:
+  Exclude:
+    - 'app/controllers/api/**/*'
+
 Metrics/AbcSize:
   Exclude:
     - 'db/migrate/*'
