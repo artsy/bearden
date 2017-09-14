@@ -27,7 +27,7 @@ RSpec.configure do |config|
   end
 
   config.before(:each, type: :feature) do
-    allow_any_instance_of(ApplicationController).to(
+    allow_any_instance_of(AdminController).to(
       receive(:require_artsy_authentication)
     )
     allow(SlackBot).to receive(:post)

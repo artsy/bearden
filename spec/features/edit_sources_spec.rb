@@ -12,7 +12,7 @@ feature 'Edit Source' do
     scenario 'Admins have access to edit a source' do
       Fabricate(:source)
 
-      allow_any_instance_of(ApplicationController)
+      allow_any_instance_of(AdminController)
         .to receive(:decode_user).and_return(
           {
             uid: 'foo',
@@ -25,7 +25,7 @@ feature 'Edit Source' do
     end
 
     scenario 'the options do not include "Add to end"' do
-      allow_any_instance_of(ApplicationController)
+      allow_any_instance_of(AdminController)
         .to receive(:decode_user).and_return(
           {
             uid: 'foo',
@@ -49,7 +49,7 @@ feature 'Edit Source' do
     end
 
     scenario 'Admins can rank a source to last' do
-      allow_any_instance_of(ApplicationController)
+      allow_any_instance_of(AdminController)
         .to receive(:decode_user).and_return(
           {
             uid: 'foo',
