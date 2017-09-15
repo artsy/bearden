@@ -23,7 +23,7 @@ class RawInputChanges
   def apply
     apply_raw_input
     @raw_input.record_result @state, @organization
-  rescue => e
+  rescue => e # rubocop:disable Lint/RescueWithoutErrorClass
     @raw_input.record_error e, @error_details
   end
 

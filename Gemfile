@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 ruby '2.4.1'
 
 # rubocop:disable Bundler/OrderedGems
-gem 'rails', '5.1.3'
+gem 'rails', '5.1.4'
 gem 'pg'
 gem 'puma'
 # rubocop:enable Bundler/OrderedGems
@@ -15,7 +15,7 @@ gem 'carrierwave_direct'
 gem 'charlock_holmes'
 gem 'coffee-rails'
 gem 'decent_exposure'
-gem 'estella', '~> 0.3.0'
+gem 'estella'
 gem 'faraday'
 gem 'foreman'
 gem 'geocoder'
@@ -32,7 +32,7 @@ gem 'sentry-raven'
 gem 'sequel'
 gem 'sidekiq'
 gem 'slack-ruby-client'
-gem 'typhoeus', '~> 0.6.8'
+gem 'typhoeus'
 gem 'uglifier'
 
 source 'https://rails-assets.org' do

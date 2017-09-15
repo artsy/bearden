@@ -3,14 +3,14 @@ class Organization < ApplicationRecord
   OPEN = 'open'.freeze
   UNKNOWN = 'unknown'.freeze
 
-  has_many :emails
-  has_many :locations
-  has_many :organization_names
-  has_many :organization_tags
-  has_many :organization_types
-  has_many :phone_numbers
-  has_many :tags, through: :organization_tags
-  has_many :websites
+  has_many :emails, dependent: :restrict_with_exception
+  has_many :locations, dependent: :restrict_with_exception
+  has_many :organization_names, dependent: :restrict_with_exception
+  has_many :organization_tags, dependent: :restrict_with_exception
+  has_many :organization_types, dependent: :restrict_with_exception
+  has_many :phone_numbers, dependent: :restrict_with_exception
+  has_many :tags, through: :organization_tags, dependent: :restrict_with_exception
+  has_many :websites, dependent: :restrict_with_exception
 
   before_validation :ensure_in_business_value
   validates :in_business, inclusion: { in: [CLOSED, OPEN, UNKNOWN] }
@@ -91,7 +91,7 @@ class Organization < ApplicationRecord
     end
 
     relations.map do |name, klass|
-      name if klass && klass.ancestors.include?(Auditable)
+      name if klass&.ancestors&.include?(Auditable)
     end.compact
   end
 
