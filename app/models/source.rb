@@ -1,6 +1,6 @@
 class Source < ApplicationRecord
   class UnknownRankType < StandardError; end
-  has_many :imports
+  has_many :imports, dependent: :restrict_with_exception
 
   validates :name, presence: true, uniqueness: true
   validates :email_rank, presence: true, uniqueness: true

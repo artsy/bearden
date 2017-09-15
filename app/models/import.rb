@@ -2,7 +2,7 @@ class Import < ApplicationRecord
   mount_uploader :file_identifier, S3Uploader
 
   belongs_to :source
-  has_many :raw_inputs
+  has_many :raw_inputs, dependent: :restrict_with_exception
 
   validates :source, presence: true
   validates :state, presence: true, inclusion: ImportMicroMachine.valid_states
