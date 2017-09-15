@@ -90,33 +90,73 @@ describe Organization do
       end
     end
   end
-  context 'search indexing' do
-    let(:org) { Fabricate :organization }
+
+  context 'searching by name' do
+    let(:organization) { Fabricate :organization }
+
     before do
       Organization.recreate_index!
-      org.locations.create! content: 'Berlin, Germany', city: 'Berlin', country: 'Germany'
-      tag = Fabricate :tag, name: 'fooy'
-      ot = Fabricate :organization_tag, organization: org, tag: tag
-      org.organization_tags << ot
-      org.websites.create! content: 'http://www.example.com'
-      org.organization_names.create! content: 'Quux Gallery'
-      org.save!
+
+      Fabricate(
+        :organization_name,
+        organization: organization,
+        content: 'Quux Gallery'
+      )
+
+      organization.es_index
       Organization.refresh_index!
       # using the default estella query
-      expect(Organization).to receive(:estella_search_query).at_least(:once).and_return(Estella::Query)
+      allow(Organization).to receive(:estella_search_query).and_return(Estella::Query)
     end
-    it 'includes organization locations and makes them searchable' do
-      expect(Organization.estella_search(term: 'berlin')).to eq([org])
-      expect(Organization.estella_search(term: 'germany')).to eq([org])
-    end
-    it 'includes tags and makes them searchable' do
-      expect(Organization.estella_search(term: 'foo')).to eq([org])
-    end
+
     it 'includes organization names and makes them searchable' do
-      expect(Organization.estella_search(term: 'quux')).to eq([org])
+      expect(Organization.estella_search(term: 'quux')).to eq([organization])
     end
+  end
+
+  context 'searching by other organization details' do
+    let(:organization) { Fabricate :organization }
+
+    before do
+      Organization.recreate_index!
+
+      Fabricate(
+        :location,
+        organization: organization,
+        content: 'Berlin, Germany',
+        city: 'Berlin',
+        country: 'Germany'
+      )
+
+      Fabricate(
+        :organization_tag,
+        organization: organization,
+        tag: Fabricate(:tag, name: 'fooy')
+      )
+
+      Fabricate(
+        :website,
+        organization: organization,
+        content: 'http://www.example.com'
+      )
+
+      organization.es_index
+      Organization.refresh_index!
+      # using the default estella query
+      allow(Organization).to receive(:estella_search_query).and_return(Estella::Query)
+    end
+
+    it 'includes organization locations and makes them searchable' do
+      expect(Organization.estella_search(term: 'berlin')).to eq([organization])
+      expect(Organization.estella_search(term: 'germany')).to eq([organization])
+    end
+
+    it 'includes tags and makes them searchable' do
+      expect(Organization.estella_search(term: 'foo')).to eq([organization])
+    end
+
     it 'includes website urls and makes them searchable' do
-      expect(Organization.estella_search(term: 'www.example')).to eq([org])
+      expect(Organization.estella_search(term: 'www.example')).to eq([organization])
     end
   end
 end
