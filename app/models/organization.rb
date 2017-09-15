@@ -30,6 +30,10 @@ class Organization < ApplicationRecord
     boost :search_boost, modifier: 'log2p', factor: 5E-4, max: 0.5
   end
 
+  def self.estella_search_query
+    Search::OrganizationsQuery
+  end
+
   def names
     organization_names.pluck(:content)
   end
@@ -60,6 +64,21 @@ class Organization < ApplicationRecord
       send(model_name).map(&:sources)
     end
     sources.flatten.uniq
+  end
+
+  # rubocop:disable Metrics/MethodLength
+  def as_json(_)
+    {
+      names: names,
+      tags: tag_names,
+      websites: website_urls,
+      cities: cities,
+      countries: countries,
+      id: id,
+      created_at: created_at,
+      updated_at: updated_at,
+      in_business: in_business
+    }
   end
 
   private
