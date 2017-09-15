@@ -92,25 +92,55 @@ describe Organization do
   end
 
   context 'searching by name' do
-    let(:organization) { Fabricate :organization }
+    let(:gallery) { Fabricate :organization }
+    let(:zwirner) { Fabricate :organization }
 
     before do
       Organization.recreate_index!
 
       Fabricate(
         :organization_name,
-        organization: organization,
+        organization: gallery,
         content: 'Quux Gallery'
       )
 
-      organization.es_index
+      Fabricate(
+        :organization_name,
+        organization: zwirner,
+        content: 'David Zwirner Gallery'
+      )
+
+      Organization.all.each(&:es_index)
       Organization.refresh_index!
-      # using the default estella query
-      allow(Organization).to receive(:estella_search_query).and_return(Estella::Query)
     end
 
     it 'includes organization names and makes them searchable' do
-      expect(Organization.estella_search(term: 'quux')).to eq([organization])
+      expect(Organization.estella_search(term: 'quux')).to eq([gallery])
+    end
+
+    it 'autocompletes organizations by name' do
+      expect(Organization.estella_search(term: 'quu')).to eq([gallery])
+    end
+
+    it 'uses shingle analysis' do
+      expect(Organization.estella_search(term: 'zwir')).to eq([zwirner])
+    end
+
+    it 'boosts organizations by location count' do
+      galerie = Fabricate :organization
+
+      Fabricate(
+        :organization_name,
+        organization: galerie,
+        content: 'Quux Galerie'
+      )
+
+      2.times { Fabricate :location, organization: galerie }
+
+      galerie.es_index
+      Organization.refresh_index!
+
+      expect(Organization.estella_search(term: 'quux')).to eq([galerie, gallery])
     end
   end
 
