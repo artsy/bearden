@@ -26,8 +26,6 @@ module Bearden
     config.active_support.to_time_preserves_timezone = true
     config.ssl_options = { hsts: { subdomains: true } }
 
-    config.paths.add File.join('app', 'api'), glob: File.join('**', '*.rb')
-    # config.autoload_paths += Dir[Rails.root.join('app', 'api', '*')]
-    config.eager_load_paths += [Rails.root.join('lib')]
+    config.autoload_paths << Rails.root.join('lib')
   end
 end

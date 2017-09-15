@@ -14,8 +14,6 @@ Rails.application.routes.draw do
 
   mount ArtsyAuth::Engine => '/'
 
-  mount Bearden::API => '/api'
-
   resources :imports, only: %i[create index new show]
   resources :sources, only: %i[create edit index new update]
   resources :syncs, only: :index
