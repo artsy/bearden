@@ -63,6 +63,44 @@ describe 'GET /v1/search' do
           ]
         )
       end
+
+      it 'returns no more results than the DEFAULT_SEARCH_SIZE' do
+        default_size = Api::V1::SearchController::DEFAULT_SEARCH_SIZE
+
+        Organization.recreate_index!
+
+        (default_size + 1).times do
+          organization = Fabricate :organization
+          Fabricate :organization_name, organization: organization
+          organization.es_index
+        end
+
+        Organization.refresh_index!
+
+        get '/v1/search', params: { term: 'Gallery' }, headers: headers, as: :json
+
+        response_json = JSON.parse(response.body)
+        expect(response_json.count).to eq default_size
+      end
+
+      it 'respects the size sent in from the client' do
+        default_size = Api::V1::SearchController::DEFAULT_SEARCH_SIZE
+        Organization.recreate_index!
+
+        default_size.times do
+          organization = Fabricate :organization
+          Fabricate :organization_name, organization: organization
+          organization.es_index
+        end
+
+        Organization.refresh_index!
+
+        size_override = default_size - 1
+        get '/v1/search', params: { term: 'Gallery', size: size_override }, headers: headers, as: :json
+
+        response_json = JSON.parse(response.body)
+        expect(response_json.count).to eq size_override
+      end
     end
   end
 end
