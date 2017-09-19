@@ -6,12 +6,6 @@ describe Organization do
     expect(organization.in_business).to eq Organization::UNKNOWN
   end
 
-  it 'has multiple locations' do
-    organization = Fabricate :organization
-    Fabricate.times 2, :location, organization: organization
-    expect(organization.locations.count).to eql 2
-  end
-
   context 'when records are created and updated' do
     it 'raises an error when PaperTrail.whodunnit is nil' do
       PaperTrail.whodunnit = nil
@@ -95,32 +89,104 @@ describe Organization do
         expect(sources).to match_array([source1, source2, source3])
       end
     end
-    context 'search indexing' do
-      let(:org) { Fabricate :organization }
-      before do
-        Organization.recreate_index!
-        org.locations.create! content: 'Berlin, Germany', city: 'Berlin', country: 'Germany'
-        tag = Fabricate :tag, name: 'fooy'
-        ot = Fabricate :organization_tag, organization: org, tag: tag
-        org.organization_tags << ot
-        org.websites.create! content: 'http://www.example.com'
-        org.organization_names.create! content: 'Quux Gallery'
-        org.save!
-        Organization.refresh_index!
-      end
-      it 'includes organization locations and makes them searchable' do
-        expect(Organization.estella_search(term: 'berlin')).to eq([org])
-        expect(Organization.estella_search(term: 'germany')).to eq([org])
-      end
-      it 'includes tags and makes them searchable' do
-        expect(Organization.estella_search(term: 'foo')).to eq([org])
-      end
-      it 'includes organization names and makes them searchable' do
-        expect(Organization.estella_search(term: 'quux')).to eq([org])
-      end
-      it 'includes website urls and makes them searchable' do
-        expect(Organization.estella_search(term: 'www.example')).to eq([org])
-      end
+  end
+
+  context 'searching by name' do
+    let(:gallery) { Fabricate :organization }
+    let(:zwirner) { Fabricate :organization }
+
+    before do
+      Organization.recreate_index!
+
+      Fabricate(
+        :organization_name,
+        organization: gallery,
+        content: 'Quux Gallery'
+      )
+
+      Fabricate(
+        :organization_name,
+        organization: zwirner,
+        content: 'David Zwirner Gallery'
+      )
+
+      Organization.all.each(&:es_index)
+      Organization.refresh_index!
+    end
+
+    it 'includes organization names and makes them searchable' do
+      expect(Organization.estella_search(term: 'quux')).to eq([gallery])
+    end
+
+    it 'autocompletes organizations by name' do
+      expect(Organization.estella_search(term: 'quu')).to eq([gallery])
+    end
+
+    it 'uses shingle analysis' do
+      expect(Organization.estella_search(term: 'zwir')).to eq([zwirner])
+    end
+
+    it 'boosts organizations by location count' do
+      galerie = Fabricate :organization
+
+      Fabricate(
+        :organization_name,
+        organization: galerie,
+        content: 'Quux Galerie'
+      )
+
+      2.times { Fabricate :location, organization: galerie }
+
+      galerie.es_index
+      Organization.refresh_index!
+
+      expect(Organization.estella_search(term: 'quux')).to eq([galerie, gallery])
+    end
+  end
+
+  context 'searching by other organization details' do
+    let(:organization) { Fabricate :organization }
+
+    before do
+      Organization.recreate_index!
+
+      Fabricate(
+        :location,
+        organization: organization,
+        content: 'Berlin, Germany',
+        city: 'Berlin',
+        country: 'Germany'
+      )
+
+      Fabricate(
+        :organization_tag,
+        organization: organization,
+        tag: Fabricate(:tag, name: 'fooy')
+      )
+
+      Fabricate(
+        :website,
+        organization: organization,
+        content: 'http://www.example.com'
+      )
+
+      organization.es_index
+      Organization.refresh_index!
+      # using the default estella query
+      allow(Organization).to receive(:estella_search_query).and_return(Estella::Query)
+    end
+
+    it 'includes organization locations and makes them searchable' do
+      expect(Organization.estella_search(term: 'berlin')).to eq([organization])
+      expect(Organization.estella_search(term: 'germany')).to eq([organization])
+    end
+
+    it 'includes tags and makes them searchable' do
+      expect(Organization.estella_search(term: 'foo')).to eq([organization])
+    end
+
+    it 'includes website urls and makes them searchable' do
+      expect(Organization.estella_search(term: 'www.example')).to eq([organization])
     end
   end
 end

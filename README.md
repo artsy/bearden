@@ -31,7 +31,7 @@ Once setup, you can run the tests like this:
 $ bundle exec rake spec
 ```
 
-Note: the default rake task is setup to run tests and Rubocop.
+Note: the default rake task is setup to run tests and RuboCop.
 
 ## Starting Server
 
@@ -43,13 +43,31 @@ instead:
 $ foreman start -f Procfile.dev
 ```
 
-See the Procfiles for more.
+See the Procfile examples for more.
 
 ## Deploying
 
 PRs merged to the `master` branch are automatically deployed to staging.
 Production is automatically deployed upon merges to `release`. Create such a PR
-with [deploy_pr][deploy_pr] or [this handy link][deploy].
+with [`deploy_pr`][deploy_pr] or [this handy link][deploy].
+
+## API
+
+Trusted apps may use the Bearden API using [JWT](https://jwt.io/) authentication. You will need to obtain a JWT for Bearden from a Gravity console:
+
+```ruby
+# in a gravity console
+app = ClientApplication.where(name: 'Bearden').first
+expires_in = 20.years.from_now
+token = ApplicationTrust.create_for_token_authentication(app, expires_in: expires_in)
+puts token
+```
+
+Once in possession of the token, send it in your requests to Bearden:
+
+```ruby
+headers = { 'Authorization' => "Bearer #{token}" }
+```
 
 ## About the name Bearden
 
@@ -76,9 +94,9 @@ MIT License. See [LICENSE](LICENSE).
 
 [badge]: https://circleci.com/gh/artsy/bearden.svg?style=svg&circle-token=d5dcd30a0660190450379057eead64bbb53e00b8
 [circleci]: https://circleci.com/gh/artsy/bearden/
-[production]: https://bearden.artsy.com
+[production]: https://bearden.artsy.net
 [production_heroku]: https://dashboard.heroku.com/apps/bearden-production
-[staging]: https://bearden-staging.artsy.com
+[staging]: https://bearden-staging.artsy.net
 [staging_heroku]: https://dashboard.heroku.com/apps/bearden-staging
 [bearden]: https://github.com/artsy/bearden
 [jonallured]: https://github.com/jonallured

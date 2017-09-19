@@ -25,5 +25,7 @@ module Bearden
     config.active_record.schema_format = :sql
     config.active_support.to_time_preserves_timezone = true
     config.ssl_options = { hsts: { subdomains: true } }
+
+    config.autoload_paths << Rails.root.join('lib')
   end
 end

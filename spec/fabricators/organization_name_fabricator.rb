@@ -1,3 +1,3 @@
 Fabricator :organization_name do
-  content 'Gallery A'
+  content { sequence(:content) { |i| "Gallery #{i}" } }
 end
