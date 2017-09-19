@@ -1,4 +1,4 @@
-class SourcesController < ApplicationController
+class SourcesController < AdminController
   expose(:sources) { Source.order(:name) }
   expose(:source)
 
