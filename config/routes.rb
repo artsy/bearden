@@ -6,6 +6,13 @@ Rails.application.routes.draw do
     get :search, to: 'search#index'
   end
 
+  # GraphQL
+  if Rails.env.development?
+    mount GraphiQL::Rails::Engine, at: '/graphiql', graphql_path: '/api/graphql'
+  end
+
+  post '/api/graphql', to: 'graphql#execute'
+
   require 'sidekiq/web'
   # see config/initializers/sidekiq.rb for security details
   mount Sidekiq::Web, at: '/sidekiq'

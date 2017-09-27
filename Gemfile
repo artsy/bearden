@@ -19,6 +19,7 @@ gem 'estella'
 gem 'faraday'
 gem 'foreman'
 gem 'geocoder'
+gem 'graphql'
 gem 'haml'
 gem 'jbuilder'
 gem 'jquery-rails'
@@ -46,6 +47,7 @@ group :development, :test do
 end
 
 group :development do
+  gem 'graphiql-rails'
   gem 'listen'
   gem 'rails-erd'
   gem 'spring'

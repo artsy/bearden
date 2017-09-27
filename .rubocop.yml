@@ -36,4 +36,4 @@ Rails/ReversibleMigration:
   Enabled: false
 
 Metrics/LineLength:
-  Max: 105
+  Enabled: false
