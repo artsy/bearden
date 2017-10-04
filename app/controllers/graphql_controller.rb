@@ -1,4 +1,4 @@
-class GraphqlController < ApplicationController
+class GraphqlController < ApiController
   def execute
     variables = params[:variables]
     variables = JSON.parse(variables) if variables && variables.is_a?(String)
