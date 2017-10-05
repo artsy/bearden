@@ -28,7 +28,7 @@ describe GraphqlController, type: :controller do
         expect(response.status).to eq 200
         expect(JSON.parse(response.body)['errors'].first['message']).to eq "Field 'search' is missing required arguments: term"
       end
-      context 'with organizations' do
+      context 'with an organization' do
         let!(:organization) { Fabricate :organization }
         let!(:organization_name) { Fabricate :organization_name, organization: organization, content: 'David Zwirner Gallery' }
         before do
@@ -40,6 +40,21 @@ describe GraphqlController, type: :controller do
           post :execute, params: { query: '{ search(term: "David") { names } }' }
           expect(response.status).to eq 200
           expect(response.body).to eq '{"data":{"search":[{"names":["David Zwirner Gallery"]}]}}'
+        end
+      end
+      context 'with multiple organizations' do
+        before do
+          3.times do |i|
+            organization_name = Fabricate(:organization_name, organization: Fabricate(:organization), content: "David #{i}")
+            organization_name.organization.es_index
+          end
+          Organization.recreate_index!
+          Organization.refresh_index!
+        end
+        it 'returns all organizations' do
+          post :execute, params: { query: '{ search(term: "David") { names } }' }
+          expect(response.status).to eq 200
+          expect(JSON.parse(response.body)['data']['search'].count).to eq 3
         end
       end
     end
