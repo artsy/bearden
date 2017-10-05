@@ -56,6 +56,11 @@ describe GraphqlController, type: :controller do
           expect(response.status).to eq 200
           expect(JSON.parse(response.body)['data']['search'].count).to eq 3
         end
+        it 'can return a max number of organizations' do
+          post :execute, params: { query: '{ search(term: "David", first: 2) { names } }' }
+          expect(response.status).to eq 200
+          expect(JSON.parse(response.body)['data']['search'].count).to eq 2
+        end
       end
     end
   end
