@@ -13,5 +13,9 @@ RSpec.configure do |config|
   config.shared_context_metadata_behavior = :apply_to_host_groups
 end
 
+Dir[File.join(File.dirname(__FILE__), 'support', '**/*.rb')].each do |file|
+  require file
+end
+
 WebMock.disable_net_connect!(allow: 'localhost')
 Sidekiq::Testing.inline!

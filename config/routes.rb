@@ -1,10 +1,7 @@
 Rails.application.routes.draw do
   root to: redirect('/imports')
 
-  scope :v1, module: 'api/v1' do
-    get :ping, to: 'ping#show'
-    get :search, to: 'search#index'
-  end
+  post '/api/graphql', to: 'graphql#execute'
 
   require 'sidekiq/web'
   # see config/initializers/sidekiq.rb for security details

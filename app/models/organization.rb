@@ -31,7 +31,7 @@ class Organization < ApplicationRecord
   end
 
   def self.estella_search_query
-    Search::OrganizationsQuery
+    OrganizationsQuery
   end
 
   def names

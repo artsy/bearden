@@ -296,6 +296,7 @@ GEM
     gli (2.16.1)
     globalid (0.4.0)
       activesupport (>= 4.2.0)
+    graphql (1.7.3)
     haml (5.0.3)
       temple (>= 0.8.0)
       tilt
@@ -545,6 +546,7 @@ DEPENDENCIES
   faraday
   foreman
   geocoder
+  graphql
   haml
   jbuilder
   jquery-rails
