@@ -32,34 +32,51 @@ describe GraphqlController, type: :controller do
         let!(:organization) { Fabricate :organization }
         let!(:organization_name) { Fabricate :organization_name, organization: organization, content: 'David Zwirner Gallery' }
         before do
+          allow_any_instance_of(OrganizationName).to receive(:rank).and_return(1)
           Organization.recreate_index!
           organization.es_index
           Organization.refresh_index!
         end
         it 'returns organizations' do
-          post :execute, params: { query: '{ search(term: "David") { names } }' }
+          post :execute, params: { query: '{ search(term: "David") { name } }' }
           expect(response.status).to eq 200
-          expect(response.body).to eq '{"data":{"search":[{"names":["David Zwirner Gallery"]}]}}'
+          expect(response.body).to eq '{"data":{"search":[{"name":"David Zwirner Gallery"}]}}'
         end
       end
       context 'with multiple organizations' do
         before do
           3.times do |i|
             organization_name = Fabricate(:organization_name, organization: Fabricate(:organization), content: "David #{i}")
+            allow_any_instance_of(OrganizationName).to receive(:rank).and_return(1)
             organization_name.organization.es_index
           end
           Organization.recreate_index!
           Organization.refresh_index!
         end
         it 'returns all organizations' do
-          post :execute, params: { query: '{ search(term: "David") { names } }' }
+          post :execute, params: { query: '{ search(term: "David") { name } }' }
           expect(response.status).to eq 200
           expect(JSON.parse(response.body)['data']['search'].count).to eq 3
         end
         it 'can return a max number of organizations' do
-          post :execute, params: { query: '{ search(term: "David", first: 2) { names } }' }
+          post :execute, params: { query: '{ search(term: "David", first: 2) { name } }' }
           expect(response.status).to eq 200
           expect(JSON.parse(response.body)['data']['search'].count).to eq 2
+        end
+      end
+      context 'with multiple organization names' do
+        let!(:organization) { Fabricate :organization }
+        let!(:alt_name) { Fabricate(:organization_name, organization: organization, content: 'Joe Bloggs') }
+        let!(:name) { Fabricate(:organization_name, organization: organization, content: 'David Zwirner') }
+        before do
+          allow_any_instance_of(OrganizationName).to receive(:rank).and_return(1)
+          name.organization.es_index
+          Organization.refresh_index!
+        end
+        it 'searches alternate names' do
+          post :execute, params: { query: '{ search(term: "Joe") { name } }' }
+          expect(response.status).to eq 200
+          expect(response.body).to eq '{"data":{"search":[{"name":"David Zwirner"}]}}'
         end
       end
     end
