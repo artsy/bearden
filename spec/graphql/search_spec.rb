@@ -19,6 +19,7 @@ describe GraphqlController, type: :controller do
         request.headers.merge! auth_headers
       end
       it 'runs a query' do
+        Organization.recreate_index!
         post :execute, params: { query: '{ search(term: "x") { id } }' }
         expect(response.status).to eq 200
         expect(response.body).to eq '{"data":{"search":[]}}'
