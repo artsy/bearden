@@ -11,7 +11,11 @@ class OrganizationsQuery < Estella::Query
               'name.ngram^5',
               'name.default^5',
               'name.shingle^1',
-              'name.snowball^1'
+              'name.snowball^1',
+              'alternate_names.ngram^5',
+              'alternate_names.default^5',
+              'alternate_names.shingle^1',
+              'alternate_names.snowball^1'
             ],
             query: params[:term]
           }

@@ -20,7 +20,8 @@ class Organization < ApplicationRecord
 
   searchable do
     field :id, type: 'integer'
-    field :name, using: :names, type: 'string', analysis: FULLTEXT_ANALYSIS, factor: 1.0
+    field :name, type: 'string', analysis: FULLTEXT_ANALYSIS, factor: 1.5
+    field :alternate_names, type: 'string', analysis: FULLTEXT_ANALYSIS, factor: 1.0
     field :tag, using: :tag_names, type: 'string', analysis: FULLTEXT_ANALYSIS, factor: 0.5
     field :website, using: :website_urls, type: 'string', analysis: FULLTEXT_ANALYSIS, factor: 0.5
     field :city, using: :cities, type: 'string', analysis: FULLTEXT_ANALYSIS, factor: 0.5
@@ -34,8 +35,16 @@ class Organization < ApplicationRecord
     OrganizationsQuery
   end
 
+  def name
+    names.first
+  end
+
+  def alternate_names
+    names.drop(1)
+  end
+
   def names
-    organization_names.pluck(:content)
+    organization_names.order(created_at: :desc).sort_by(&:rank).pluck(:content)
   end
 
   def tag_names
