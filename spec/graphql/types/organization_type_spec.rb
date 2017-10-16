@@ -8,7 +8,7 @@ describe BeardenSchema.types['Organization'] do
   it {
     is_expected.to have_graphql_fields(
       :id,
-      :names
+      :name
     )
   }
 end

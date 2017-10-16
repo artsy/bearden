@@ -97,6 +97,7 @@ describe Organization do
 
     before do
       Organization.recreate_index!
+      allow_any_instance_of(OrganizationName).to receive(:rank).and_return(1)
 
       Fabricate(
         :organization_name,
