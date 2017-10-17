@@ -14,19 +14,23 @@ class OrganizationResolver
     highest_ranked_data
   end
 
+  def self.rank(rankables)
+    rankables.sort_by { |rankable| [rankable.rank, -rankable.created_at.to_i] }
+  end
+
+  def self.find_highest_rankable(rankables)
+    rank(rankables).first
+  end
+
   private
 
   def find_highest_rankables
-    @email = find_highest_rankable(@organization.emails)
-    @location = find_highest_rankable(@organization.locations)
-    @organization_name = find_highest_rankable(@organization.organization_names)
-    @organization_type = find_highest_rankable(@organization.organization_types)
-    @phone_number = find_highest_rankable(@organization.phone_numbers)
-    @website = find_highest_rankable(@organization.websites)
-  end
-
-  def find_highest_rankable(rankables)
-    rankables.order(created_at: :desc).sort_by(&:rank).first
+    @email = OrganizationResolver.find_highest_rankable(@organization.emails)
+    @location = OrganizationResolver.find_highest_rankable(@organization.locations)
+    @organization_name = OrganizationResolver.find_highest_rankable(@organization.organization_names)
+    @organization_type = OrganizationResolver.find_highest_rankable(@organization.organization_types)
+    @phone_number = OrganizationResolver.find_highest_rankable(@organization.phone_numbers)
+    @website = OrganizationResolver.find_highest_rankable(@organization.websites)
   end
 
   # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
