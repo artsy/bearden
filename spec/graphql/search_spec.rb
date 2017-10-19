@@ -3,7 +3,7 @@ require 'rails_helper'
 describe GraphqlController, type: :controller do
   let(:jwt_token) do
     JWT.encode(
-      { aud: Rails.application.secrets.artsy_application_id },
+      { aud: Rails.application.secrets.artsy_application_id, roles: 'trusted' },
       Rails.application.secrets.artsy_internal_secret
     )
   end
