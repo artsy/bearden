@@ -74,10 +74,10 @@ describe GraphqlController, type: :controller do
           name.organization.es_index
           Organization.refresh_index!
         end
-        it 'searches alternate names' do
+        it 'searches alternate names but returns original one' do
           post :execute, params: { query: '{ search(term: "Joe") { name } }' }
           expect(response.status).to eq 200
-          expect(response.body).to eq '{"data":{"search":[{"name":"David Zwirner"}]}}'
+          expect(response.body).to eq '{"data":{"search":[{"name":"Joe Bloggs"}]}}'
         end
       end
     end
