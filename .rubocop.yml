@@ -37,3 +37,6 @@ Rails/ReversibleMigration:
 
 Metrics/LineLength:
   Enabled: false
+
+Rails/TimeZone:
+  Enabled: false

@@ -43,8 +43,9 @@ class Organization < ApplicationRecord
     names.drop(1)
   end
 
+  # Lowest rank first, then most recent first.
   def names
-    organization_names.order(created_at: :desc).sort_by(&:rank).pluck(:content)
+    OrganizationResolver.rank(organization_names).pluck(:content)
   end
 
   def tag_names
