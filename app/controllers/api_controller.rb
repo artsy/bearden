@@ -13,8 +13,13 @@ class ApiController < ApplicationController
     return false unless auth_header
     token = auth_header.split(' ').last
     secret = Rails.application.secrets.artsy_internal_secret
-    JWT.decode(token, secret)
+    payload = JWT.decode(token, secret).first
+    validate_payload(payload)
   rescue JWT::DecodeError
     return false
+  end
+
+  def validate_payload(payload)
+    payload['roles']&.split(',')&.include?('trusted')
   end
 end

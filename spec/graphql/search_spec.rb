@@ -3,15 +3,30 @@ require 'rails_helper'
 describe GraphqlController, type: :controller do
   let(:jwt_token) do
     JWT.encode(
+      { aud: Rails.application.secrets.artsy_application_id, roles: 'trusted' },
+      Rails.application.secrets.artsy_internal_secret
+    )
+  end
+  let(:untrusted_jwt_token) do
+    JWT.encode(
       { aud: Rails.application.secrets.artsy_application_id },
       Rails.application.secrets.artsy_internal_secret
     )
   end
   describe 'execute' do
-    it 'requires a token' do
-      post :execute
-      expect(response.status).to eq 401
-      expect(response.body).to eq 'Access Denied'
+    context 'without auth' do
+      it 'requires a token' do
+        post :execute
+        expect(response.status).to eq 401
+        expect(response.body).to eq 'Access Denied'
+      end
+      it 'requires a trusted role' do
+        auth_headers = { 'Authorization' => "Bearer #{untrusted_jwt_token}" }
+        request.headers.merge! auth_headers
+        post :execute
+        expect(response.status).to eq 401
+        expect(response.body).to eq 'Access Denied'
+      end
     end
     context 'with auth' do
       let(:auth_headers) { { 'Authorization' => "Bearer #{jwt_token}" } }
