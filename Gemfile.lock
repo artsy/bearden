@@ -296,7 +296,14 @@ GEM
     gli (2.17.0)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
+    graphlient (0.1.0)
+      faraday
+      faraday_middleware
+      graphql-client
     graphql (1.7.4)
+    graphql-client (0.12.1)
+      activesupport (>= 3.0, < 6.0)
+      graphql (~> 1.6)
     haml (5.0.4)
       temple (>= 0.8.0)
       tilt
@@ -547,6 +554,7 @@ DEPENDENCIES
   faraday
   foreman
   geocoder
+  graphlient
   graphql
   haml
   jbuilder
