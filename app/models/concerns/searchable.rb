@@ -12,7 +12,7 @@ module Searchable
     skip_callback(:destroy, :after, :es_delete)
 
     # background indexing
-    after_save :delay_es_index
+    after_commit :delay_es_index
     after_destroy :delay_es_delete
   end
 
