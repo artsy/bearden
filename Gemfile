@@ -59,5 +59,6 @@ group :test do
   gem 'capybara'
   gem 'database_cleaner'
   gem 'fabrication'
+  gem 'graphlient'
   gem 'webmock'
 end
