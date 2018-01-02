@@ -1,5 +1,5 @@
-# rubocop:disable Metrics/MethodLength
 class CsvTransformer
+  # rubocop:disable Metrics/MethodLength
   def self.allowed_headers
     %w[
       email
@@ -16,6 +16,7 @@ class CsvTransformer
       website
     ]
   end
+  # rubocop:enable Metrics/MethodLength
 
   def self.transform(raw_input)
     new(raw_input).transform

@@ -30,7 +30,7 @@ class CreateTagsSourcesOrganizations < ActiveRecord::Migration[5.0]
       t.timestamps
     end
 
-    create_table :organizations_tags, id: false do |t|
+    create_table :organizations_tags, id: false do |t| # rubocop:disable Rails/CreateTableWithTimestamps
       t.belongs_to :organization, index: true
       t.belongs_to :tag, index: true
     end
