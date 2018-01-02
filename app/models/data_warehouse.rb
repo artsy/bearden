@@ -10,12 +10,10 @@ class DataWarehouse
   def self.reset(sources)
     Result.new.tap do |result|
       Redshift.connect do |connection|
-        begin
-          warehouse = new(sources, result, connection)
-          warehouse.reset
-        rescue PG::Error => e
-          result.errors = "#{e.class}: #{e.message}"
-        end
+        warehouse = new(sources, result, connection)
+        warehouse.reset
+      rescue PG::Error => e
+        result.errors = "#{e.class}: #{e.message}"
       end
     end
   end

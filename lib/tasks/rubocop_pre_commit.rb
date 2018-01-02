@@ -1,7 +1,5 @@
 #!/usr/bin/env ruby
 
-# rubocop:disable Rails/Exit
-
 require 'english'
 require 'rubocop'
 
@@ -14,4 +12,4 @@ changed_files = `git status --porcelain`.split(/\n/)
 
 system("rubocop --force-exclusion #{changed_files}") unless changed_files.empty?
 
-exit $CHILD_STATUS.to_s[-1].to_i
+exit $CHILD_STATUS.to_s[-1].to_i # rubocop:disable Rails/Exit
