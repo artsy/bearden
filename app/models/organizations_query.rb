@@ -28,4 +28,5 @@ class OrganizationsQuery < Estella::Query
       }
     }
   end
+  # rubocop:enable Metrics/MethodLength
 end

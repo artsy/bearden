@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.4.1'
+ruby '2.5.0'
 
 # rubocop:disable Bundler/OrderedGems
 gem 'rails', '5.1.4'
@@ -25,6 +25,7 @@ gem 'jbuilder'
 gem 'jquery-rails'
 gem 'jwt'
 gem 'micromachine'
+gem 'omniauth-oauth2', '1.4.0'
 gem 'paper_trail'
 gem 'paper_trail-globalid'
 gem 'redis', '3.3.5'
