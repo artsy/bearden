@@ -4,7 +4,7 @@ ruby '2.5.0'
 
 # rubocop:disable Bundler/OrderedGems
 gem 'rails', '5.1.4'
-gem 'pg'
+gem 'pg', '0.21.0'
 gem 'puma'
 # rubocop:enable Bundler/OrderedGems
 
