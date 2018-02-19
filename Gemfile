@@ -9,7 +9,7 @@ gem 'puma'
 
 gem 'artsy-auth'
 gem 'aws-sdk-s3'
-gem 'bootstrap', '~> 4.0.0.alpha6'
+gem 'bootstrap'
 gem 'carrierwave_direct'
 gem 'charlock_holmes'
 gem 'coffee-rails'
@@ -35,10 +35,6 @@ gem 'sidekiq'
 gem 'slack-ruby-client'
 gem 'typhoeus'
 gem 'uglifier'
-
-source 'https://rails-assets.org' do
-  gem 'rails-assets-tether', '>= 1.3.3'
-end
 
 group :development, :test do
   gem 'dotenv-rails'
