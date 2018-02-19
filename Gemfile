@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.5.0'
+ruby File.read('.ruby-version')
 
 # rubocop:disable Bundler/OrderedGems
 gem 'rails', '5.1.4'
