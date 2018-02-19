@@ -1,12 +1,11 @@
 source 'https://rubygems.org'
 
-ruby '2.5.0'
+ruby File.read('.ruby-version')
 
-# rubocop:disable Bundler/OrderedGems
-gem 'rails', '5.1.4'
+gem 'rails', '5.1.5'
+
 gem 'pg', '0.21.0'
 gem 'puma'
-# rubocop:enable Bundler/OrderedGems
 
 gem 'artsy-auth'
 gem 'aws-sdk-s3'
