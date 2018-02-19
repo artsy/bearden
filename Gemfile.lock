@@ -427,7 +427,7 @@ GEM
       json (>= 1.8)
       nokogiri (~> 1.5)
       trollop (~> 2.1)
-    redis (3.3.5)
+    redis (4.0.1)
     request_store (1.4.0)
       rack (>= 1.4)
     rest-client (2.0.2)
@@ -567,7 +567,7 @@ DEPENDENCIES
   puma
   rails (= 5.1.5)
   rails-erd
-  redis (= 3.3.5)
+  redis
   rspec-rails
   rubocop
   sass-rails
