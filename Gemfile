@@ -40,7 +40,7 @@ group :development, :test do
   gem 'dotenv-rails'
   gem 'pry-rails'
   gem 'rspec-rails'
-  gem 'rubocop'
+  gem 'rubocop', '0.52.1'
 end
 
 group :development do
