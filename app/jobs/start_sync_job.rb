@@ -41,7 +41,7 @@ class StartSyncJob < ApplicationJob
   def enqueue_export_jobs
     total_parts = Organization.count / @part_size + 1
 
-    sync.update_attributes total_parts: total_parts
+    sync.update total_parts: total_parts
 
     (1..total_parts).each do |part_number|
       OrganizationExportJob.perform_later(sync.id, part_number)

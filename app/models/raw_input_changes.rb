@@ -51,7 +51,7 @@ class RawInputChanges
 
   def update_organization
     organization_attrs = @attrs[:organization]
-    @organization.update_attributes organization_attrs if organization_attrs
+    @organization.update organization_attrs if organization_attrs
   end
 
   def relations_to_build
