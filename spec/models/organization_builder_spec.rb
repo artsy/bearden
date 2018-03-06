@@ -18,37 +18,6 @@ describe OrganizationBuilder do
       end
     end
 
-    context 'with a matching website after resolution' do
-      xit 'creates a website for the redirect and finds the organization' do
-        organization = Fabricate :organization
-        website = Fabricate(
-          :website,
-          organization: organization,
-          content: 'https://www.artsy.net'
-        )
-
-        results = [
-          { status: 301, content: 'http://artsy.net' },
-          { status: 200, content: "#{website.content}/" }
-        ]
-
-        resolver = double(
-          :resolver,
-          resolved_url: website.content,
-          results: results
-        )
-        expect(WebsiteResolver).to receive(:resolve).and_return(resolver)
-
-        builder = OrganizationBuilder.new('artsy.net')
-        builder.find_or_create
-
-        expect(Organization.count).to eq 1
-        organization = builder.organization
-        expect(organization.websites.count).to eq 2
-        expect(builder).to_not be_created
-      end
-    end
-
     context 'with a new website' do
       it 'creates and organization and website' do
         website = 'http://example.com'

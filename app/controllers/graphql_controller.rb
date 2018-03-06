@@ -25,7 +25,7 @@ class GraphqlController < ApiController
 
   def variables
     variables = params[:variables]
-    variables = JSON.parse(variables) if variables && variables.is_a?(String)
+    variables = JSON.parse(variables) if variables&.is_a?(String)
     variables || {}
   end
 end
