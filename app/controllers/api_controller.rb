@@ -16,7 +16,7 @@ class ApiController < ApplicationController
     payload = JWT.decode(token, secret).first
     validate_payload(payload)
   rescue JWT::DecodeError
-    return false
+    false
   end
 
   def validate_payload(payload)

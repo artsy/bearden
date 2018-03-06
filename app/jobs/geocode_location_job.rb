@@ -19,7 +19,7 @@ class GeocodeLocationJob < ApplicationJob
 
     PaperTrail.track_changes_with('Geocoder') do
       attrs = location_attrs(results&.first)
-      location.update_attributes(attrs)
+      location.update(attrs)
     end
   end
 

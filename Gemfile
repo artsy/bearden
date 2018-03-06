@@ -1,16 +1,15 @@
 source 'https://rubygems.org'
 
-ruby '2.5.0'
+ruby File.read('.ruby-version')
 
-# rubocop:disable Bundler/OrderedGems
-gem 'rails', '5.1.4'
+gem 'rails', '5.1.5'
+
 gem 'pg', '0.21.0'
 gem 'puma'
-# rubocop:enable Bundler/OrderedGems
 
 gem 'artsy-auth'
 gem 'aws-sdk-s3'
-gem 'bootstrap', '~> 4.0.0.alpha6'
+gem 'bootstrap'
 gem 'carrierwave_direct'
 gem 'charlock_holmes'
 gem 'coffee-rails'
@@ -28,7 +27,7 @@ gem 'micromachine'
 gem 'omniauth-oauth2', '1.4.0'
 gem 'paper_trail'
 gem 'paper_trail-globalid'
-gem 'redis', '3.3.5'
+gem 'redis'
 gem 'sass-rails'
 gem 'sentry-raven'
 gem 'sequel'
@@ -37,18 +36,14 @@ gem 'slack-ruby-client'
 gem 'typhoeus'
 gem 'uglifier'
 
-source 'https://rails-assets.org' do
-  gem 'rails-assets-tether', '>= 1.3.3'
-end
-
 group :development, :test do
-  gem 'dotenv-rails'
   gem 'pry-rails'
   gem 'rspec-rails'
   gem 'rubocop'
 end
 
 group :development do
+  gem 'dotenv-rails'
   gem 'listen'
   gem 'rails-erd'
   gem 'spring'

@@ -12,7 +12,7 @@ class RawInput < ApplicationRecord
   end
 
   def record_result(state, output)
-    update_attributes(
+    update(
       state: state,
       output_id: output.id,
       output_type: output.class
@@ -20,7 +20,7 @@ class RawInput < ApplicationRecord
   end
 
   def record_error(error, error_details)
-    update_attributes(
+    update(
       state: ERROR,
       exception: error.class,
       error_details: error_details

@@ -4,10 +4,6 @@ AllCops:
     - 'vendor/**/*'
     - 'lib/tasks/temporary/*.rake'
 
-Style/ClassAndModuleChildren:
-  Exclude:
-    - 'app/controllers/api/**/*'
-
 Metrics/AbcSize:
   Exclude:
     - 'db/migrate/*'
@@ -18,25 +14,32 @@ Metrics/BlockLength:
     - 'lib/tasks/*.rake'
     - 'docs/tasks/*.rake'
 
+Metrics/LineLength:
+  Enabled: false
+
 Metrics/MethodLength:
   Exclude:
     - 'db/migrate/*'
 
-Style/Documentation:
+Naming/UncommunicativeMethodParamName:
   Enabled: false
 
-Style/FrozenStringLiteralComment:
+Rails/ReversibleMigration:
+  Enabled: false
+
+Rails/TimeZone:
   Enabled: false
 
 Style/BracesAroundHashParameters:
   Exclude:
     - 'spec/**/*'
 
-Rails/ReversibleMigration:
+Style/ClassAndModuleChildren:
+  Exclude:
+    - 'app/controllers/api/**/*'
+
+Style/Documentation:
   Enabled: false
 
-Metrics/LineLength:
-  Enabled: false
-
-Rails/TimeZone:
+Style/FrozenStringLiteralComment:
   Enabled: false

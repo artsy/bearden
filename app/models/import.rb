@@ -53,6 +53,6 @@ class Import < ApplicationRecord
   end
 
   def update_state(_, _)
-    update_attributes state: machine.state
+    update state: machine.state
   end
 end
