@@ -4,7 +4,7 @@ jobs:
   build:
     working_directory: ~/bearden
     docker:
-      - image: circleci/ruby:2.5-node
+      - image: artsy/ruby:2.5.1-node-chrome
         environment:
           RAILS_ENV: test
       - image: circleci/postgres:10.1-alpine
