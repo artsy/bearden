@@ -4,13 +4,13 @@ jobs:
   build:
     working_directory: ~/bearden
     docker:
-      - image: circleci/ruby:2.5.0-node
+      - image: artsy/ruby:2.5.1-node-chrome
         environment:
           RAILS_ENV: test
       - image: circleci/postgres:10.1-alpine
       - image: circleci/elasticsearch
     steps:
-      - run: sudo apt-get install libicu-dev
+      - run: apt-get install libicu-dev
       - checkout
       - type: cache-restore
         key: bearden-{{ checksum "Gemfile.lock" }}
