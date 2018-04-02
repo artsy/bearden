@@ -49,8 +49,8 @@ GEM
     ast (2.4.0)
     autoprefixer-rails (8.2.0)
       execjs
-    aws-partitions (1.72.0)
-    aws-sdk-core (3.17.1)
+    aws-partitions (1.76.0)
+    aws-sdk-core (3.18.1)
       aws-partitions (~> 1.0)
       aws-sigv4 (~> 1.0)
       jmespath (~> 1.0)
@@ -83,7 +83,7 @@ GEM
       carrierwave
       fog
       uuidtools
-    charlock_holmes (0.7.5)
+    charlock_holmes (0.7.6)
     choice (0.2.0)
     coderay (1.1.2)
     coffee-rails (4.2.2)
@@ -127,7 +127,7 @@ GEM
       elasticsearch-model
     ethon (0.11.0)
       ffi (>= 1.3.0)
-    excon (0.61.0)
+    excon (0.62.0)
     execjs (2.7.0)
     fabrication (2.20.1)
     faraday (0.12.2)
@@ -233,7 +233,7 @@ GEM
       fog-core (~> 1.40)
       fog-json (>= 1.0)
       ipaddress (>= 0.8)
-    fog-ovirt (1.0.0)
+    fog-ovirt (1.0.1)
       fog-core (~> 1.45)
       fog-json
       fog-xml (~> 0.1.1)
@@ -371,7 +371,7 @@ GEM
     parallel (1.12.1)
     parser (2.5.0.5)
       ast (~> 2.4.0)
-    pg (0.21.0)
+    pg (1.0.0)
     popper_js (1.12.9)
     powerpack (0.1.1)
     pry (0.11.3)
@@ -384,7 +384,7 @@ GEM
     rack (2.0.4)
     rack-protection (2.0.1)
       rack
-    rack-test (0.8.3)
+    rack-test (1.0.0)
       rack (>= 1.0, < 3)
     rails (5.1.5)
       actioncable (= 5.1.5)
@@ -475,8 +475,8 @@ GEM
       tilt (>= 1.1, < 3)
     sentry-raven (2.7.2)
       faraday (>= 0.7.6, < 1.0)
-    sequel (5.6.0)
-    sidekiq (5.1.1)
+    sequel (5.7.0)
+    sidekiq (5.1.3)
       concurrent-ruby (~> 1.0)
       connection_pool (~> 2.2, >= 2.2.0)
       rack-protection (>= 1.5.0)
@@ -560,9 +560,9 @@ DEPENDENCIES
   listen
   micromachine
   omniauth-oauth2 (= 1.4.0)
-  paper_trail
+  paper_trail (= 8.1.2)
   paper_trail-globalid
-  pg (= 0.21.0)
+  pg
   pry-rails
   puma
   rails (= 5.1.5)
