@@ -2,9 +2,9 @@ source 'https://rubygems.org'
 
 ruby File.read('.ruby-version')
 
-gem 'rails', '5.1.5'
+gem 'rails', '5.1.6'
 
-gem 'pg', '0.21.0'
+gem 'pg'
 gem 'puma'
 
 gem 'artsy-auth'
@@ -25,7 +25,7 @@ gem 'jquery-rails'
 gem 'jwt'
 gem 'micromachine'
 gem 'omniauth-oauth2', '1.4.0'
-gem 'paper_trail'
+gem 'paper_trail', '8.1.2'
 gem 'paper_trail-globalid'
 gem 'redis'
 gem 'sass-rails'
