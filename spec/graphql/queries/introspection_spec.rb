@@ -12,6 +12,6 @@ describe 'GraphQL Introspection', type: :request do
     expect(response.status).to eq 403
   end
   it 'retrieves schema' do
-    expect(client.schema).to be_a GraphQL::Schema
+    expect(client.schema).to be_a Graphlient::Schema
   end
 end
