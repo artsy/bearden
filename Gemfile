@@ -39,7 +39,7 @@ gem 'uglifier'
 group :development, :test do
   gem 'pry-rails'
   gem 'rspec-rails'
-  gem 'rubocop'
+  gem 'rubocop', '0.54.0'
 end
 
 group :development do
