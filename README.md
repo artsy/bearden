@@ -1,5 +1,7 @@
 # Bearden [![CircleCI][badge]][circleci]
 
+OMG LOL
+
 ## Meta
 
 * State: production
