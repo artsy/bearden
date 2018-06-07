@@ -55,7 +55,10 @@ workflows:
   version: 2
   build-deploy:
     jobs:
-      - build-and-test
+      - build-and-test:
+          filters:
+            branches:
+              ignore: release
       - deploy-staging:
           requires:
             - build-and-test
