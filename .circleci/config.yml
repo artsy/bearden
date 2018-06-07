@@ -1,7 +1,7 @@
 version: 2
 
 jobs:
-  build:
+  build-and-test:
     working_directory: ~/bearden
     docker:
       - image: artsy/ruby:2.5.1-node-chrome
@@ -10,27 +10,59 @@ jobs:
       - image: circleci/postgres:10.1-alpine
       - image: circleci/elasticsearch
     steps:
-      - run: apt-get install libicu-dev
+      - run:
+          name: Install ICU for charlock_holmes
+          command: apt-get install libicu-dev
       - checkout
-      - type: cache-restore
-        key: bearden-{{ checksum "Gemfile.lock" }}
-      - run: bundle install --path vendor/bundle
-      - type: cache-save
-        key: bearden-{{ checksum "Gemfile.lock" }}
-        paths:
-          - vendor/bundle
+      - restore_cache:
+          key: bearden-{{ checksum "Gemfile.lock" }}
+      - run:
+          name: Bundle Install
+          command: bundle install --path vendor/bundle
+      - save_cache:
+          key: bearden-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+      - run:
+          name: Poll for Elasticsearch
+          command: sleep 10 && curl --retry 10 --retry-delay 5 -v http://127.0.0.1:9200/
+      - run:
+          name: Setup database
+          command: mv config/database{.circle,}.yml && bundle exec rake db:create db:migrate
+      - run:
+          name: Run tests
+          command: bundle exec rake
 
-      # Make sure that Elasticsearch is up before running tests:
-      - run: sleep 10 && curl --retry 10 --retry-delay 5 -v http://127.0.0.1:9200/
+  deploy-staging:
+    docker:
+      - image: buildpack-deps:trusty
+    steps:
+      - checkout
+      - run:
+          name: Deploy to staging
+          command: git push --force https://heroku:$HEROKU_API_KEY@git.heroku.com/bearden-staging.git master
 
-      - run: mv config/database{.circle,}.yml
-      - run: bundle exec rake db:create db:migrate
-      - run: bundle exec rake
+  deploy-production:
+    docker:
+      - image: buildpack-deps:trusty
+    steps:
+      - checkout
+      - run:
+          name: Deploy to production
+          command: git push --force https://heroku:$HEROKU_API_KEY@git.heroku.com/bearden-production.git master
 
-      - run: bash .circleci/heroku_setup
-      - add_ssh_keys:
-          fingerprints:
-            - "85:44:31:07:7a:a0:4e:bb:50:91:f0:d8:23:8f:69:03"
-      - deploy:
-          name: Deploy
-          command: .circleci/heroku_deploy
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build-and-test
+      - deploy-staging:
+          requires:
+            - build-and-test
+          filters:
+            branches:
+              only: master
+      - deploy-production:
+          filters:
+            branches:
+              only: release
