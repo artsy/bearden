@@ -9,7 +9,7 @@ gem 'puma'
 
 gem 'artsy-auth'
 gem 'aws-sdk-s3'
-gem 'bootstrap'
+gem 'bootstrap', '~> 4.1'
 gem 'carrierwave_direct'
 gem 'charlock_holmes'
 gem 'coffee-rails'
